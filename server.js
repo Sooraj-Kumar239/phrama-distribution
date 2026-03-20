@@ -30,22 +30,22 @@ app.get('/products', (req, res)=>{
 });
 
 // post request
-    app.post('/products',(req,res)=>{
+    app.post('/products',(req, res)=>{
         const{
             ProductName,
             BatchNumber,
-            ExpirayDate,
+            ExpiryDate,
             StockQuantity,
             UnitPrice,
-            RecordLevel
-        }=req.body;
+            ReorderLevel
+        } = req.body;
 
-        const sql='insert into products'
-        (ProductName,BatchNumber,ExpirayDate,StockQuantity,UnitPrice,RecordLevel)
-        values
-        (panadol,-01-26,02-8-2028,20,20.00,00);
+        const sql  =`INSERT INTO  products
+        (ProductName, BatchNumber, ExpiryDate, StockQuantity, UnitPrice, ReorderLevel)
+        values (?,?,?,?,?,?)`;
 
-        db.query(sql,[ProductName,BatchNumber,ExpirayDate,StockQuantity,UnitPrice,RecordLevel],
+        db.query(sql,
+            [ProductName,BatchNumber,ExpiryDate,StockQuantity,UnitPrice,ReorderLevel],
             (err,result)=>{
                 if (err) {
                 console.log(err);
@@ -54,8 +54,8 @@ app.get('/products', (req, res)=>{
                 res.send('Product added successfully');
             }
             }
-        )
-
+        );
+    });
 // Customers route
 app.get('/customers', (req, res) => {
     res.send('Customers list');
