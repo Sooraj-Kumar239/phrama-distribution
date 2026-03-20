@@ -15,7 +15,16 @@ app.listen(3000, () => {
 
 // products route
 app.get('/products', (req, res)=>{
-    res.send('products List');
+    db.query('SELECT * FROM products' , (err, results)=>{
+        if(err){
+            console.log(err);
+            res.send('error in fethching products');
+             }
+        else
+            {
+                res.json(results);
+            }
+    });
 });
 
 // Customers route
