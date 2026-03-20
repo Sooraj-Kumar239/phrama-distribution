@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-
+const db=require('./db') //server start and database will connect
 // Home route
 app.get('/', (req, res) => {
     res.send('Pharma Distribution System Running...');
