@@ -1,6 +1,9 @@
 // console.log("SERVER FILE checking");
-
+const cors                      = require("cors");
 const express                   = require('express');
+// const app                        = express();
+
+
 //server start and database will connectg
 const db                        = require('./Model/db');
 const productController         = require('./Controllers/productController');
@@ -17,6 +20,8 @@ const vendorsController         = require('./Controllers/vendorsController');
 const LabelService              = require('./labels/labelService');
 
 const app = express();
+app.use(cors());
+app.use(express.json());
 app.use(express.json());//enable json body for post request
 //Add controller
 app.use('/products', productController);
