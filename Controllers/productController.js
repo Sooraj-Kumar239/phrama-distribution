@@ -1,0 +1,49 @@
+const db = require('../Model/db');
+const express = require('express');
+const router = express.Router();
+const LabelService = require('../labels/labelService');
+
+//Return all products
+router.get('/', (req, res) => {
+    db.query('SELECT * FROM products', (err, results) => {
+        if (err) {
+            console.log(err);
+            res.send(LabelService.get('PRODUCT_LIST'));
+            // res.send(LabelService.get('CUSTOMER_LIST'));
+        }
+        else {
+            res.json(results);
+        }
+    });
+});
+
+//Inserts request
+router.post('/', (req, res) => {
+    const {
+        ProductName,
+        BatchNumber,
+        ExpiryDate,
+        StockQuantity,
+        UnitPrice,
+        ReorderLevel
+    } = req.body;
+
+    const sql = `INSERT INTO  products
+        (ProductName, BatchNumber, ExpiryDate, StockQuantity, UnitPrice, ReorderLevel)
+        values (?,?,?,?,?,?)`;
+
+    db.query(sql,
+        [ProductName, BatchNumber, ExpiryDate, StockQuantity, UnitPrice, ReorderLevel],
+        (err, result) => {
+            if (err) {
+                console.log(err);
+                res.send('Error inserting product');
+            } else {
+                res.send('Product added successfully');
+            }
+        }
+    );
+});
+
+
+module.exports = router; 

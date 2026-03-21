@@ -1,0 +1,7 @@
+{
+  "HOME_ROUTE"    : "Pharma Distribution System Running...",
+  "SERVER_START"  : "Server running on port ",
+  "PORT"          : "3003",
+  "CUSTOMER_LIST" : "Customers list",
+  "PRODUCT_LIST"  :"Product List"
+}

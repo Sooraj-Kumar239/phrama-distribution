@@ -1,62 +1,23 @@
 const express = require('express');
-const app = express();
-const db=require('./db') //server start and database will connectg
+//server start and database will connectg
+const db = require('./Model/db');
+const productController = require('./Controllers/productController');
+const customerController = require('./Controllers/customerController');
+const LabelService = require('./labels/labelService');
 
+const app = express();
 app.use(express.json());//enable json body for post request
 
+//Add controller
+app.use('/products', productController);
+app.use('/customer', customerController);
 
-// Home route
+//Home route
 app.get('/', (req, res) => {
-    res.send('Pharma Distribution System Running...');
+    res.send(LabelService.get('HOME_ROUTE'));
 });
 
-// Server start creting server on the browser
-app.listen(3000, () => {
-    console.log('Server running on port 3000');
-});
-
-// products route
-app.get('/products', (req, res)=>{
-    db.query('SELECT * FROM products' , (err, results)=>{
-        if(err){
-            console.log(err);
-            res.send('error in fethching products');
-             }
-        else
-            {
-                res.json(results);
-            }
-    });
-});
-
-// post request
-    app.post('/products',(req, res)=>{
-        const{
-            ProductName,
-            BatchNumber,
-            ExpiryDate,
-            StockQuantity,
-            UnitPrice,
-            ReorderLevel
-        } = req.body;
-
-        const sql  =`INSERT INTO  products
-        (ProductName, BatchNumber, ExpiryDate, StockQuantity, UnitPrice, ReorderLevel)
-        values (?,?,?,?,?,?)`;
-
-        db.query(sql,
-            [ProductName,BatchNumber,ExpiryDate,StockQuantity,UnitPrice,ReorderLevel],
-            (err,result)=>{
-                if (err) {
-                console.log(err);
-                res.send('Error inserting product');
-            } else {
-                res.send('Product added successfully');
-            }
-            }
-        );
-    });
-// Customers route
-app.get('/customers', (req, res) => {
-    res.send('Customers list');
+//Start creting server on the browser
+app.listen(LabelService.get('PORT'), () => {
+    console.log(`${LabelService.get('SERVER_START')}: ${LabelService.get('PORT')}`);
 });
