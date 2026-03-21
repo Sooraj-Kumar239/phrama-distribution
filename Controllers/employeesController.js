@@ -5,10 +5,10 @@ const LabelService = require('../labels/labelService');
 
 //Return all products
 router.get('/', (req, res) => {
-    db.query('SELECT * FROM products', (err, results) => {
+    db.query('SELECT * FROM employees', (err, results) => {
         if (err) {
             console.log(err);
-            res.send(LabelService.get('PRODUCT_LIST'));
+            res.send(LabelService.get('EMPLOYEE_LIST'));
             // res.send(LabelService.get('CUSTOMER_LIST'));
         }
         else {
@@ -20,26 +20,27 @@ router.get('/', (req, res) => {
 //Inserts request
 router.post('/', (req, res) => {
     const {
-        ProductName,
-        BatchNumber,
-        ExpiryDate,
-        StockQuantity,
-        UnitPrice,
-        ReorderLevel
+    DesignationID,
+    FullName,
+    Email,
+    PhoneNumber,
+    HireDate,
+    Endate,
+    IsActive
     } = req.body;
 
-    const sql = `INSERT INTO  products
-        (ProductName, BatchNumber, ExpiryDate, StockQuantity, UnitPrice, ReorderLevel)
-        values (?,?,?,?,?,?)`;
+    const sql = `INSERT INTO  employees
+        (DesignationID,FullName,Email,PhoneNumber,HireDate,Endate,IsActive)
+        values (?,?,?,?,?,?,?)`;
 
     db.query(sql,
-        [ProductName, BatchNumber, ExpiryDate, StockQuantity, UnitPrice, ReorderLevel],
+        [DesignationID,FullName,Email,PhoneNumber,HireDate,Endate,IsActive],
         (err, result) => {
             if (err) {
                 console.log(err);
-                res.send('Error inserting product');
+                res.send('Error inserting employss');
             } else {
-                res.send('Product added successfully');
+                res.send('employee added successfully');
             }
         }
     );

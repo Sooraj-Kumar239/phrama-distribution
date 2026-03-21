@@ -1,14 +1,17 @@
+// code for checking
+// console.log("User Controller Loaded");
+// 
 const db = require('../Model/db');
 const express = require('express');
 const router = express.Router();
 const LabelService = require('../labels/labelService');
 
-//Return all customer
+//Return all users
 router.get('/', (req, res) => {
-    db.query('SELECT * FROM customers', (err, results) => {
+    db.query('SELECT * FROM designations', (err, results) => {
         if (err) {
             console.log(err);
-            res.send(LabelService.get('PRODUCT_LIST'));
+            res.send(LabelService.get(' DESIGNATION_LIST'));
             // res.send(LabelService.get('CUSTOMER_LIST'));
         }
         else {
@@ -20,26 +23,22 @@ router.get('/', (req, res) => {
 //Inserts request
 router.post('/', (req, res) => {
     const {
-        CustomerName,
-        ContactPerson,
-        Phone,
-        Email,
-        Address,
-        CustomerType
+        	Title,
+            BaseSalar
     } = req.body;
 
-    const sql = `INSERT INTO customers
-        (CustomerName,ContactPerson,Phone,Email,Address,CustomerType)
-        values (?,?,?,?,?,?)`;
+    const sql = `INSERT INTO  designations
+        (	Title,	BaseSalar)
+        values (?,?,)`;
 
     db.query(sql,
-        [CustomerName,ContactPerson,Phone,Email,Address,CustomerType],
+        [	Title,	BaseSalar],
         (err, result) => {
             if (err) {
-                console.log(err);
-                res.send('Error inserting customers');
+                console.log(err.message);
+                res.send('Error inserting Designation' + err.message);
             } else {
-                res.send('Customer added successfully');
+                res.send('Designation added successfully');
             }
         }
     );

@@ -1,7 +1,16 @@
 {
-  "HOME_ROUTE"    : "Pharma Distribution System Running...",
-  "SERVER_START"  : "Server running on port ",
-  "PORT"          : "3003",
-  "CUSTOMER_LIST" : "Customers list",
-  "PRODUCT_LIST"  :"Product List"
-}
+  "HOME_ROUTE"        : "Pharma Distribution System Running...",
+  "SERVER_START"      : "Server running on port ",
+  "PORT"              : "3003",
+  "CUSTOMER_LIST"     : "Customers list",
+  "PRODUCT_LIST"      :"Product List",
+  "USER_LIST"         :"USERS LIST!",
+  "DESIGNATION_LIST"  :"ESIGNATION LIST",
+  "EMPLOYEE_LIST"     :"eMPLOYEE_LIST",
+  "PURCHASElINE_LIST" :"purchase line list",
+  "saleslines"        :"saleslines list",
+  "salesorders"       :"sales orders list",
+  "VEHIVLES_LIST"     :"vehicles list",
+  "VENDORS_LIST"      :"vendors list"
+
+  }
