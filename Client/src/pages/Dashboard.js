@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+// import Header from "../components/Header";
 function Dashboard(){
 
     // states kyu?
@@ -9,6 +10,9 @@ function Dashboard(){
     const [price, setPrice] = useState("");
     const [reorder, setReorder] = useState("");
     const [products, setProducts] = useState([]);
+    // message show when data inserted 
+    const [message, setMessage] = useState("");
+
 
     const fetchProducts = () => {
         fetch("http://localhost:3003/products")
@@ -38,7 +42,7 @@ function Dashboard(){
         })
             .then(res => res.text())
                 .then(data => {
-                                alert(data);
+                                 setMessage("Product Added Successfully");
                                 // to cleAR form 
                                 setName("");
                                 setBatch("");
@@ -47,19 +51,35 @@ function Dashboard(){
                                 setPrice("");
                                 setReorder("");
                                 // referesh the list
-                                fetchProducts(); 
-            })
+                                fetchProducts();
+                                setTimeout(() => {
+                                setMessage("");
+                                 }, 3000); 
+                })
                                 .catch(err => console.log(err));
     };
                 useEffect(() => {
-            fetchProducts();
+                fetchProducts();
              }, []);
 
         return (
         <div>
 
       <h1>Dashboard</h1>
-     <h3>Add Product</h3>
+            {message && (
+                     <div style={{
+                        position: "fixed",
+                        bottom: "20px",
+                        right: "20px",
+                        backgroundColor: "green",
+                        color: "white",
+                        padding: "10px 20px",
+                        borderRadius: "5px"
+                    }}>
+            {message}
+  </div>
+)}
+        <h3>Add Product</h3>
 
       <input placeholder="Product Name" onChange={(e) => setName(e.target.value)} />
       <input placeholder="Batch Number" onChange={(e) => setBatch(e.target.value)} />
@@ -98,10 +118,12 @@ function Dashboard(){
                                 <td>{p.StockQuantity}</td>
                                 <td>{p.UnitPrice}</td>
                                 <td>{p.ReorderLevel}</td>
-                                <td><a href="">Edit</a></td>
-                                <td><a href="">Delete</a></td>
+                                <td><button>Edit</button></td>
+                                <td><button>Delete</button></td>                
                             
                             </tr>
+
+                            
                         ))
                 )}
             </tbody>
