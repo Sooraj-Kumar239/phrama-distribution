@@ -43,8 +43,24 @@ router.post('/', (req, res) => {
             }
         }
     );
+});
 
-// update request
+// delete request
+
+router.delete('/:id', (req, res) => {
+    const id = req.params.id;
+    console.log("DELETE API HIT", id);
+
+    const sql = "DELETE FROM products WHERE ProductID = ?";
+    
+    db.query(sql, [id], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.send("Error deleting product");
+        } else {
+            res.send("Product Deleted Successfully");
+        }
+    });
 });
 
 

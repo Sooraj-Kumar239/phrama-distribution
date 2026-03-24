@@ -11,12 +11,32 @@ function Products(){
     const [products, setProducts] = useState([]);
     // message show when data inserted 
     const [message, setMessage] = useState("");
+    //message show when data row deleted
+    const [msgType, setMsgType] = useState("");
 
 
     const fetchProducts = () => {
         fetch("http://localhost:3003/products")
         .then(res => res.json())
         .then(data => setProducts(data))
+        .catch(err => console.log(err));
+    };
+
+    // delete
+    const deleteProduct = (id) => {
+        fetch(`http://localhost:3003/products/${id}`, {
+        method: "DELETE"
+        })
+        .then(res => res.text())
+        .then(data => {
+        setMessage("Product Deleted Successfully");
+        setMsgType("delete"); 
+        fetchProducts();
+
+        setTimeout(() => {
+            setMessage("");
+        }, 3000);
+        })
         .catch(err => console.log(err));
     };
 
@@ -42,6 +62,7 @@ function Products(){
             .then(res => res.text())
                 .then(data => {
                                  setMessage("Product Added Successfully");
+                                 setMsgType("success");
                                 // to cleAR form 
                                 setName("");
                                 setBatch("");
@@ -70,7 +91,8 @@ function Products(){
                         position: "fixed",
                         bottom: "20px",
                         right: "20px",
-                        backgroundColor: "green",
+                        backgroundColor: msgType==="success" ? "green":
+                                        msgType === "delete" ? "red" :"gray",
                         color: "white",
                         padding: "10px 20px",
                         borderRadius: "5px"
@@ -118,8 +140,21 @@ function Products(){
                                 <td>{p.UnitPrice}</td>
                                 <td>{p.ReorderLevel}</td>
                                 <td><a href="">Edit</a></td>
-                                <td><a href="">Delete</a></td>
-                            
+                                <td>
+                                    <button 
+                                    onClick={() => deleteProduct(p.ProductID)}
+                                    style={{
+                                        backgroundColor: "red",
+                                        color: "white",
+                                        border: "none",
+                                        padding: "5px 10px",
+                                        borderRadius: "5px",
+                                        cursor: "pointer"
+                                    }}
+                                >
+                                    Delete
+                                </button>
+                                </td>
                             </tr>
 
                             
