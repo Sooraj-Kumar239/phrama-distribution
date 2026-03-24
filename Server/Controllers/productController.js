@@ -44,7 +44,46 @@ router.post('/', (req, res) => {
         }
     );
 });
+router.get('/:id', (req, res) => {
+    const id = req.params.id;
 
+    const sql = "SELECT * FROM products WHERE ProductID = ?";
+
+    db.query(sql, [id], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.send("Error fetching product");
+        } else {
+            res.json(result[0]); // 👈 important
+        }
+    });
+});
+// edit requestr
+               router.put('/:id', (req, res) => {
+    const id = req.params.id;
+
+    const {
+        ProductName,
+        BatchNumber,
+        ExpiryDate,
+        StockQuantity,
+        UnitPrice,
+        ReorderLevel
+    } = req.body;
+
+    db.query(
+        "UPDATE products SET ProductName=?, BatchNumber=?, ExpiryDate=?, StockQuantity=?, UnitPrice=?, ReorderLevel=? WHERE ProductID=?",
+        [ProductName, BatchNumber, ExpiryDate, StockQuantity, UnitPrice, ReorderLevel, id],
+        (err, result) => {
+            if (err) {
+                console.log(err);
+                res.send("Error updating");
+            } else {
+                res.send("Updated successfully");
+            }
+        }
+    );
+});
 // delete request
 
 router.delete('/:id', (req, res) => {

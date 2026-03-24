@@ -13,15 +13,81 @@ function Products(){
     const [message, setMessage] = useState("");
     //message show when data row deleted
     const [msgType, setMsgType] = useState("");
-
+    // for data edit and show update
+    const [editId, setEditId] = useState(null);
 
     const fetchProducts = () => {
-        fetch("http://localhost:3003/products")
+    fetch("http://localhost:3003/products")
         .then(res => res.json())
-        .then(data => setProducts(data))
+        .then(data => {setProducts(data);
+        })
         .catch(err => console.log(err));
-    };
+};
+        useEffect(() => {
+            fetchProducts();
+            const params = new URLSearchParams(window.location.search);
+            const msg = params.get("msg");
+            //  console.log("MSG:", msg); 
 
+            if (msg === "updated") {
+                setMessage("Product Updated Successfully");
+                setMsgType("update");
+
+                setTimeout(() => {
+                setMessage("");
+                setMsgType("");
+                }, 3000);
+             }
+
+        }, []);
+    // edit 
+    //             const handleEdit = (p) => {
+    //             setEditId(p.ProductID);
+    //             setName(p.ProductName);
+    //             setBatch(p.BatchNumber);
+    //             setExpiry(p.ExpiryDate.split("T")[0]);
+    //             setStock(p.StockQuantity);
+    //             setPrice(p.UnitPrice);
+    //             setReorder(p.ReorderLevel);
+    //         };
+    //             const updateProduct = () => {
+    //             fetch(`http://localhost:3003/products/${editId}`, {
+    //             method: "PUT",
+    //             headers: {
+    //             "Content-Type": "application/json"
+    //                 },
+    //             body: JSON.stringify({
+    //             ProductName: name,
+    //             BatchNumber: batch,
+    //             ExpiryDate: expiry,
+    //             StockQuantity: stock,
+    //             UnitPrice: price,
+    //             ReorderLevel: reorder
+    //          })
+    // })
+    //             .then(res => res.text())
+    //             .then(data => {
+    //                 setMessage("Product Updated Successfully");
+    //                 setMsgType("update");
+
+    //                 setEditId(null);
+
+    //                 setName("");
+    //                 setBatch("");
+    //                 setExpiry("");
+    //                 setStock("");
+    //                 setPrice("");
+    //                 setReorder("");
+
+    //                 fetchProducts();
+
+    //                 setTimeout(() => {
+    //                     setMessage("");
+    //                     setMsgType("");
+    //                 }, 3000);
+    //             })
+    //             .catch(err => console.log(err));
+    //         };
     // delete
     const deleteProduct = (id) => {
         fetch(`http://localhost:3003/products/${id}`, {
@@ -78,9 +144,7 @@ function Products(){
                 })
                                 .catch(err => console.log(err));
     };
-                useEffect(() => {
-                fetchProducts();
-             }, []);
+                
 
         return (
         <div>
@@ -91,8 +155,9 @@ function Products(){
                         position: "fixed",
                         bottom: "20px",
                         right: "20px",
-                        backgroundColor: msgType==="success" ? "green":
-                                        msgType === "delete" ? "red" :"gray",
+                        backgroundColor: msgType === "success" ? "green":
+                                         msgType === "delete"  ? "red" :
+                                         msgType === "update"  ? "#007bff": "#6c757d",
                         color: "white",
                         padding: "10px 20px",
                         borderRadius: "5px"
@@ -102,14 +167,17 @@ function Products(){
 )}
         <h3>Add Product</h3>
 
-      <input placeholder="Product Name" onChange={(e) => setName(e.target.value)} />
-      <input placeholder="Batch Number" onChange={(e) => setBatch(e.target.value)} />
-      <input type="date" onChange={(e) => setExpiry(e.target.value)} />
-      <input placeholder="Stock" type="number" onChange={(e) => setStock(e.target.value)} />
-      <input placeholder="Unit Price" type="number" onChange={(e) => setPrice(e.target.value)} />
-      <input placeholder="Reorder Level" type="number" onChange={(e) => setReorder(e.target.value)} />
+                            <input placeholder="Product Name" onChange={(e) => setName(e.target.value)} />
+                            <input placeholder="Batch Number" onChange={(e) => setBatch(e.target.value)} />
+                            <input type="date" onChange={(e) => setExpiry(e.target.value)} />
+                            <input placeholder="Stock" type="number" onChange={(e) => setStock(e.target.value)} />
+                            <input placeholder="Unit Price" type="number" onChange={(e) => setPrice(e.target.value)} />
+                            <input placeholder="Reorder Level" type="number" onChange={(e) => setReorder(e.target.value)} />
 
-      <button onClick={addProduct}>Add Product</button>
+      {/* <button onClick={addProduct}>Add Product</button> */}
+        <button onClick={editId ? updateProduct : addProduct}>
+            {editId ? "Update Product" : "Add Product"}
+        </button>
 
         <h2>All Products</h2>
         <table border="1" cellPadding="10">
@@ -139,7 +207,21 @@ function Products(){
                                 <td>{p.StockQuantity}</td>
                                 <td>{p.UnitPrice}</td>
                                 <td>{p.ReorderLevel}</td>
-                                <td><a href="">Edit</a></td>
+                                <td>
+                                    <button
+                                        onClick={() => window.location.href = `/edit/${p.ProductID}`}
+                                        style={{
+                                            backgroundColor: "#007bff",
+                                            color: "white",
+                                            border: "none",
+                                            padding: "5px 10px",
+                                            borderRadius: "5px",
+                                            cursor: "pointer"
+                                        }}
+                                    >
+                                        Edit
+                                    </button>
+                                </td>
                                 <td>
                                     <button 
                                     onClick={() => deleteProduct(p.ProductID)}
