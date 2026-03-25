@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
-function Products(){
+function Users(){
     // return <Layout>
     //         <h2>Product Page</h2>
     //     </Layout>
@@ -21,7 +21,7 @@ function Products(){
     const [editId, setEditId] = useState(null);
     // styling
     const inputStyle = {
-                        width: "10%",
+                        width: "100%",
                         padding: "10px",
                         marginBottom: "10px",
                         borderRadius: "5px",
@@ -29,7 +29,7 @@ function Products(){
                     };
 
     const addBtn = {
-                    width: "10%",
+                    width: "100%",
                     padding: "10px",
                     backgroundColor: "#28a745",
                     color: "white",
@@ -82,7 +82,7 @@ function Products(){
 
 
     const addProduct = () => {
-        fetch("http://localhost:3003/products", {
+        fetch("http://localhost:3003/users", {
             method: "POST",
             headers:
             {
@@ -223,4 +223,4 @@ function Products(){
   );
 }
 
-export default Products;
+export default Users;

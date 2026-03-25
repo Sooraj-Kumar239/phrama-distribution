@@ -1,0 +1,173 @@
+import { useEffect, useState } from "react";
+import Layout from "../components/Layout";
+
+function Designation() {
+        //  return <h1>Designation Page Working </h1>;
+
+    const [title, setTitle] = useState("");
+    const [baseSalary, setBaseSalary] = useState("");
+    const [designation, setDesignation] = useState([]);
+
+    const [message, setMessage] = useState("");
+    const [msgType, setMsgType] = useState("");
+
+    const inputStyle = {
+        width: "20%",
+        padding: "10px",
+        marginBottom: "10px",
+        borderRadius: "5px",
+        border: "1px solid #ccc"
+    };
+
+    const addBtn = {
+        padding: "10px",
+        backgroundColor: "#28a745",
+        color: "white",
+        border: "none",
+        borderRadius: "5px",
+        cursor: "pointer"
+    };
+
+    // Fetch Data
+    const fetchDesignation = () => {
+        fetch("http://localhost:3003/designation")
+            .then(res => res.json())
+            .then(data => setDesignation(data))
+            .catch(err => console.log(err));
+    };
+
+    useEffect(() => {
+        fetchDesignation();
+    }, []);
+
+    // ✅ Add Designation
+    const addDesignation = () => {
+        fetch("http://localhost:3003/designation", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                Title: title,
+                BaseSalary: baseSalary
+            })
+        })
+        .then(res => res.text())
+        .then(() => {
+            setMessage("Designation Added Successfully");
+            setMsgType("success");
+
+            setTitle("");
+            setBaseSalary("");
+
+            fetchDesignation();
+
+            setTimeout(() => setMessage(""), 3000);
+        })
+        .catch(err => console.log(err));
+    };
+
+    // ✅ Delete
+    const deleteDesignation = (id) => {
+        fetch(`http://localhost:3003/designation/${id}`, {
+            method: "DELETE"
+        })
+        .then(() => {
+            setMessage("Deleted Successfully");
+            setMsgType("delete");
+
+            fetchDesignation();
+
+            setTimeout(() => setMessage(""), 3000);
+        })
+        .catch(err => console.log(err));
+    };
+
+    return (
+        <Layout>
+            <div>
+
+                {message && (
+                    <div style={{
+                        position: "fixed",
+                        bottom: "20px",
+                        right: "20px",
+                        backgroundColor:
+                            msgType === "success" ? "green" :
+                            msgType === "delete" ? "red" : "#007bff",
+                        color: "white",
+                        padding: "10px",
+                        borderRadius: "5px"
+                    }}>
+                        {message}
+                    </div>
+                )}
+
+                <h3>Add Designation</h3>
+
+                <input
+                    style={inputStyle}
+                    placeholder="Title"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                />
+
+                <input
+                    style={inputStyle}
+                    placeholder="Base Salary"
+                    value={baseSalary}
+                    onChange={(e) => setBaseSalary(e.target.value)}
+                />
+
+                <br />
+                <button style={addBtn} onClick={addDesignation}>
+                    Add Designation
+                </button>
+
+                <h2>All Designations</h2>
+
+                <table border="1" cellPadding="10">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Base Salary</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {designation.length === 0 ? (
+                            <tr>
+                                <td colSpan="3">No data found</td>
+                            </tr>
+                        ) : (
+                            designation.map((d) => (
+                                <tr key={d.DesignationID}>
+                                    <td>{d.Title}</td>
+                                    <td>{d.BaseSalary}</td>
+                                    <td>
+                                        <button
+                                            onClick={() => deleteDesignation(d.DesignationID)}
+                                            style={{
+                                                backgroundColor: "red",
+                                                color: "white",
+                                                border: "none",
+                                                padding: "5px",
+                                                borderRadius: "5px"
+                                            }}
+                                        >
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))
+                        )}
+                    </tbody>
+                </table>
+
+            </div>
+        </Layout>
+    );
+}
+
+export default Designation;

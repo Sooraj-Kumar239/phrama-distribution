@@ -23,16 +23,12 @@ router.get('/', (req, res) => {
 //Inserts request
 router.post('/', (req, res) => {
     const {
-        	Title,
-            BaseSalar
-    } = req.body;
+        	Title, BaseSalary } = req.body;
 
-    const sql = `INSERT INTO  designations
-        (	Title,	BaseSalar)
-        values (?,?,)`;
+    const sql = `INSERT INTO  designations (Title,	BaseSalary) values (?,?)`;
 
     db.query(sql,
-        [	Title,	BaseSalar],
+        [	Title,	BaseSalary],
         (err, result) => {
             if (err) {
                 console.log(err.message);
