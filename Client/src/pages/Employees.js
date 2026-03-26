@@ -174,7 +174,7 @@ function Employees() {
                             <th>Hire Date</th>
                             <th>End Date</th>
                             <th>Status</th>
-                            <th>Action</th>
+                            <th colSpan={2}>Action</th>
                         </tr>
                     </thead>
 
@@ -189,10 +189,25 @@ function Employees() {
                                     <td>{e.FullName}</td>
                                     <td>{e.Email}</td>
                                     <td>{e.PhoneNumber}</td>
-                                    <td>{e.DesignationID}</td>
+                                    <td>{e.DesignationName}</td>
                                     <td>{e.HireDate}</td>
                                     <td>{e.EndDate}</td>
                                     <td>{e.IsActive}</td>
+                                    <td>
+                                         <button
+                                        onClick={() => window.location.href = `/edit/${e.EmployeeID}`}
+                                        style={{
+                                            backgroundColor: "#007bff",
+                                            color: "white",
+                                            border: "none",
+                                            padding: "5px 10px",
+                                            borderRadius: "5px",
+                                            cursor: "pointer"
+                                        }}
+                                    >
+                                        Edit
+                                    </button>
+                                    </td>
                                     <td>
                                         <button
                                             onClick={() => deleteEmployee(e.EmployeeID)}
