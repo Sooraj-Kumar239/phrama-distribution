@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
+import { useNavigate } from "react-router-dom";
+
 
 function Designation() {
         //  return <h1>Designation Page Working </h1>;
@@ -10,6 +12,9 @@ function Designation() {
 
     const [message, setMessage] = useState("");
     const [msgType, setMsgType] = useState("");
+    // show form
+    const [showForm, setShowForm] = useState(false);
+    const navigate = useNavigate();
 
     const inputStyle = {
         width: "20%",
@@ -39,8 +44,17 @@ function Designation() {
     useEffect(() => {
         fetchDesignation();
     }, []);
+    useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("msg") === "updated") {
+        setMessage("Designation Updated Successfully");
+        setMsgType("success");
 
-    // ✅ Add Designation
+        setTimeout(() => setMessage(""), 3000);
+    }
+}, []);
+
+    // Add Designation
     const addDesignation = () => {
         fetch("http://localhost:3003/designation", {
             method: "POST",
@@ -61,13 +75,14 @@ function Designation() {
             setBaseSalary("");
 
             fetchDesignation();
-
+            setShowForm(false);
             setTimeout(() => setMessage(""), 3000);
         })
         .catch(err => console.log(err));
+        setShowForm(false);
     };
 
-    // ✅ Delete
+    // Delete
     const deleteDesignation = (id) => {
         fetch(`http://localhost:3003/designation/${id}`, {
             method: "DELETE"
@@ -84,7 +99,14 @@ function Designation() {
     };
 
     return (
+        
         <Layout>
+                <button 
+                     onClick={() => setShowForm(!showForm)} 
+                     style={{ marginBottom: "10px" }}
+                    >
+                    {showForm ? "Close Form" : "Add Designation"}
+                </button>
             <div>
 
                 {message && (
@@ -103,26 +125,32 @@ function Designation() {
                     </div>
                 )}
 
-                <h3>Add Designation</h3>
+                {/* <h3>Add Designation</h3> */}
 
-                <input
-                    style={inputStyle}
-                    placeholder="Title"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                />
+                {showForm && (
+    <>
+        <h3>Add Designation</h3>
 
-                <input
-                    style={inputStyle}
-                    placeholder="Base Salary"
-                    value={baseSalary}
-                    onChange={(e) => setBaseSalary(e.target.value)}
-                />
+        <input
+            style={inputStyle}
+            placeholder="Title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+        />
 
-                <br />
-                <button style={addBtn} onClick={addDesignation}>
-                    Add Designation
-                </button>
+        <input
+            style={inputStyle}
+            placeholder="Base Salary"
+            value={baseSalary}
+            onChange={(e) => setBaseSalary(e.target.value)}
+        />
+
+        <br />
+        <button style={addBtn} onClick={addDesignation}>
+            Add Designation
+        </button>
+    </>
+)}
 
                 <h2>All Designations</h2>
 
@@ -131,7 +159,7 @@ function Designation() {
                         <tr>
                             <th>Title</th>
                             <th>Base Salary</th>
-                            <th>Action</th>
+                            <th colSpan={2}>Action</th>
                         </tr>
                     </thead>
 
@@ -145,6 +173,20 @@ function Designation() {
                                 <tr key={d.DesignationID}>
                                     <td>{d.Title}</td>
                                     <td>{d.BaseSalary}</td>
+                                     <td>
+                                        <button
+                                            onClick={() => navigate(`/edit-designation/${d.DesignationID}`)}
+                                            style={{
+                                                backgroundColor: "blue",
+                                                color: "white",
+                                                border: "none",
+                                                padding: "5px",
+                                                borderRadius: "5px"
+                                            }}
+                                        >
+                                            edit
+                                        </button>
+                                    </td>
                                     <td>
                                         <button
                                             onClick={() => deleteDesignation(d.DesignationID)}

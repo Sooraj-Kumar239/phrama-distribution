@@ -1,9 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Header() {
     const [userOpen, setUserOpen] = useState(false);
     const [productOpen, setProductOpen] = useState(false);
-    const [employeessOpen, setEmployeesOpen] = useState(false);
+    const [employeesOpen, setEmployeesOpen] = useState(false);
+    const [designationOpen, setDesignationOpen] = useState(false);
+    const navigate = useNavigate();
 
     return (
         <div style={{
@@ -32,9 +35,22 @@ function Header() {
                 Dashboard
             </span>
                 {/* designations */}
+                 <span style={{ position: "relative" }}>
+                <button
+                        onClick={() => navigate("/designations")}
+                        style={{
+                        background: "none",
+                        color: "white",
+                        border: "none",
+                        cursor: "pointer"
+                    }}
+                    >
+                        Manage Designation
+                </button>
+                </span>
                 {/* users */}
                 {/* users Dropdown */}
-            <span style={{ position: "relative" }}>
+                 <span style={{ position: "relative" }}>
                 <button
                     onClick={() => setUserOpen(!userOpen)}
                     style={{
@@ -104,7 +120,7 @@ function Header() {
             {/* employees  */}
             <span style={{ position: "relative" }}>
                 <button
-                  onClick={() => setEmployeesOpen(!employeessOpen)}
+                  onClick={() => setEmployeesOpen(!employeesOpen)}
                     style={{
                         background: "none",
                         color: "white",
@@ -115,7 +131,7 @@ function Header() {
                     Employees
                 </button>
 
-                {employeessOpen && (
+                {employeesOpen && (
                     <div style={{
                         position: "absolute",
                         backgroundColor: "white",

@@ -9,6 +9,7 @@ import UserEdit from "./pages/UserEdit";
 import Designation from "./pages/Designation";
 import Employees from "./pages/Employees";
 
+import EditDesignation from "./pages/EditDesignation";
 
 
 function App() {
@@ -22,8 +23,10 @@ function App() {
         <Route path="/edit/:id" element={<EditProduct />} />
         <Route path="/edit/:id" element={<Users />} />
         <Route path="/edit/:id" element={<UserEdit />} />
-        <Route path="/designation" element={<Designation/>}/>
+        <Route path="/designations" element={<Designation/>}/>
         <Route path="/employees" element={<Employees/>}/>
+       
+        <Route path="/edit-designation/:id" element={<EditDesignation />} />
       </Routes>
 
     </BrowserRouter>
