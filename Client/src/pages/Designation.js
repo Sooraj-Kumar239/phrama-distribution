@@ -84,7 +84,15 @@ function Designation() {
 
     // Delete
     const deleteDesignation = (id) => {
-        fetch(`http://localhost:3003/designation/${id}`, {
+            // for debuggoing
+            console.log("deletec clicked");
+            // for pop up messggage confirmation
+            const confrimDelete= window.confirm("you want to delete this designatioin?");
+                if(!confrimDelete)
+                    {
+                        return;
+                    }
+            fetch(`http://localhost:3003/designation/${id}`, {
             method: "DELETE"
         })
         .then(() => {
@@ -183,22 +191,22 @@ function Designation() {
                                                 padding: "5px",
                                                 borderRadius: "5px"
                                             }}
-                                        >
+                                            >
                                             edit
                                         </button>
-                                    </td>
-                                    <td>
-                                        <button
-                                            onClick={() => deleteDesignation(d.DesignationID)}
-                                            style={{
-                                                backgroundColor: "red",
-                                                color: "white",
-                                                border: "none",
-                                                padding: "5px",
-                                                borderRadius: "5px"
-                                            }}
-                                        >
-                                            Delete
+                                        </td>
+                                        <td>
+                                            <button
+                                                 onClick={() => deleteDesignation(d.DesignationID)}
+                                                    style={{
+                                                    backgroundColor: "red",
+                                                    color: "white",
+                                                    border: "none",
+                                                    padding: "5px",
+                                                    borderRadius: "5px"
+                                                }}
+                                                 >
+                                                Delete
                                         </button>
                                     </td>
                                 </tr>

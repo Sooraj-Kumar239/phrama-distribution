@@ -69,6 +69,23 @@ router.post('/', (req, res) => {
                         }
                     });
                 });
+                // for delete the record
+                router.delete('/:id' , (req,res)=>{
+                    // it will take id from URL
+                    const id=req.params.id;  
+                    
+                    const sql="DELETE FROM designations WHERE DesignationID = ?";
+                    db.query(sql,[id],(err,result)=>{
+                        if (err) {
+                            console.log(err);
+                            return res.status(500).send("error deleting designation");
+                        }
+                        if (result.affectedRows === 0) {
+                            return res.send("No record found with this ID");
+                        }
+                        res.send("Designation deleted successfully");
+                    })
+                })
 
 
 module.exports = router; 
