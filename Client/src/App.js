@@ -13,6 +13,8 @@ import Vendors from "./pages/Vendors";
 import EditVendor from "./pages/EditVendor";
 
 import EditDesignation from "./pages/EditDesignation";
+// customers page
+import Customers from "./pages/Customers";
 
 
 function App() {
@@ -33,6 +35,9 @@ function App() {
         <Route path="/vendors" element={<Vendors />} />
         <Route path="/vendors/edit/:id" element={<EditVendor />} />
         {/* for edit  */}
+        {/* customers  */}
+        <Route path="/customers" element={< Customers />}/>
+      
       </Routes>
 
     </BrowserRouter>

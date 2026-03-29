@@ -1,4 +1,4 @@
-// console.log("SERVER FILE checking");
+// const console.log("SERVER FILE checking");
 const cors                      = require("cors");
 const express                   = require('express');
 // const app                        = express();
@@ -25,7 +25,7 @@ app.use(express.json());
 app.use(express.json());//enable json body for post request
 //Add controller
 app.use('/products', productController);
-app.use('/customer', customerController);
+app.use('/customers', customerController);
 //Home route
 app.get('/', (req, res) => {
     res.send(LabelService.get('HOME_ROUTE'));
@@ -40,7 +40,7 @@ app.use('/employees', employeesController);
 app.use('/purchaselines', purchaseLineController);
 // purchase order
 app.use('/purchaseorder', purchaseOrderController);
-// sales Lines
+// sales LinesAC
 app.use('/saleslines', salesLinesController);
 // salesOrder
 app.use('/salesorder', salesOrdersController);

@@ -180,6 +180,12 @@ function Header() {
                         >
                             All Vendors
                         </div>
+                        <div
+                            style={{ cursor: "pointer" }}
+                            onClick={() => window.location.href = "/vendors"}
+                        >
+                            purchase Order
+                        </div>
                     </div>
                 )}
             </span>
