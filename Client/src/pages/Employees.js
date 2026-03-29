@@ -18,7 +18,7 @@ function Employees() {
     const [message, setMessage] = useState("");
     const [msgType, setMsgType] = useState("");
 
-    // ✅ Styling
+    //  Styling
     const inputStyle = {
         width: "15%",
         padding: "10px",
@@ -58,9 +58,7 @@ function Employees() {
             .catch(err => console.log(err));
     };
 
-    // useEffect(() => {
-    //     fetchEmployees();
-    // }, []);
+   
 
     //  Add Employee
     const addEmployee = () => {
@@ -79,8 +77,8 @@ function Employees() {
                 IsActive: isActive
             })
         })
-        .then(res => res.text())
-        .then(() => {
+            .then(res => res.text())
+            .then(() => {
             setMessage("Employee Added Successfully");
             setMsgType("success");
 
@@ -97,140 +95,138 @@ function Employees() {
 
             setTimeout(() => setMessage(""), 3000);
         })
-        .catch(err => console.log(err));
+            .catch(err => console.log(err));
     };
 
-    // Delete Employee
-    const deleteEmployee = (id) => {
-        fetch(`http://localhost:3003/employees/${id}`, {
-            method: "DELETE"
-        })
-        .then(() => {
-            setMessage("Employee Deleted");
-            setMsgType("delete");
+            // Delete Employee
+            const deleteEmployee = (id) => {
+                fetch(`http://localhost:3003/employees/${id}`, {
+                    method: "DELETE"
+                })
+                .then(() => {
+                    setMessage("Employee Deleted");
+                    setMsgType("delete");
+                    fetchEmployees();
+                    setTimeout(() => setMessage(""), 3000);
+                })
+                    .catch(err => console.log(err));
+            };
 
-            fetchEmployees();
+                return (
+                    <Layout>
+                        <div>
 
-            setTimeout(() => setMessage(""), 3000);
-        })
-        .catch(err => console.log(err));
-    };
+                            {/* Message */}
+                            {message && (
+                                <div style={{
+                                    position: "fixed",
+                                    bottom: "20px",
+                                    right: "20px",
+                                    backgroundColor:
+                                    msgType === "success" ? "green" :
+                                    msgType === "delete" ? "red" : "#007bff",
+                                    color: "white",
+                                    padding: "10px",
+                                    borderRadius: "5px"
+                                    }}>
+                                    {message}
+                                    </div>
+                                    )}
 
-    return (
-        <Layout>
-            <div>
+                                    <h3>Add Employee</h3>
 
-                {/* Message */}
-                {message && (
-                    <div style={{
-                        position: "fixed",
-                        bottom: "20px",
-                        right: "20px",
-                        backgroundColor:
-                            msgType === "success" ? "green" :
-                            msgType === "delete" ? "red" : "#007bff",
-                        color: "white",
-                        padding: "10px",
-                        borderRadius: "5px"
-                    }}>
-                        {message}
-                    </div>
-                )}
+                                    {/* Form */}
+                                    <input style={inputStyle} placeholder="Full Name" value={fullName} onChange={(e) => setFullName(e.target.value)} />
+                                    <input style={inputStyle} placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                                    <input style={inputStyle} placeholder="Phone" value={phone} onChange={(e) => setPhone(e.target.value)} />
+                                    <select style={inputStyle} value={designationId} onChange={(e) => setDesignationId(e.target.value)}>
+                                        <option value="">Select Designation</option>
 
-                <h3>Add Employee</h3>
+                                        {designations.map((d) => (
+                                        <option key={d.DesignationID} value={d.DesignationID}>
+                                        {d.Title}
+                                        </option>
+                                        ))}
+                                    </select>
+                                        <input style={inputStyle} type="date" value={hireDate} onChange={(e) => setHireDate(e.target.value)} />
+                                        <input style={inputStyle} type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+                                            <input style={inputStyle} placeholder="Is Active (1/0)" value={isActive} onChange={(e) => setIsActive(e.target.value)} />
 
-                {/* Form */}
-                <input style={inputStyle} placeholder="Full Name" value={fullName} onChange={(e) => setFullName(e.target.value)} />
-                <input style={inputStyle} placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                <input style={inputStyle} placeholder="Phone" value={phone} onChange={(e) => setPhone(e.target.value)} />
-                <select style={inputStyle} value={designationId} onChange={(e) => setDesignationId(e.target.value)}>
-                    <option value="">Select Designation</option>
+                                            <br />
+                                                <button style={addBtn} onClick={addEmployee}>
+                                            Add Employee
+                                            </button>
 
-                    {designations.map((d) => (
-                    <option key={d.DesignationID} value={d.DesignationID}>
-                        {d.Title}
-                    </option>
-                    ))}
-                </select>
-                <input style={inputStyle} type="date" value={hireDate} onChange={(e) => setHireDate(e.target.value)} />
-                <input style={inputStyle} type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
-                <input style={inputStyle} placeholder="Is Active (1/0)" value={isActive} onChange={(e) => setIsActive(e.target.value)} />
+                                            <h2>All Employees</h2>
 
-                <br />
-                <button style={addBtn} onClick={addEmployee}>
-                    Add Employee
-                </button>
+                                         {/* Table */}
+                                            <table border="1" cellPadding="10">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Name</th>
+                                                        <th>Email</th>
+                                                        <th>Phone</th>
+                                                        <th>Designation</th>
+                                                        <th>Hire Date</th>
+                                                        <th>End Date</th>
+                                                        <th>Status</th>
+                                                        <th colSpan={2}>Action</th>
+                                                    </tr>
+                                                </thead>
 
-                <h2>All Employees</h2>
+                                                <tbody>
+                                                    {employees.length === 0 ? (
+                                                        <tr>
+                                                            <td colSpan="8">No data found</td>
+                                                        </tr>
+                                                    ) : (
+                                                        employees.map((e) => (
+                                                            <tr key={e.EmployeeID}>
+                                                                <td>{e.FullName}</td>
+                                                                <td>{e.Email}</td>
+                                                                <td>{e.PhoneNumber}</td>
+                                                                <td>{e.DesignationName}</td>
+                                                                <td>{e.HireDate}</td>
+                                                                <td>{e.EndDate}</td>
+                                                                <td>{e.IsActive}</td>
+                                                                <td>
+                                                                    <button
+                                                                    onClick={() => window.location.href = `/edit/${e.EmployeeID}`}
+                                                                    style={{
+                                                                        backgroundColor: "#007bff",
+                                                                        color: "white",
+                                                                        border: "none",
+                                                                        padding: "5px 10px",
+                                                                        borderRadius: "5px",
+                                                                        cursor: "pointer"
+                                                                    }}
+                                                                >
+                                                                    Edit
+                                                                </button>
+                                                                </td>
+                                                                <td>
+                                                                    <button
+                                                                        onClick={() => deleteEmployee(e.EmployeeID)}
+                                                                        style={{
+                                                                            backgroundColor: "red",
+                                                                            color: "white",
+                                                                            border: "none",
+                                                                            padding: "5px 10px",
+                                                                            borderRadius: "5px",
+                                                                            cursor: "pointer"
+                                                                        }}
+                                                                        >
+                                                                        Delete
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        ))
+                                                    )}
+                                                </tbody>
+                                            </table>
 
-                {/* Table */}
-                <table border="1" cellPadding="10">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Phone</th>
-                            <th>Designation</th>
-                            <th>Hire Date</th>
-                            <th>End Date</th>
-                            <th>Status</th>
-                            <th colSpan={2}>Action</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        {employees.length === 0 ? (
-                            <tr>
-                                <td colSpan="8">No data found</td>
-                            </tr>
-                        ) : (
-                            employees.map((e) => (
-                                <tr key={e.EmployeeID}>
-                                    <td>{e.FullName}</td>
-                                    <td>{e.Email}</td>
-                                    <td>{e.PhoneNumber}</td>
-                                    <td>{e.DesignationName}</td>
-                                    <td>{e.HireDate}</td>
-                                    <td>{e.EndDate}</td>
-                                    <td>{e.IsActive}</td>
-                                    <td>
-                                         <button
-                                        onClick={() => window.location.href = `/edit/${e.EmployeeID}`}
-                                        style={{
-                                            backgroundColor: "#007bff",
-                                            color: "white",
-                                            border: "none",
-                                            padding: "5px 10px",
-                                            borderRadius: "5px",
-                                            cursor: "pointer"
-                                        }}
-                                    >
-                                        Edit
-                                    </button>
-                                    </td>
-                                    <td>
-                                        <button
-                                            onClick={() => deleteEmployee(e.EmployeeID)}
-                                            style={{
-                                                backgroundColor: "red",
-                                                color: "white",
-                                                border: "none",
-                                                padding: "5px 10px",
-                                                borderRadius: "5px",
-                                                cursor: "pointer"
-                                            }}
-                                        >
-                                            Delete
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))
-                        )}
-                    </tbody>
-                </table>
-
-            </div>
-        </Layout>
+                                </div>
+                        </Layout>
     );
 }
 

@@ -6,6 +6,7 @@ function Header() {
     const [productOpen, setProductOpen] = useState(false);
     const [employeesOpen, setEmployeesOpen] = useState(false);
     const [designationOpen, setDesignationOpen] = useState(false);
+    const [vendorsOpen, setVendorsOpen] =useState(false);
     const navigate = useNavigate();
 
     return (
@@ -145,6 +146,38 @@ function Header() {
                             onClick={() => window.location.href = "/employees"}
                         >
                             All Employees
+                        </div>
+                    </div>
+                )}
+            </span>
+            {/* vendors */}
+             <span style={{ position: "relative" }}>
+                <button
+                  onClick={() => setVendorsOpen(!vendorsOpen)}
+                    style={{
+                        background: "none",
+                        color: "white",
+                        border: "none",
+                        cursor: "pointer"
+                    }}
+                >
+                    Distributors
+                </button>
+
+                {vendorsOpen && (
+                    <div style={{
+                        position: "absolute",
+                        backgroundColor: "white",
+                        color: "black",
+                        marginTop: "10px",
+                        padding: "10px",
+                        borderRadius: "5px"
+                    }}>
+                        <div
+                            style={{ cursor: "pointer" }}
+                            onClick={() => window.location.href = "/vendors"}
+                        >
+                            All Vendors
                         </div>
                     </div>
                 )}
