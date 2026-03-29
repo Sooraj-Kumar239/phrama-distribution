@@ -8,7 +8,7 @@ router.get('/', (req, res) => {
     db.query('SELECT * FROM customers', (err, results) => {
         if (err) {
             console.log(err);
-            res.send(LabelService.get('PRODUCT_LIST'));
+            res.send(LabelService.get('CUSTOMER_LIST'));
             // res.send(LabelService.get('CUSTOMER_LIST'));
         }
         else {
