@@ -28,7 +28,7 @@ function Customers(){
 
     // fetch data
     useEffect(() => {
-        fetch("http://localhost:3003/customers")
+        fetch(`http://localhost:3003/customers`)
         .then(res => res.json())
         .then(data => setCustomers(data));
     },[]);
@@ -36,7 +36,7 @@ function Customers(){
     // add new customer
     const handleSubmit = (e) => {
         e.preventDefault();
-        fetch("http://localhost:3003/customers", {
+        fetch(`http://localhost:3003/customers`, {
             method: "POST",
             headers: {
                 "Content-type" : "application/json"
@@ -55,7 +55,7 @@ function Customers(){
         .then(msg => {
 
             // refresh list
-            fetch("http://localhost:3003/customers")
+            fetch(`http://localhost:3003/customers`)
             .then(res => res.json())
             .then(data => setCustomers(data));
 
@@ -82,7 +82,7 @@ function Customers(){
         .then(res => res.text())
         .then(() => {
 
-            fetch("http://localhost:3003/customers")
+            fetch(`http://localhost:3003/customers`)
             .then(res => res.json())
             .then(data => setCustomers(data));
 
@@ -169,30 +169,37 @@ function Customers(){
                     
 
                     {/* TABLE */}
-            <table border="1">
-                <thead>
+            <table border="1"  style={{ width: "100%", borderCollapse: "collapse", marginTop: "20px"}}>
+                 <thead style={{ backgroundColor: "#f2f2f2" }}>
                     <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Contact</th>
-                        <th>Phone</th>
-                        <th>Email</th>
-                        <th>Type</th>
-                        <th>Action</th>
+                        <th  style={{ padding: "10px", borderBottom: "1px solid #ddd" }}>ID</th>
+                        <th  style={{ padding: "10px", borderBottom: "1px solid #ddd" }}>Name</th>
+                        <th  style={{ padding: "10px", borderBottom: "1px solid #ddd" }}>Contact</th>
+                        <th  style={{ padding: "10px", borderBottom: "1px solid #ddd" }}>Phone</th>
+                        <th  style={{ padding: "10px", borderBottom: "1px solid #ddd" }}>Email</th>
+                        <th  style={{ padding: "10px", borderBottom: "1px solid #ddd" }}>Type</th>
+                        <th  style={{ padding: "10px", borderBottom: "1px solid #ddd" }}>Action</th>
                     </tr>
                 </thead>
 
                 <tbody>
                     {customers.map((c) => (
                         <tr key={c.CustomerID}>
-                            <td>{c.CustomerID}</td>
-                            <td>{c.CustomerName}</td>
-                            <td>{c.ContactPerson}</td>
-                            <td>{c.Phone}</td>
-                            <td>{c.Email}</td>
-                            <td>{c.CustomerType}</td>
+                            <td style={{ padding: "10px", borderBottom: "1px solid #ddd" }}>{c.CustomerID}</td>
+                            <td style={{ padding: "10px", borderBottom: "1px solid #ddd" }}>{c.CustomerName}</td>
+                            <td style={{ padding: "10px", borderBottom: "1px solid #ddd" }}>{c.ContactPerson}</td>
+                            <td style={{ padding: "10px", borderBottom: "1px solid #ddd" }}>{c.Phone}</td>
+                            <td style={{ padding: "10px", borderBottom: "1px solid #ddd" }}>{c.Email}</td>
+                            <td style={{ padding: "10px", borderBottom: "1px solid #ddd" }}>{c.CustomerType}</td>
                             <td>
-                                <button onClick={() => handleDelete(c.CustomerID)}>
+                                <button onClick={() => window.location.href = `/customers/edit/${c.CustomerID}`}
+                                    style={{ backgroundColor: "#007bff", color: "white",border: "none", padding: "5px 10px", borderRadius: "4px", marginRight: "5px",
+                                            cursor: "pointer"}}>
+                                    Edit
+                                </button>
+                                <button onClick={() => handleDelete(c.CustomerID)}
+                                     style={{ backgroundColor: "#dc3545", color: "white", border: "none", padding: "5px 10px", borderRadius: "4px", cursor: "pointer"}}>
+                                    
                                     Delete
                                 </button>
                             </td>

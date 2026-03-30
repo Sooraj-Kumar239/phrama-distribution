@@ -15,6 +15,7 @@ import EditVendor from "./pages/EditVendor";
 import EditDesignation from "./pages/EditDesignation";
 // customers page
 import Customers from "./pages/Customers";
+import EditCustomer from "./pages/EditCustomer";
 
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
         {/* for edit  */}
         {/* customers  */}
         <Route path="/customers" element={< Customers />}/>
+        <Route path="/customers/edit/:id" element={<EditCustomer/>} />
       
       </Routes>
 

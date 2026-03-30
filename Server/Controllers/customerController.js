@@ -17,6 +17,24 @@ router.get('/', (req, res) => {
     });
 });
 
+router.get('/:id', (req, res) => {
+    console.log("ID API HIT 🔥", req.params.id);
+    const { id } = req.params;
+
+    db.query(
+        'SELECT * FROM customers WHERE CustomerID = ?',
+        [id],
+        (err, result) => {
+            if (err) {
+                console.log(err);
+                res.send("Error fetching customer");
+            } else {
+                res.json(result[0]); 
+            }
+        }
+    );
+});
+
 //Inserts request
 router.post('/', (req, res) => {
     const {
@@ -67,7 +85,7 @@ router.post('/', (req, res) => {
                                 res.send("Error in updating customer");
                             }
                             else{
-                                req.send('Customer Updated successfully!');
+                                res.send('Customer Updated successfully!');
                             }
                     }
                 )
