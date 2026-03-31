@@ -19,4 +19,29 @@ router.get('/employee-count', (req, res) => {
     });
 });
 
+
+// acvtie vehicles
+
+router.get('/vehicle-count', (req, res) => {
+
+    const sql = `
+        SELECT COUNT(*) AS total 
+        FROM vehicles 
+        WHERE CurrentStatus != 'Inactive'
+    `;
+
+    db.query(sql, (err, result) => {
+
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ error: "Database Error" });
+        }
+
+        return res.json({
+            activeVehicles: result[0].total
+        });
+    });
+});
+// end acvtie vehicles
+
 module.exports = router;
