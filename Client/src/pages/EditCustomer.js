@@ -14,6 +14,8 @@ function EditCustomer() {
     const [Email, setEmail] = useState("");
     const [Address, setAddress] = useState("");
     const [CustomerType, setCustomerType] = useState("");
+    // error state 
+    const [errors, setErrors] = useState({});
 
     // load existing  data
     useEffect(() => {
@@ -31,25 +33,66 @@ function EditCustomer() {
 
     // UPDATE customer
     const updateCustomer = () => {
-        fetch(`http://localhost:3003/customers/${id}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                CustomerName,
-                ContactPerson,
-                Phone,
-                Email,
-                Address,
-                CustomerType
-            })
+        // form validation
+    const newErrors = {};
+
+    if (!CustomerName.trim()) newErrors.CustomerName = "Customer Name required";
+    if (!ContactPerson.trim()) newErrors.ContactPerson = "Contact Person required";
+    if (!Phone.trim()) newErrors.Phone = "Phone required";
+    if (!Address.trim()) newErrors.Address = "Address required";
+    if (!CustomerType.trim()) newErrors.CustomerType = "Customer Type required";
+
+    // Email 
+    if (Email && !/^\S+@\S+\.\S+$/.test(Email)) {
+        newErrors.Email = "Invalid email";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+        setErrors(newErrors);
+        return;
+    }
+
+    // API call
+    fetch(`http://localhost:3003/customers/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            CustomerName,
+            ContactPerson,
+            Phone,
+            Email,
+            Address,
+            CustomerType
         })
-        .then(res => res.text())
-        .then(() => {
-            window.location.href = "/customers?msg=updated";
-        });
+    })
+    .then(res => res.text())
+    .then(() => {
+        navigate("/customers?msg=updated");
+    });
     };
+
+
+    //     fetch(`http://localhost:3003/customers/${id}`, {
+    //         method: "PUT",
+    //         headers: {
+    //             "Content-Type": "application/json"
+    //         },
+    //         body: JSON.stringify({
+    //             CustomerName,
+    //             ContactPerson,
+    //             Phone,
+    //             Email,
+    //             Address,
+    //             CustomerType
+    //         })
+    //     })
+    //     .then(res => res.text())
+    //     .then(() => {
+    //         window.location.href = "/customers?msg=updated";
+    //     });
+    // };
 
     return (
         <Layout>
@@ -64,20 +107,89 @@ function EditCustomer() {
             }}>
                 <h2>Edit Customer</h2>
 
-                <label>Customer name</label>
-                <input value={CustomerName} onChange={(e) => setCustomerName(e.target.value)}
-                    style={{ width: "100%", marginBottom: "10px", padding: "8px" }} />
+                    <label>Customer Name</label>
+                    <input 
+                        value={CustomerName}
+                        onChange={(e) => setCustomerName(e.target.value)}
+                        style={{ 
+                            width: "100%", 
+                            padding: "8px",
+                            border: errors.CustomerName ? "2px solid red" : "1px solid #ccc"
+                        }}
+                    />
+                    <div style={{ color: "red", fontSize: "12px", height: "14px" }}>
+                        {errors.CustomerName}
+                    </div>
 
                 <label>Contact Person</label>
-                <input value={ContactPerson} onChange={(e) => setContactPerson(e.target.value)}
-                    style={{ width: "100%", marginBottom: "10px", padding: "8px" }} />
+                <input 
+                    value={ContactPerson}
+                    onChange={(e) => setContactPerson(e.target.value)}
+                    style={{
+                        width: "100%",
+                        marginBottom: "10px", 
+                        border: errors.ContactPerson ? "2px solid red" : "1px solid #ccc",
+                        padding: "8px" }}
+                />
+                <div style={{ color: "red", fontSize: "12px", height: "14px" }}>
+                    {errors.ContactPerson}
+                </div>    
 
                 <label>Phone</label>
-                <input value={Phone} onChange={(e) => setPhone(e.target.value)}
-                    style={{ width: "100%", marginBottom: "10px", padding: "8px" }} />
+                <input 
+                    value={Phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    style={{ 
+                        width: "100%", 
+                        padding: "8px",
+                        border: errors.Phone ? "2px solid red" : "1px solid #ccc"
+                    }}
+                />
+                <div style={{ color: "red", fontSize: "12px", height: "14px" }}>
+                    {errors.Phone}
+                </div>
 
                 <label>Email</label>
-                <input value={Email} onChange={(e) => setEmail(e.target.value)}/>
+                <input 
+                    value={Email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    style={{ 
+                        width: "100%", 
+                        padding: "8px",
+                        border: errors.Email ? "2px solid red" : "1px solid #ccc"
+                    }}
+                />
+                <div style={{ color: "red", fontSize: "12px", height: "14px" }}>
+                    {errors.Email}
+                </div>
+
+                <label>Address</label>
+                <input 
+                    value={Address}
+                    onChange={(e) => setAddress(e.target.value)}
+                    style={{ 
+                        width: "100%", 
+                        padding: "8px",
+                        border: errors.Address ? "2px solid red" : "1px solid #ccc"
+                    }}
+                />
+                <div style={{ color: "red", fontSize: "12px", height: "14px" }}>
+                    {errors.Address}
+                </div>
+
+                <label>Customer Type</label>
+                    <input 
+                        value={CustomerType}
+                        onChange={(e) => setCustomerType(e.target.value)}
+                        style={{ 
+                            width: "100%", 
+                            padding: "8px",
+                            border: errors.CustomerType ? "2px solid red" : "1px solid #ccc"
+                        }}
+                    />
+                    <div style={{ color: "red", fontSize: "12px", height: "14px" }}>
+                        {errors.CustomerType}
+                    </div>
 
                 <button onClick={updateCustomer}
                     style={{
