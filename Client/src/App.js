@@ -16,6 +16,8 @@ import EditDesignation from "./pages/EditDesignation";
 // customers page
 import Customers from "./pages/Customers";
 import EditCustomer from "./pages/EditCustomer";
+// login page 
+import Login from "./pages/Login";
 
 
 function App() {
@@ -24,7 +26,7 @@ function App() {
       {/* <Header /> */}
 
       <Routes>
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/" element={<Login />} />
         <Route path="/products" element={<Products />} />
         <Route path="/edit/:id" element={<EditProduct />} />
         <Route path="/edit/:id" element={<Users />} />
@@ -39,6 +41,8 @@ function App() {
         {/* customers  */}
         <Route path="/customers" element={< Customers />}/>
         <Route path="/customers/edit/:id" element={<EditCustomer/>} />
+        {/* login page */}
+        <Route path="/login" element={<Login />} />
       
       </Routes>
 

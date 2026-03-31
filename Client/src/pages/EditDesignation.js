@@ -10,6 +10,8 @@ function EditDesignation() {
     const [title, setTitle] = useState("");
     const [baseSalary, setBaseSalary] = useState("");
     const navigate = useNavigate();
+    // error state 
+    const [errors, setErrors] = useState({});
 
         // fetch data by id
     useEffect(() => {
@@ -23,6 +25,20 @@ function EditDesignation() {
     }, [id]);
 // update
     const updateDesignation = () => {
+        // validation
+        const newErrors = {};
+
+        if (!title.trim()) newErrors.title = "Title required";
+        if (!baseSalary.toString().trim()) newErrors.baseSalary = "Base Salary required";
+            else if (isNaN(baseSalary)) newErrors.baseSalary = "Must be number";
+
+            if (Object.keys(newErrors).length > 0) {
+                setErrors(newErrors);
+                 return;
+             }
+        // end validation
+
+
         fetch(`http://localhost:3003/designation/${id}`, {
             method: "PUT",
             headers: {
@@ -55,18 +71,40 @@ function EditDesignation() {
                 <input
                     placeholder="Title"
                     value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    style={{ width: "100%", marginBottom: "10px", padding: "8px" }}
+                    onChange={(e) => {
+                        setTitle(e.target.value);
+                        setErrors({ ...errors, title: "" });
+                    }}
+                    style={{
+                        width: "100%",
+                        marginBottom: "10px",
+                        padding: "8px",
+                        border: errors.title ? "2px solid red" : "1px solid #ccc"
+                    }}
                 />
+                <div style={{ color: "red", fontSize: "12px", height: "14px" }}>
+                    {errors.title}
+                </div>
 
                 <input
                     placeholder="Base Salary"
                     value={baseSalary}
-                    onChange={(e) => setBaseSalary(e.target.value)}
-                    style={{ width: "100%", marginBottom: "10px", padding: "8px" }}
+                   onChange={(e) => {
+                        setBaseSalary(e.target.value);
+                        setErrors({ ...errors, baseSalary: "" });
+                        }}
+                        style={{
+                            width: "100%",
+                            marginBottom: "10px",
+                            padding: "8px",
+                            border: errors.baseSalary ? "2px solid red" : "1px solid #ccc"
+                    }}
                 />
+                <div style={{ color: "red", fontSize: "12px", height: "14px" }}>
+                     {errors.baseSalary}
+                </div>
 
-                <button onClick={updateDesignation}>
+                <button type="button" onClick={updateDesignation}>
                     Update Designation
                 </button>
 

@@ -4,8 +4,9 @@ import { useNavigate } from "react-router-dom";
 
 
 function Designation() {
-        //  return <h1>Designation Page Working </h1>;
+        
 
+    const [errors, setErrors] = useState({});
     const [title, setTitle] = useState("");
     const [baseSalary, setBaseSalary] = useState("");
     const [designation, setDesignation] = useState([]);
@@ -56,6 +57,18 @@ function Designation() {
 
     // Add Designation
     const addDesignation = () => {
+        // validation
+    const newErrors = {};
+
+        if (!title.trim()) newErrors.title = "Title required";
+        if (!baseSalary.trim()) newErrors.baseSalary = "Base Salary required";
+        else if (isNaN(baseSalary)) newErrors.baseSalary = "Must be number";
+
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            return;
+        }
+
         fetch("http://localhost:3003/designation", {
             method: "POST",
             headers: {
@@ -140,18 +153,39 @@ function Designation() {
         <h3>Add Designation</h3>
 
         <input
-            style={inputStyle}
+            style={{
+                ...inputStyle,
+                border: errors.title ? "2px solid red" : "1px solid #ccc"
+            }}
             placeholder="Title"
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) => {
+                setTitle(e.target.value);
+                setErrors({ ...errors, title: "" });
+            }}
         />
 
+        <div style={{ color: "red", fontSize: "12px", height: "14px" }}>
+            {errors.title}
+        </div>
+
+
         <input
-            style={inputStyle}
-            placeholder="Base Salary"
-            value={baseSalary}
-            onChange={(e) => setBaseSalary(e.target.value)}
-        />
+            style={{
+                ...inputStyle,
+                border: errors.baseSalary ? "2px solid red" : "1px solid #ccc"
+                }}
+                placeholder="Base Salary"
+                value={baseSalary}
+                onChange={(e) => {
+                    setBaseSalary(e.target.value);
+                    setErrors({ ...errors, baseSalary: "" });
+                }}
+            />
+
+            <div style={{ color: "red", fontSize: "12px", height: "14px" }}>
+                {errors.baseSalary}
+            </div>
 
         <br />
         <button style={addBtn} onClick={addDesignation}>
