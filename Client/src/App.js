@@ -1,4 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+
 import Dashboard from "./pages/Dashboard";
 // import Dashboard from "./pages/Dashboard";
 import Products from "./pages/Products";
@@ -18,34 +20,43 @@ import Customers from "./pages/Customers";
 import EditCustomer from "./pages/EditCustomer";
 // login page 
 import Login from "./pages/Login";
+// protected
+import ProtectedRoute from "./components/ProtectRoute";
 
 
 function App() {
   return (
     <BrowserRouter>
-      {/* <Header /> */}
+      
 
       <Routes>
+        {/* public */}
         <Route path="/" element={<Login />} />
-        <Route path="/products" element={<Products />} />
-        <Route path="/edit/:id" element={<EditProduct />} />
-        <Route path="/edit/:id" element={<Users />} />
-        <Route path="/edit/:id" element={<UserEdit />} />
-        <Route path="/designations" element={<Designation/>}/>
-        <Route path="/employees" element={<Employees/>}/>
-       
-        <Route path="/edit-designation/:id" element={<EditDesignation />} />
-        <Route path="/vendors" element={<Vendors />} />
-        <Route path="/vendors/edit/:id" element={<EditVendor />} />
-        {/* for edit  */}
-        {/* customers  */}
-        <Route path="/customers" element={< Customers />}/>
-        <Route path="/customers/edit/:id" element={<EditCustomer/>} />
-        {/* login page */}
         <Route path="/login" element={<Login />} />
-      
-      </Routes>
 
+        {/* protected route */}
+
+        <Route element={<ProtectedRoute />} >
+          <Route path="/dashboard" element={<Dashboard />} />
+
+          <Route path="/products" element={<Products />} />
+          <Route path="/products/edit/:id" element={<EditProduct />} />
+
+          <Route path="/users" element={<Users />} />
+          <Route path="/users/edit/:id" element={<UserEdit />} />
+
+          <Route path="/designations" element={<Designation />} />
+          <Route path="/designations/edit/:id" element={<EditDesignation />} />
+
+          <Route path="/employees" element={<Employees />} />
+
+          <Route path="/vendors" element={<Vendors />} />
+          <Route path="/vendors/edit/:id" element={<EditVendor />} />
+
+          <Route path="/customers" element={<Customers />} />
+          <Route path="/customers/edit/:id" element={<EditCustomer />} />
+        </Route>
+      </Routes>
     </BrowserRouter>
   );
 }
