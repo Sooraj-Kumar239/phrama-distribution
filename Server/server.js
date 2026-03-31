@@ -18,6 +18,8 @@ const salesOrdersController     = require('./Controllers/salesOrdersController')
 const vehiclesController        = require('./Controllers/vehiclesController');
 const vendorsController         = require('./Controllers/vendorsController');
 const LabelService              = require('./labels/labelService');
+// dashboard
+const dashboardRoutes = require('./Controllers/dashboardController');
 
 const app = express();
 app.use(cors());
@@ -48,7 +50,13 @@ app.use('/salesorder', salesOrdersController);
 app.use('/vehicles' , vehiclesController);
 // const vendors
 app.use('/vendors', vendorsController);
+// dashboard/hoempage
+app.use('/dashboard', dashboardRoutes);
 //Start creting server on the browser
+
+// temprary
+    
+// 
 app.listen(LabelService.get('PORT'), () => {
     console.log(`${LabelService.get('SERVER_START')}: ${LabelService.get('PORT')}`);
 });

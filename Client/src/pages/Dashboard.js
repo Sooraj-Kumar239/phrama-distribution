@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Layout from "../components/Layout";
+
 
 
 
@@ -17,6 +18,16 @@ const boxStyle = {
 function Dashboard() {
     // const [events, setEvents] = useState([]);
     // const [open, setOpen] = useState(false);
+    const [employeeCount, setEmployeeCount] = useState(0);
+    useEffect(() => {
+                fetch("http://localhost:3003/dashboard/employee-count")
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log(data); // check ke liye
+                        setEmployeeCount(data.activeEmployees);
+                    })
+                    .catch(err => console.log(err));
+    }, []);
 
     return (
         <Layout>
@@ -60,7 +71,7 @@ function Dashboard() {
                         borderRadius: "10px",
                         boxShadow: "0 0 10px rgba(0,0,0,0.1)"
                     }}>
-                        <h3 style={{ marginBottom: "10px" }}>📅 Calendar</h3>
+                        <h3 style={{ marginBottom: "10px" }}> Calendar</h3>
                         <iframe
                             src="https://calendar.google.com/calendar/embed?src=skood.2194%40gmail.com&ctz=Europe%2FDublin"
                             style={{ border: 0 }}
@@ -103,7 +114,9 @@ function Dashboard() {
                         <div style={boxStyle}>
                              Active Employees
                             <br />
-                            <span style={{ fontSize: "24px", color: "#dc3545" }}>5</span>
+                                <span style={{ fontSize: "24px", color: "#dc3545" }}>
+                                    {employeeCount}
+                                </span>
                         </div>
 
                     </div>
