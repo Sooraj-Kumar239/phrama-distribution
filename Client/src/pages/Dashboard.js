@@ -19,6 +19,8 @@ function Dashboard() {
     // const [events, setEvents] = useState([]);
     // const [open, setOpen] = useState(false);
     const [employeeCount, setEmployeeCount] = useState(0);
+    // for all vehicles number
+    const [vehicleCount, setVehicleCount] = useState(0);
     useEffect(() => {
                 fetch("http://localhost:3003/dashboard/employee-count")
                     .then(res => res.json())
@@ -27,6 +29,18 @@ function Dashboard() {
                         setEmployeeCount(data.activeEmployees);
                     })
                     .catch(err => console.log(err));
+    }, []);
+
+
+    // all vehicles api 
+    useEffect(() => {
+
+        fetch("http://localhost:3003/dashboard/vehicle-count")
+        .then(res => res.json())
+        .then(data => {
+            setVehicleCount(data.activeVehicles);
+        });
+
     }, []);
 
     return (
@@ -90,31 +104,37 @@ function Dashboard() {
                         width: "70%",
                         display: "grid",
                         gridTemplateColumns: "repeat(2, 1fr)",
-                        gap: "20px"
+                        gap: "20px",
+                        // fontSize: "50px"
                     }}>
 
                         <div style={boxStyle}>
-                            Active Purchase Orders
+                           
+                            <span style={{ fontSize: "20px" }}>Active Purchase Orders</span>
                             <br />
-                            <span style={{ fontSize: "24px", color: "#007bff" }}>50</span>
+                            <span style={{ fontSize: "50px", color: "#007bff" }}>50</span>
                         </div>
 
                         <div style={boxStyle}>
-                            Active Sales Orders
+                           
+                            <span style={{ fontSize: "20px" }}>Active Sales Orders</span>
                             <br />
-                            <span style={{ fontSize: "24px", color: "#28a745" }}>20</span>
+                            <span style={{ fontSize: "50px", color: "#28a745" }}>20</span>
                         </div>
 
                         <div style={boxStyle}>
-                            Active Vehicles
+                            
+                            <span style={{ fontSize: "20px" }}>Active Vehicles</span>
                             <br />
-                            <span style={{ fontSize: "24px", color: "#ffc107" }}>6</span>
+                            <span style={{ fontSize: "45px", color: "#ffc107" }}>
+                                {vehicleCount}
+                            </span>
                         </div>
 
                         <div style={boxStyle}>
-                             Active Employees
+                            <span style={{ fontSize: "20px" }}>Active Employees</span>
                             <br />
-                                <span style={{ fontSize: "24px", color: "#dc3545" }}>
+                                <span style={{ fontSize: "50px", color: "#dc3545" }}>
                                     {employeeCount}
                                 </span>
                         </div>
