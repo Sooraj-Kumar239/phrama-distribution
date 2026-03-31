@@ -4,6 +4,7 @@ import Layout from "../components/Layout";
 
 
 
+
 const boxStyle = {
     background: "#ffffff",
     padding: "20px",
@@ -14,7 +15,8 @@ const boxStyle = {
     textAlign: "center"
 };
 function Dashboard() {
-    const [open, setOpen] = useState(false);
+    // const [events, setEvents] = useState([]);
+    // const [open, setOpen] = useState(false);
 
     return (
         <Layout>
@@ -53,12 +55,23 @@ function Dashboard() {
                     <div style={{
                         width: "30%",
                         background: "#ffffff",
-                        padding: "15px",
+                        padding: "20px",
+                        minHeight: "250px",
                         borderRadius: "10px",
                         boxShadow: "0 0 10px rgba(0,0,0,0.1)"
                     }}>
                         <h3 style={{ marginBottom: "10px" }}>📅 Calendar</h3>
-                        <p>Calendar will be added here</p>
+                        <iframe
+                            src="https://calendar.google.com/calendar/embed?src=skood.2194%40gmail.com&ctz=Europe%2FDublin"
+                            style={{ border: 0 }}
+                            width="100%"
+                            height="300"
+                            frameBorder="0"
+                            scrolling="no"
+                        ></iframe>
+                        {/* <p style={{ marginTop: "10px" }}>
+                            Selected Date: {date.toDateString()}
+                        </p> */}
                     </div>
 
                     {/*  RIGHT SIDE -  BOXES */}
