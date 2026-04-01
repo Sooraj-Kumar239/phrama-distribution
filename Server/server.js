@@ -2,7 +2,8 @@
 const cors                      = require("cors");
 const express                   = require('express');
 // const app                        = express();
-
+// auth controleer
+const authController = require('./Controllers/authController');
 
 //server start and database will connectg
 const db                        = require('./Model/db');
@@ -34,6 +35,8 @@ app.get('/', (req, res) => {
 });
 // user
 app.use('/users', userController);
+// auth
+app.use('/', authController);
 //designation
 app.use('/designation', designationsController);
 // employees

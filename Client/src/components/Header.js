@@ -1,14 +1,23 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+
+
 function Header() {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const navigate = useNavigate();
+    const handleLogout = () => {
+        localStorage.removeItem("user");
+        navigate("/login");
+    };
+
     const [userOpen, setUserOpen] = useState(false);
     const [productOpen, setProductOpen] = useState(false);
     const [employeesOpen, setEmployeesOpen] = useState(false);
     const [designationOpen, setDesignationOpen] = useState(false);
     const [vendorsOpen, setVendorsOpen] =useState(false);
-     const [customersOpen, setCustomersOpen] =useState(false);
-    const navigate = useNavigate();
+    const [customersOpen, setCustomersOpen] =useState(false);
+    
 
     return (
         <div style={{
@@ -88,7 +97,7 @@ function Header() {
             <span style={{ position: "relative" }}>
                 <button
                 
-    // const [employeessOpen, setEmployeesOpen] = useState(false);
+            // const [employeessOpen, setEmployeesOpen] = useState(false);
 
                   onClick={() => setProductOpen(!productOpen)}
                     style={{
@@ -221,7 +230,40 @@ function Header() {
                     </div>
                 )}
             </span>
+
+
+            <div style={{
+    marginLeft: "auto",
+    display: "flex",
+    alignItems: "center",
+    gap: "15px"
+}}>
+
+    {/* Username */}
+    <span>
+         Welcome, {user?.username || "User"} 
+    </span>
+
+    {/* Logout Button */}
+    <button
+        onClick={handleLogout}
+            
+        style={{
+            background: "#dc3545",
+            color: "white",
+            border: "none",
+            padding: "5px 10px",
+            borderRadius: "5px",
+            cursor: "pointer"
+        }}
+    >
+        Logout
+    </button>
+
+</div>
         </div>
+
+        
     );
 }
 

@@ -8,6 +8,7 @@ function Login() {
     const [errors, setErrors] = useState({});
 
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
 
    const login = () => {
 
@@ -25,7 +26,7 @@ function Login() {
         setErrors(newErrors);
         return;
     }
-
+    setLoading(true);
     fetch("http://localhost:3003/login", {
         method: "POST",
         headers: {
@@ -33,6 +34,7 @@ function Login() {
         },
         body: JSON.stringify({ username, password })
     })
+   
     .then(res => res.json())
     .then(data => {
         if (data.success) {
@@ -44,7 +46,11 @@ function Login() {
     })
     .catch(() => {
         alert("Server error");
-    });
+    })
+    .finally(() => {
+    setLoading(false);  
+});
+
 };
 
     return (
@@ -113,8 +119,9 @@ function Login() {
                 </div>
 
                 {/* button section satrt */}
+               
                 <button
-                    onClick={login}
+                    onClick={login} disabled={loading}
                     style={{
                         width: "100%",
                         padding: "10px",
