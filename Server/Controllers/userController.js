@@ -22,18 +22,20 @@ router.get('/', (req, res) => {
 
 //Inserts request
 router.post('/', (req, res) => {
+    
     const {
         EmployeeID,
-        Username,
-        PasswordH
+        username,
+        PasswordH,
+        role
     } = req.body;
 
     const sql = `INSERT INTO  users
-        (EmployeeID, Username, PasswordH)
-        values (?,?,?)`;
+        (EmployeeID, Username, PasswordH, role)
+        values (?,?,?,?)`;
 
     db.query(sql,
-        [EmployeeID, Username, PasswordH],
+        [EmployeeID, username, PasswordH, role],
         (err, result) => {
             if (err) {
                 console.log(err.message);

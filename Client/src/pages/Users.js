@@ -1,24 +1,27 @@
 import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
+import { useNavigate } from "react-router-dom";
+// import { use } from "../../../Server/Controllers/authController";
 function Users(){
-    // return <Layout>
-    //         <h2>Product Page</h2>
-    //     </Layout>
+    const [employees, setEmployees] = useState([]);
+
+    const [users, setUsers] = useState([]);
+    const navigate = useNavigate();
+    
 
     // states kyu?
-    const [name, setName] = useState("");
-    const [batch, setBatch] = useState("");
-    const [expiry, setExpiry] = useState("");
-    const [stock, setStock] = useState("");
-    const [price, setPrice] = useState("");
-    const [reorder, setReorder] = useState("");
-    const [products, setProducts] = useState([]);
+    const [EmployeeID, setEmployeeId] = useState("");
+    const [username, setUsername] = useState("");
+    const [PasswordH, setPassword] = useState("");
+    const [role, setrole] = useState("");
+    
+    
     // message show when data inserted 
     const [message, setMessage] = useState("");
     //message show when data row deleted
     const [msgType, setMsgType] = useState("");
     // for data edit and show update
-    const [editId, setEditId] = useState(null);
+    // const [editId, setEditId] = useState(null);
     // styling
     const inputStyle = {
                         width: "100%",
@@ -29,30 +32,41 @@ function Users(){
                     };
 
     const addBtn = {
-                    width: "100%",
-                    padding: "10px",
-                    backgroundColor: "#28a745",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "5px",
-                    cursor: "pointer"
-                };
+            width: "100%",
+            padding: "10px",
+            backgroundColor: "#28a745",
+            color: "white",
+            border: "none",
+            borderRadius: "5px",
+            cursor: "pointer"
+    };
 
-    const fetchProducts = () => {
-    fetch("http://localhost:3003/products")
+    // fetch employee
+    const fetchEmployees = () => {
+        fetch("http://localhost:3003/employees")
         .then(res => res.json())
-        .then(data => {setProducts(data);
+        .then(data => setEmployees(data))
+        .catch(err => console.log(err));
+    };
+    // end fetch employee
+
+    const fetchUsers = () => {
+    fetch("http://localhost:3003/users")
+        .then(res => res.json())
+        .then(data => {setUsers(data);
         })
         .catch(err => console.log(err));
     };
+
         useEffect(() => {
-            fetchProducts();
+            fetchUsers();
+            fetchEmployees();
             const params = new URLSearchParams(window.location.search);
             const msg = params.get("msg");
             //  console.log("MSG:", msg); 
 
             if (msg === "updated") {
-                setMessage("Product Updated Successfully");
+                setMessage("UserUpdated Successfully");
                 setMsgType("update");
 
                 setTimeout(() => {
@@ -63,15 +77,15 @@ function Users(){
 
         }, []);
    
-    const deleteProduct = (id) => {
-        fetch(`http://localhost:3003/products/${id}`, {
+    const deleteUser = (id) => {
+        fetch(`http://localhost:3003/users/${id}`, {
         method: "DELETE"
         })
         .then(res => res.text())
         .then(data => {
-        setMessage("Product Deleted Successfully");
+        setMessage("User Deleted Successfully");
         setMsgType("delete"); 
-        fetchProducts();
+        fetchUsers();
 
         setTimeout(() => {
             setMessage("");
@@ -81,7 +95,7 @@ function Users(){
     };
 
 
-    const addProduct = () => {
+    const addUser = () => {
         fetch("http://localhost:3003/users", {
             method: "POST",
             headers:
@@ -91,97 +105,129 @@ function Users(){
         
             body: JSON.stringify
             ({
-                ProductName: name,
-                BatchNumber: batch,
-                ExpiryDate: expiry,
-                StockQuantity: stock,
-                UnitPrice: price,
-                ReorderLevel: reorder
+                EmployeeID  : EmployeeID,
+                username    : username,
+                PasswordH   : PasswordH,
+                role        : role,
+               
             })
         })
             .then(res => res.text())
                 .then(data => {
-                                 setMessage("Product Added Successfully");
-                                 setMsgType("success");
-                                // to cleAR form 
-                                setName("");
-                                setBatch("");
-                                setExpiry("");
-                                setStock("");
-                                setPrice("");
-                                setReorder("");
-                                // referesh the list
-                                fetchProducts();
-                                setTimeout(() => {
-                                setMessage("");
-                                 }, 3000); 
+                            setMessage("User Added Successfully");
+                            setMsgType("success");
+                            // to cleAR form 
+                            setEmployeeId("");
+                            setUsername("");
+                            setPassword("");
+                            setrole("");
+                                
+                            // referesh the list
+                            fetchUsers();
+                            setTimeout(() => {
+                            setMessage("");
+                            }, 3000); 
                 })
-                                .catch(err => console.log(err));
+                            .catch(err => console.log(err));
         };
                 
 
         return (
             <Layout>
-        <div>
+                <div>
 
                     {/* <h1>Dashboard</h1> */}
-                         {message && (
-                    <div style={{
-                        position: "fixed",
-                        bottom: "20px",
-                        right: "20px",
-                        backgroundColor: msgType === "success" ? "green":
+                    {message && (
+                        <div style={{
+                            position: "fixed",
+                            bottom: "20px",
+                            right: "20px",
+                            backgroundColor: msgType === "success" ? "green":
                                          msgType === "delete"  ? "red" :
                                          msgType === "update"  ? "#007bff": "#6c757d",
-                        color: "white",
-                        padding: "10px 20px",
-                        borderRadius: "5px"
+                            color: "white",
+                            padding: "10px 20px",
+                            borderRadius: "5px"
                             }}>
-                          {message}
-                    </div>
-)}
-        <h3>Add Product</h3>
+                                    {message}
+                        </div>
+                    )}
+                            <h3>Add User</h3>
                             
-                            <input style={inputStyle} placeholder="Product Name" onChange={(e) => setName(e.target.value)} />
-                            <input style={inputStyle} placeholder="Batch Number" onChange={(e) => setBatch(e.target.value)} />
-                            <input style={inputStyle} type="date" onChange={(e) => setExpiry(e.target.value)} />
-                            <input style={inputStyle} placeholder="Stock" type="number" onChange={(e) => setStock(e.target.value)} />
-                            <input style={inputStyle} placeholder="Unit Price" type="number" onChange={(e) => setPrice(e.target.value)} />
-                            <input style={inputStyle} placeholder="Reorder Level" type="number" onChange={(e) => setReorder(e.target.value)} />
+                            {/* <input style={inputStyle} placeholder="employeeId" onChange={(u) => setEmployeeId(u.target.value)} /> */}
+                            {/* selct optio start */}
+                            <select 
+                                    style={inputStyle} 
+                                    value={EmployeeID}
+                                    onChange={(e) => setEmployeeId(e.target.value)}
+                                >
+                                    <option value="">Select Employee</option>
+                                        {employees.map(emp => (
+                                        <option key={emp.EmployeeID} value={emp.EmployeeID}>
+                                            {emp.FullName}
+                                        </option>
+                                    ))}
+                            </select>
+                            {/* select end */}
+                            <input
+                                style={inputStyle} 
+                                value={username}
+                                placeholder="User Name"
+                                onChange={(u) => setUsername(u.target.value)}
+                            />
 
-                              <button style={addBtn} onClick={addProduct}>Add Product</button>
+                            <input
+                                style={inputStyle} 
+                                value={PasswordH}
+                                placeholder="password" onChange={(u) => setPassword(u.target.value)}
+                            />
+                            
+                            {/* <input style={inputStyle} placeholder="role" type="text" onChange={(u) => setrole(u.target.value)} /> */}
+                            {/* role start */}
+                                        <select 
+                                                style={inputStyle} 
+                                                value={role}
+                                                onChange={(e) => setrole(e.target.value)}
+                                            >
+                                                <option value="">Select Role</option>
+                                                <option value="Admin">Admin</option>
+                                                <option value="HR">HR</option>
+                                                <option value="IT">IT Support</option>
+                                            </select>
+                            {/* role end */}
+                            
+                            
+                            <button style={addBtn} onClick={addUser}>Add User</button>
 
-        <h2>All Products</h2>
-        <table border="1" cellPadding="10">
-            <thead>
-                <tr>
-                    <th>Product Name</th>
-                    <th>Batch</th>
-                    <th>Expiry</th>
-                    <th>Stock</th>
-                    <th>Price</th>
-                    <th>Reorder</th>
-                    <th colSpan="2">Action</th>
-                </tr>
-            </thead>
+                            <h2>All USer</h2>
+                            <table border="1" cellPadding="10">
+                                <thead>
+                                    <tr>
+                                        <th>User Id</th>
+                                        <th>Employee ID</th>
+                                        <th>Username</th>
+                                        <th>Password</th>
+                                        <th>Role</th>
+                                        <th colSpan="2">Action</th>
+                                     </tr>
+                                </thead>
 
-            <tbody>
-                {products.length === 0 ? (
-                    <tr>
-                        <td colSpan="6">No data found</td>
-                    </tr>
-                 ) : (
-                        products.map((p) => (
-                            <tr key={p.ProductID}>
-                                <td>{p.ProductName}</td>
-                                <td>{p.BatchNumber}</td>
-                                <td>{p.ExpiryDate}</td>
-                                <td>{p.StockQuantity}</td>
-                                <td>{p.UnitPrice}</td>
-                                <td>{p.ReorderLevel}</td>
-                                <td>
+                                <tbody>
+                                    {users.length === 0 ? (
+                                        <tr>
+                                            <td colSpan="6">No data found</td>
+                                        </tr>
+                                    ) : (
+                                        users.map((u) => (
+                                                <tr key={u.UserID}>
+                                                <td>{u.UserID}</td>
+                                                <td>{u.EmployeeID}</td>
+                                                <td>{u.Username}</td>
+                                                <td>{u.PasswordH}</td>
+                                                <td>{u.role}</td>
+                                                <td>
                                     <button
-                                        onClick={() => window.location.href = `/edit/${p.ProductID}`}
+                                        onClick={() => navigate(`/users/edit/${u.UserID}`)}
                                         style={{
                                             backgroundColor: "#007bff",
                                             color: "white",
@@ -196,7 +242,7 @@ function Users(){
                                 </td>
                                 <td>
                                     <button 
-                                    onClick={() => deleteProduct(p.ProductID)}
+                                    onClick={() => deleteUser(u.UserID)}
                                     style={{
                                         backgroundColor: "red",
                                         color: "white",

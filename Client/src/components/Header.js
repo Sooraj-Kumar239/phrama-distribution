@@ -25,7 +25,7 @@ function Header() {
                     top: 0,
                     width: "100%",
                     backgroundColor: "#333",
-                    padding: "15px",
+                    padding: "15px 40px",
                     color: "white",
                     zIndex: 1000,
                     display: "flex",
@@ -41,7 +41,7 @@ function Header() {
             {/* Dashboard */}
             <span
                 style={{ cursor: "pointer" }}
-                onClick={() => window.location.href = "/"}
+                onClick={() => navigate("/dashboard")}
             >
                 Dashboard
             </span>
@@ -85,9 +85,9 @@ function Header() {
                     }}>
                         <div
                             style={{ cursor: "pointer" }}
-                            onClick={() => window.location.href = "/products"}
+                            onClick={() => window.location.href = "/users"}
                         >
-                            All Products
+                            All users
                         </div>
                     </div>
                 )}
@@ -233,34 +233,35 @@ function Header() {
 
 
             <div style={{
-    marginLeft: "auto",
-    display: "flex",
-    alignItems: "center",
-    gap: "15px"
-}}>
+                marginLeft: "auto",
+                marginRight:"20px",
+                display: "flex",
+                alignItems: "center",
+                gap: "15px"
+            }}>
 
-    {/* Username */}
-    <span>
-         Welcome, {user?.username || "User"} 
-    </span>
+            {/* Username */}
+            <span>
+                Welcome, {user?.username || "User"} 
+            </span>
 
-    {/* Logout Button */}
-    <button
-        onClick={handleLogout}
+            {/* Logout Button */}
+            <button
+                onClick={handleLogout}
             
-        style={{
-            background: "#dc3545",
-            color: "white",
-            border: "none",
-            padding: "5px 10px",
-            borderRadius: "5px",
-            cursor: "pointer"
-        }}
-    >
-        Logout
-    </button>
+                style={{
+                    background: "#dc3545",
+                    color: "white",
+                    border: "none",
+                    padding: "15px 40px",
+                    borderRadius: "5px",
+                    cursor: "pointer"
+                }}
+             >
+             Logout
+            </button>
 
-</div>
+        </div>
         </div>
 
         
