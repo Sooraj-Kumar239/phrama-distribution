@@ -22,6 +22,9 @@ import EditCustomer from "./pages/EditCustomer";
 import Login from "./pages/Login";
 // protected
 import ProtectedRoute from "./components/ProtectRoute";
+// purchase
+import PurchaseOrder from "./pages/PurchaseOrder";
+import PurchaseLines from "./pages/PurchaseLines";
 
 
 function App() {
@@ -55,6 +58,10 @@ function App() {
 
           <Route path="/customers" element={<Customers />} />
           <Route path="/customers/edit/:id" element={<EditCustomer />} />
+
+          {/* purchase pages path */}
+          <Route path="/purchase-order" element={<PurchaseOrder />} />
+          <Route path="/purchase-lines/:id" element={<PurchaseLines />} />
         </Route>
       </Routes>
     </BrowserRouter>

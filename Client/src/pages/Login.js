@@ -27,7 +27,7 @@ function Login() {
         return;
     }
     setLoading(true);
-    fetch("http://localhost:3003/login", {
+    fetch("http://localhost:3003/auth/login", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -37,6 +37,7 @@ function Login() {
    
     .then(res => res.json())
     .then(data => {
+        console.log("LOGIN RESPONSE:", data);  // test
         if (data.success) {
             localStorage.setItem("user", JSON.stringify(data.user));
             navigate("/dashboard");

@@ -7,17 +7,22 @@ const router = express.Router();
 const LabelService = require('../labels/labelService');
 
 //Return all users
-router.get('/', (req, res) => {
-    db.query('SELECT * FROM purchaseLines', (err, results) => {
-        if (err) {
-            console.log(err);
-            res.send(LabelService.get('PURCHASElINE_LIST'));
-            // res.send(LabelService.get('CUSTOMER_LIST'));
-        }
-        else {
+router.get('/:orderId', (req, res) => {
+
+    const orderId = req.params.orderId;
+    
+    db.query(
+     `SELECT pl.*, p.ProductName 
+         FROM purchaseLines pl
+         JOIN products p ON pl.ProductID = p.ProductID
+         WHERE PurchaseOrderID = ?`,
+        [orderId],
+        (err, results) => {
+            if (err) return res.send(err);
             res.json(results);
         }
-    });
+    );
+       
 });
 
 //Inserts request
@@ -27,27 +32,46 @@ router.post('/', (req, res) => {
         ProductID,
         QuantityOrdered,
         UnitCostAtPurchase,
-        LineTotal
+        // LineTotal
     } = req.body;
 
-    const sql = `INSERT INTO  purchaseLines
-        (PurchaseOrderID,ProductID,QuantityOrdered,UnitCostAtPurchase,LineTotal)
-        values (?,?,?,?,?)`;
+    // calculate here
+    const LineTotal = QuantityOrdered * UnitCostAtPurchase;
 
-    db.query(sql,
+    db.query( `INSERT INTO  purchaseLines
+        (PurchaseOrderID, ProductID, QuantityOrdered, UnitCostAtPurchase, LineTotal)
+        values (?, ?, ?, ?, ?)`,
         [PurchaseOrderID,ProductID,QuantityOrdered,UnitCostAtPurchase,LineTotal],
+        
         (err, result) => {
-            if (err) {
-                console.log(err.message);
-                res.send('Error inserting user' + err.message);
-            } else {
-                res.send('User added successfully');
-            }
+            if(err) return res.send(err);
+
+
+            //  UPDATE TOTAL
+            db.query(
+                `UPDATE purchaseorders 
+                 SET TotalCost = (
+                    SELECT SUM(LineTotal) 
+                    FROM purchaseLines 
+                    WHERE PurchaseOrderID = ?
+                 )
+                 WHERE PurchaseOrderID = ?`,
+                [PurchaseOrderID, PurchaseOrderID],
+                (err2) => {
+
+                    if (err2) return res.send(err2);
+
+                    res.send('Line added & Total updated');
+                }
+            );
         }
     );
 
-// update request
 });
+
+
+// update request
+
 
 
 module.exports = router; 

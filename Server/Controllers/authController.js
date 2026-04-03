@@ -30,7 +30,8 @@ router.post('/login', (req, res) => {
             user: {
                 id: user.UserID,
                 username: user.Username,
-                role: user.role
+                role: user.role,
+                 EmployeeID: user.EmployeeID
             }
         });
     });

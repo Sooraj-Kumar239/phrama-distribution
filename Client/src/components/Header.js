@@ -17,6 +17,9 @@ function Header() {
     const [designationOpen, setDesignationOpen] = useState(false);
     const [vendorsOpen, setVendorsOpen] =useState(false);
     const [customersOpen, setCustomersOpen] =useState(false);
+    // state for purchase
+    const [purchaseOpen, setPurchaseOpen] = useState(false);
+    // state for purchaseLines
     
 
     return (
@@ -197,69 +200,109 @@ function Header() {
                         </div>
                     </div>
                 )}
-            </span>
+             </span>
              {/* customers */}
-             <span style={{ position: "relative" }}>
+            <span style={{ position: "relative" }}>
                 <button
-                  onClick={() => setCustomersOpen(!customersOpen)}
-                    style={{
-                        background: "none",
-                        color: "white",
-                        border: "none",
-                        cursor: "pointer"
-                    }}
-                >
-                    Customers
-                </button>
+                    onClick={() => setCustomersOpen(!customersOpen)}
+                        style={{
+                            background  : "none",
+                            color       : "white",
+                            border      : "none",
+                            cursor      : "pointer"
+                        }}
+                        >
+                        Customers
+                    </button>
 
-                {customersOpen && (
-                    <div style={{
-                        position: "absolute",
-                        backgroundColor: "white",
-                        color: "black",
-                        marginTop: "10px",
-                        padding: "10px",
-                        borderRadius: "5px"
-                    }}>
+                    {customersOpen && (
+                        <div style={{
+                            position        : "absolute",
+                            backgroundColor : "white",
+                            color           : "black",
+                            marginTop       : "10px",
+                            padding         : "10px",
+                            borderRadius    : "5px"
+                        }}>
                         <div
                             style={{ cursor: "pointer" }}
                             onClick={() => window.location.href = "/customers"}
-                        >
+                            >
                             All Customers
+                            </div>
                         </div>
-                    </div>
-                )}
-            </span>
+                    )}
+                </span>
 
+                    {/* purchase */}
+                     <span style={{ position: "relative" }}>
+                <button
+                    onClick={() => setPurchaseOpen(!purchaseOpen)}
+                        style={{
+                            background  : "none",
+                            color       : "white",
+                            border      : "none",
+                            cursor      : "pointer"
+                        }}
+                        >
+                        Purchase
+                    </button>
 
-            <div style={{
-                marginLeft: "auto",
-                marginRight:"20px",
-                display: "flex",
-                alignItems: "center",
-                gap: "15px"
-            }}>
+                    {purchaseOpen && (
+                        <div style={{
+                            position        : "absolute",
+                            backgroundColor : "white",
+                            color           : "black",
+                            marginTop       : "10px",
+                            padding         : "10px",
+                            borderRadius    : "5px"
+                        }}>
+                            <div
+                                style={{ cursor: "pointer" }}
+                                onClick={() => navigate ("/purchase-order")}
+                                >
+                                Purchse Orders
+                            </div>
 
-            {/* Username */}
-            <span>
-                Welcome, {user?.username || "User"} 
-            </span>
+                            <div
+                                style={{ cursor: "pointer" }}
+                                onClick={() => navigate ("/purchase-lines")}
+                                >
+                                Purchse Lines
+                            </div>
+                        </div>
+                    )}
+                </span>
 
-            {/* Logout Button */}
-            <button
-                onClick={handleLogout}
+                    {/*  */}
+                <div style={{
+                    marginLeft  : "auto",
+                    marginRight :"20px",
+                    display     : "flex",
+                    alignItems  : "center",
+                    gap         : "15px"
+                }}>
+
+                {/* Username */}
+                <span>
+                    Welcome, {user?.username || "User"} 
+                </span>
+
+                {/* Logout Button */}
+                <button
+                    onClick={handleLogout}
             
-                style={{
-                    background: "#dc3545",
-                    color: "white",
-                    border: "none",
-                    padding: "15px 40px",
-                    borderRadius: "5px",
-                    cursor: "pointer"
-                }}
-             >
-             Logout
-            </button>
+                    style={{
+                        background  : "#dc3545",
+                        color       : "white",
+                        border      : "none",
+                        padding     : "15px 40px",
+                        borderRadius: "5px",
+                        cursor      : "pointer"
+                    }}
+                    >
+                    Logout
+                </button>
 
         </div>
         </div>

@@ -36,7 +36,7 @@ app.get('/', (req, res) => {
 // user
 app.use('/users', userController);
 // auth
-app.use('/', authController);
+app.use('/auth', authController);
 //designation
 app.use('/designation', designationsController);
 // employees
@@ -44,7 +44,7 @@ app.use('/employees', employeesController);
 // purchaseLine
 app.use('/purchaselines', purchaseLineController);
 // purchase order
-app.use('/purchaseorder', purchaseOrderController);
+app.use('/purchase-orders', purchaseOrderController);
 // sales LinesAC
 app.use('/saleslines', salesLinesController);
 // salesOrder
