@@ -4,184 +4,308 @@ import { useParams } from "react-router-dom";
 
 function PurchaseLines() {
 
-    const { id } = useParams(); // 👈 coming from click
-    const [orders, setOrders] = useState([]);
+    const { id } = useParams(); //  coming from click
+    const [order, setOrder] = useState([]);
+    const [vendors, setVendors] = useState([]);
     const [products, setProducts] = useState([]);
     const [lines, setLines] = useState([]);
+    const [editMode, setEditMode] = useState(false);
+    const [tempData, setTempData] = useState([]);
+    // const [tempLine, setTempLine] = useState([]);
 
-    const [PurchaseOrderID, setPurchaseOrderID] = useState(id || "");
-    const [ProductID, setProductID] = useState("");
-    const [QuantityOrdered, setQuantityOrdered] = useState("");
-    const [UnitCostAtPurchase, setUnitCostAtPurchase] = useState("");
 
-    const [selectedOrder, setSelectedOrder] = useState(null);
-
-    // 🔥 Fetch data
+    //  Fetch data
     useEffect(() => {
-        fetch("http://localhost:3003/purchase-orders")
+        fetch(`http://localhost:3003/purchase-orders/${id}`)
             .then(res => res.json())
             .then(data => {
-                setOrders(data);
-
-                if (id) {
-                    const found = data.find(o => o.PurchaseOrderID == id);
-                    setSelectedOrder(found);
-                }
+                setOrder(data);
+                setTempData(data);
             });
+    },[id]);
 
-        fetch("http://localhost:3003/products")
-            .then(res => res.json())
-            .then(data => setProducts(data));
-    }, [id]);
-
-    // 🔥 Fetch lines
+    // fetch vendors
     useEffect(() => {
-        if (PurchaseOrderID) {
-            fetch(`http://localhost:3003/purchaselines/${PurchaseOrderID}`)
-                .then(res => res.json())
-                .then(data => setLines(data));
-        }
-    }, [PurchaseOrderID]);
+        fetch(`http://localhost:3003/vendors`)
+            .then(res => res.json())
+            .then(setVendors);
+    },[]);
 
-    // ➕ ADD
-    const addLine = () => {
-        fetch("http://localhost:3003/purchaselines", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                PurchaseOrderID,
-                ProductID,
-                QuantityOrdered,
-                UnitCostAtPurchase
-            })
+    // PRODUCTS
+    useEffect(() => {
+    fetch("http://localhost:3003/products")
+        .then(res => res.json())
+        .then(setProducts);
+    }, []);
+        
+    //  Fetch lines
+    useEffect(() => {
+        fetch(`http://localhost:3003/purchase-lines/${id}`)
+            .then(res => res.json())
+            .then(data => setLines(data));
+    },[id]);
+
+
+
+        // save line
+        const handleSave = () => {
+        fetch(`http://localhost:3003/purchase-orders/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(tempData)
         })
         .then(() => {
-            fetch(`http://localhost:3003/purchaselines/${PurchaseOrderID}`)
-                .then(res => res.json())
-                .then(data => setLines(data));
-
-            setProductID("");
-            setQuantityOrdered("");
-            setUnitCostAtPurchase("");
+        alert("Updated!");
+        setEditMode(false);
         });
+        };
+
+        // line logic
+        const handleLineChange = (index, field, value) => {
+
+        const updated = [...lines];
+        updated[index][field] = value;
+
+        // product select → auto cost
+        if (field === "ProductID") {
+        const product = products.find(p => p.ProductID == value);
+        if (product) {
+        updated[index].UnitCost = product.UnitPrice;
+        }
+        }
+
+        // total calculate
+        updated[index].LineTotal =
+        (updated[index].Quantity || 0) * (updated[index].UnitCost || 0);
+
+        setLines(updated);
+  };
+
+         const addLine = () => {
+        setLines([
+        ...lines,
+      {
+        ProductID: "",
+        Quantity: 0,
+        UnitCost: 0,
+        LineTotal: 0
+         }
+        ]);
     };
 
+    // ADD
+    // const addLine = () => {
+    //     fetch("http://localhost:3003/purchaselines", {
+    //         method: "POST",
+    //         headers: { "Content-Type": "application/json" },
+    //         body: JSON.stringify({
+    //             PurchaseOrderID,
+    //             ProductID,
+    //             QuantityOrdered,
+    //             UnitCostAtPurchase
+    //         })
+    //     })
+    //     .then(() => {
+    //         fetch(`http://localhost:3003/purchaselines/${PurchaseOrderID}`)
+    //             .then(res => res.json())
+    //             .then(data => setLines(data));
+
+    //         setProductID("");
+    //         setQuantityOrdered("");
+    //         setUnitCostAtPurchase("");
+    //     });
+    // };
+
     return (
-        <Layout>
+    <Layout>
+      <div style={{ padding: "20px" }}>
 
-            <h2>Purchase Lines</h2>
+        <h2>Purchase Lines</h2>
 
-            {/* 🔽 ORDER SELECT */}
-            {!id && (
-                <select
-                    value={PurchaseOrderID}
-                    onChange={(e) => setPurchaseOrderID(e.target.value)}
-                >
-                    <option value="">Select Order</option>
-                    {orders.map(o => (
-                        <option key={o.PurchaseOrderID} value={o.PurchaseOrderID}>
-                            Order #{o.PurchaseOrderID}
-                        </option>
-                    ))}
-                </select>
+        {/* ================= HEADER BUTTONS ================= */}
+        <div style={btnContainer}>
+          <button style={btnYellow} onClick={() => setEditMode(true)}>Edit</button>
+          <button style={btnBlue} onClick={handleSave}>Save</button>
+        </div>
+
+        {/* ================= HEADER DATA ================= */}
+        <div style={headerBox}>
+
+          <div><b>ID:</b> {order.PurchaseOrderID}</div>
+
+          <div>
+            <b>Name:</b>
+            {editMode ? (
+              <input
+                value={tempData.OrderName || ""}
+                onChange={(e) =>
+                  setTempData({ ...tempData, OrderName: e.target.value })
+                }
+              />
+            ) : order.OrderName}
+          </div>
+
+          <div>
+            <b>Vendor:</b>
+            {editMode ? (
+              <select
+                value={tempData.VendorID}
+                onChange={(e) =>
+                  setTempData({ ...tempData, VendorID: e.target.value })
+                }
+              >
+                {vendors.map(v => (
+                  <option key={v.VendorID} value={v.VendorID}>
+                    {v.VendorName}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              vendors.find(v => v.VendorID === order.VendorID)?.VendorName
             )}
+          </div>
 
-            {/* 📊 ORDER GRID */}
-            {selectedOrder && (
-                <div style={{
-                    marginTop: "20px",
-                    padding: "15px",
-                    border: "1px solid #ccc",
-                    borderRadius: "8px",
-                    background: "#f9f9f9"
-                }}>
+          <div>
+            <b>Status:</b>
+            {editMode ? (
+              <select
+                value={tempData.OrderStatus}
+                onChange={(e) =>
+                  setTempData({ ...tempData, OrderStatus: e.target.value })
+                }
+              >
+                <option>Pending</option>
+                <option>Received</option>
+              </select>
+            ) : order.OrderStatus}
+          </div>
 
-                    {/* ROW 1 */}
-                    <div style={{ display: "flex", gap: "30px" }}>
-                        <div><b>Order ID:</b> {selectedOrder.PurchaseOrderID}</div>
-                        <div><b>Vendor:</b> {selectedOrder.VendorID}</div>
-                        <div><b>Employee:</b> {selectedOrder.EmployeeID}</div>
-                    </div>
+        </div>
 
-                    {/* ROW 2 */}
-                    <div style={{ display: "flex", gap: "30px", marginTop: "10px" }}>
-                        <div><b>Total:</b> {selectedOrder.TotalCost}</div>
-                        <div><b>Status:</b> {selectedOrder.OrderStatus}</div>
-                        <div><b>Date:</b> {selectedOrder.CreatedAt || "N/A"}</div>
-                    </div>
-                </div>
-            )}
+        {/* ================= LINE BUTTONS ================= */}
+        <div style={btnContainer}>
+          <button style={btnGreen} onClick={addLine}>+ Add Line</button>
+        </div>
 
-            {/* ➕ ADD FORM */}
-            {PurchaseOrderID && (
-                <div style={{
-                    marginTop: "20px",
-                    padding: "15px",
-                    border: "1px solid #ddd",
-                    borderRadius: "8px"
-                }}>
+        {/* ================= GRID ================= */}
+        <div style={tableContainer}>
 
-                    <h3>Add Purchase Line</h3>
+          <div style={tableHeader}>
+            <div>Line</div>
+            <div>Product</div>
+            <div>Qty</div>
+            <div>Unit Cost</div>
+            <div>Total</div>
+          </div>
 
-                    <div style={{ display: "flex", gap: "15px", flexWrap: "wrap" }}>
+          {lines.map((l, index) => (
+            <div key={index} style={tableRow}>
 
-                        <select
-                            value={ProductID}
-                            onChange={(e) => setProductID(e.target.value)}
-                        >
-                            <option value="">Select Product</option>
-                            {products.map(p => (
-                                <option key={p.ProductID} value={p.ProductID}>
-                                    {p.ProductName}
-                                </option>
-                            ))}
-                        </select>
+              <div>{index + 1}</div>
 
-                        <input
-                            placeholder="Quantity"
-                            value={QuantityOrdered}
-                            onChange={(e) => setQuantityOrdered(e.target.value)}
-                        />
+              <select
+                value={l.ProductID || ""}
+                onChange={(e) =>
+                  handleLineChange(index, "ProductID", e.target.value)
+                }
+              >
+                <option value="">Select</option>
+                {products.map(p => (
+                  <option key={p.ProductID} value={p.ProductID}>
+                    {p.ProductName}
+                  </option>
+                ))}
+              </select>
 
-                        <input
-                            placeholder="Unit Cost"
-                            value={UnitCostAtPurchase}
-                            onChange={(e) => setUnitCostAtPurchase(e.target.value)}
-                        />
+              <input
+                type="number"
+                value={l.Quantity || 0}
+                onChange={(e) =>
+                  handleLineChange(index, "Quantity", e.target.value)
+                }
+              />
 
-                        <button onClick={addLine}>Add</button>
-                    </div>
-                </div>
-            )}
+              <input
+                value={l.UnitCost || 0}
+                onChange={(e) =>
+                  handleLineChange(index, "UnitCost", e.target.value)
+                }
+              />
 
-            {/* 📋 TABLE */}
-            {PurchaseOrderID && (
-                <table border="1" style={{ width: "100%", marginTop: "20px" }}>
-                    <thead>
-                        <tr>
-                            <th>Line #</th>
-                            <th>Product</th>
-                            <th>Qty</th>
-                            <th>Unit Cost</th>
-                            <th>Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {lines.map(l => (
-                            <tr key={l.PLineID}>
-                                <td>{l.PLineID}</td>
-                                <td>{l.ProductName}</td>
-                                <td>{l.QuantityOrdered}</td>
-                                <td>{l.UnitCostAtPurchase}</td>
-                                <td>{l.LineTotal}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            )}
+              <div>{l.LineTotal || 0}</div>
 
-        </Layout>
-    );
+            </div>
+          ))}
+
+        </div>
+
+      </div>
+    </Layout>
+  );
 }
 
 export default PurchaseLines;
+const headerBox = {
+  display: "grid",
+  gridTemplateColumns: "1fr 1fr 1fr 1fr",
+  gap: "10px",
+  backgroundColor: "#f8f9fa",
+  padding: "15px",
+  borderRadius: "10px",
+  marginBottom: "15px"
+};
+
+const btnContainer = {
+  marginBottom: "15px"
+};
+
+const tableContainer = {
+  borderRadius: "10px",
+  overflow: "hidden",
+  boxShadow: "0 2px 8px rgba(0,0,0,0.1)"
+};
+
+const tableHeader = {
+  display: "grid",
+  gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
+  backgroundColor: "#343a40",
+  color: "white",
+  padding: "12px",
+  fontWeight: "600"
+};
+
+const tableRow = {
+  display: "grid",
+  gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
+  padding: "12px",
+  borderBottom: "1px solid #ddd"
+};
+
+const btnGreen = {
+  backgroundColor: "#28a745",
+  color: "white",
+  border: "none",
+  padding: "8px 14px",
+  borderRadius: "6px",
+  marginRight: "8px",
+  cursor: "pointer"
+};
+
+const btnYellow = {
+  backgroundColor: "#ffc107",
+  border: "none",
+  padding: "8px 14px",
+  borderRadius: "6px",
+  marginRight: "8px",
+  cursor: "pointer"
+};
+
+const btnBlue = {
+  backgroundColor: "#007bff",
+  color: "white",
+  border: "none",
+  padding: "8px 14px",
+  borderRadius: "6px",
+  marginRight: "8px",
+  cursor: "pointer"
+};

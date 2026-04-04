@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import { useNavigate } from "react-router-dom";
 
+const user = JSON.parse(localStorage.getItem("user"));
+
 function PurchaseOrder() {
 
   const [orders, setOrders] = useState([]);
@@ -52,7 +54,7 @@ function PurchaseOrder() {
       OrderName: "",
       VendorID: "",
       OrderStatus: "Pending",
-      EmployeeID: 1
+      EmployeeID: user?.EmployeeID
     });
     setEditMode(true);
     setSelected("new");
@@ -158,7 +160,7 @@ function PurchaseOrder() {
                 <option>Received</option>
               </select>
 
-              <div>1</div>
+              <div>{user?.EmployeeID}</div>
             </div>
           )}
 
@@ -232,7 +234,7 @@ function PurchaseOrder() {
   );
 }
 
-//////////////// STYLES //////////////////
+// css
 
 const tableContainer = {
   borderRadius: "10px",
