@@ -124,8 +124,10 @@ function PurchaseOrder() {
             <div>ID</div>
             <div>Name</div>
             <div>Vendor</div>
+            <div>Employee ID</div>
+            <div>Order Date</div>
+            <div>Total Cost</div>
             <div>Status</div>
-            <div>Created By</div>
           </div>
 
           {editMode && selected === "new" && (
@@ -208,7 +210,8 @@ function PurchaseOrder() {
                   vendors.find(v => v.VendorID === o.VendorID)?.VendorName || o.VendorID
                 )}
               </div>
-
+                {/* employee id */}
+                 <div>{o.EmployeeID}</div>
               {/* STATUS */}
               <div>
                 {editMode && selected === o.PurchaseOrderID ? (
@@ -224,7 +227,7 @@ function PurchaseOrder() {
                 )}
               </div>
 
-              <div>{o.EmployeeID}</div>
+             
 
             </div>
           ))}
@@ -244,7 +247,7 @@ const tableContainer = {
 
 const tableHeader = {
   display: "grid",
-  gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
+  gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr 1fr 1fr",
   backgroundColor: "#343a40",
   color: "white",
   padding: "12px",
@@ -253,7 +256,7 @@ const tableHeader = {
 
 const tableRow = {
   display: "grid",
-  gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
+  gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr 1fr 1fr",
   padding: "12px",
   borderBottom: "1px solid #ddd",
   cursor: "pointer"

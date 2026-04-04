@@ -20,6 +20,8 @@ function Header() {
     // state for purchase
     const [purchaseOpen, setPurchaseOpen] = useState(false);
     // state for purchaseLines
+    // state for purchase
+    const [salesOpen, setSalesOpen] = useState(false);
     
 
     return (
@@ -273,6 +275,49 @@ function Header() {
                         </div>
                     )}
                 </span>
+
+                    {/* sale */}
+                    <span style={{ position: "relative" }}>
+                        <button
+                            onClick={() => setSalesOpen(!salesOpen)}
+                            style={{
+                                background  : "none",
+                                color       : "white",
+                                border      : "none",
+                                cursor      : "pointer"
+                            }}
+                            >
+                            Sale
+                        </button>
+
+                        {salesOpen && (
+                            <div style={{
+                                    position        : "absolute",
+                                    backgroundColor : "white",
+                                    color           : "black",
+                                    marginTop       : "10px",
+                                    padding         : "10px",
+                                    borderRadius    : "5px"
+                                }}>
+                                
+                                <div
+                                    style={{ cursor: "pointer" }}
+                                    onClick={() => navigate ("/sale-order")}
+                                    >
+                                    SaleOrders
+                                </div>
+
+                                <div
+                                    style={{ cursor: "pointer" }}
+                                    onClick={() => navigate ("/sale-lines")}
+                                    >
+                                    SaleLines
+                                </div>
+                            </div>
+                        )}
+                    </span>
+
+
 
                     {/*  */}
                 <div style={{

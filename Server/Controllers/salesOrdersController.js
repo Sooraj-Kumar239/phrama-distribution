@@ -43,7 +43,10 @@ router.post('/', (req, res) => {
                 console.log(err.message);
                 res.send('Error inserting sles order' + err.message);
             } else {
-                res.send('sales order added successfully');
+                     return res.json({
+                        success: true,
+                       message: "Sales order added successfully"
+                        });
             }
         }
     );

@@ -25,6 +25,9 @@ import ProtectedRoute from "./components/ProtectRoute";
 // purchase
 import PurchaseOrder from "./pages/PurchaseOrder";
 import PurchaseLines from "./pages/PurchaseLines";
+// sales
+import SaleOrder from "./pages/SaleOrder";
+import SaleLine from "./pages/SaleLine"
 
 
 function App() {
@@ -62,6 +65,10 @@ function App() {
           {/* purchase pages path */}
           <Route path="/purchase-order" element={<PurchaseOrder />} />
           <Route path="/purchase-lines/:id" element={<PurchaseLines />} />
+
+          {/* react route for the sale pages */}
+          <Route path="/sale-order" element={<SaleOrder />} />
+          <Route path="/sales-lines/:id" element={<SaleLine />} />
         </Route>
       </Routes>
     </BrowserRouter>
