@@ -3,11 +3,22 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+//toastify
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    {/* Wrapping everything in a fragment ensures only one root is returned */}
+    <>
+      <App />
+      <ToastContainer 
+        position="bottom-right" 
+        autoClose={3000} 
+        theme="colored" 
+      />
+    </>
   </React.StrictMode>
 );
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import { useNavigate } from "react-router-dom";
-
+import { toast } from "react-toastify";
 
 function SaleOrder() {
 
@@ -58,7 +58,7 @@ function SaleOrder() {
 
   // LINES BUTTON click p lines page p jawhi
   const goToLines = () => {
-    if (!selected) return alert("Select record first");
+    if (!selected) return toast.info("Select record first");
     navigate(`/sales-lines/${selected}`);
   };
 
@@ -80,7 +80,7 @@ function SaleOrder() {
 
   // EDIT
   const handleEdit = () => {
-        if (!selected || selected === "new") return alert("Select record first");
+        if (!selected || selected === "new") return toast.info("Select record first");
 
         const current = orders.find(o => o.SaleOrderID === selected);
         // ab selected data nu load kr form m
@@ -108,18 +108,18 @@ function SaleOrder() {
                 console.log(data);
 
                 if (data.error){
-                    alert("error: " + data.error);
+                    toast.info("error: " + data.error);
                 }
                 else
                 {
-                    alert("Inserted!");
+                    toast.info("Inserted!");
                     window.location.reload();    
                 }
             })
            
             .catch(err => {
                 console.error(err);
-                alert("Server error");
+                toast.info("Server error");
             });
         }
          else {
@@ -130,7 +130,7 @@ function SaleOrder() {
                 body: JSON.stringify(tempData)
             })
             .then(() => {
-                alert("Updated!");
+                toast.info("Updated!");
                 window.location.reload();
             });
         }

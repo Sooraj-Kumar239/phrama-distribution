@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function Login() {
 
@@ -42,11 +43,11 @@ function Login() {
             localStorage.setItem("user", JSON.stringify(data.user));
             navigate("/dashboard");
         } else {
-            alert("Invalid login");
+            toast.info("Invalid login");
         }
     })
     .catch(() => {
-        alert("Server error");
+        toast.info("Server error");
     })
     .finally(() => {
     setLoading(false);  

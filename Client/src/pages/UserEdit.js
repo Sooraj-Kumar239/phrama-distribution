@@ -7,6 +7,7 @@ function UserEdit() {
     const { id } = useParams();
 
     const [employeeId, setEmployeeId] = useState("");
+    const [userId, setUserId] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [role, setRole] = useState("");
@@ -16,10 +17,16 @@ function UserEdit() {
         fetch(`http://localhost:3003/users/${id}`)
             .then(res => res.json())
             .then(data => {
-                setEmployeeId(data.EmployeeID);
-                setUsername(data.Username);
-                setPassword(data.Password);
-                setRole(data.Role);
+                // Since the API returns an array, we must use data[0]
+                if (data && data.length > 0) {
+                    const user = data[0];
+
+                    setEmployeeId(user.EmployeeID || "");
+                    setUserId(user.UserID || "");
+                    setUsername(user.Username || "");
+                    setPassword(user.PasswordH || user.Password || "");
+                    setRole(user.role || user.Role || "");
+                }
             })
             .catch(err => console.log(err));
     }, [id]);
@@ -32,6 +39,7 @@ function UserEdit() {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
+                UserId: userId,
                 EmployeeID: employeeId,
                 Username: username,
                 Password: password,
@@ -59,8 +67,17 @@ function UserEdit() {
 
                 <h2 style={{ marginBottom: "20px" }}>Edit User</h2>
 
+                <label>User ID</label>
+                <input
+                    disabled
+                    value={userId}
+                    onChange={(e) => setUserId(e.target.value)}
+                    style={{ width: "100%", marginBottom: "10px", padding: "8px" }}
+                />
+
                 <label>Employee ID</label>
                 <input
+                    disabled
                     value={employeeId}
                     onChange={(e) => setEmployeeId(e.target.value)}
                     style={{ width: "100%", marginBottom: "10px", padding: "8px" }}

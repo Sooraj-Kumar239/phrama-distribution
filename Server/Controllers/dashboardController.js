@@ -27,7 +27,7 @@ router.get('/vehicle-count', (req, res) => {
     const sql = `
         SELECT COUNT(*) AS total 
         FROM vehicles 
-        WHERE CurrentStatus != 'Inactive'
+        WHERE CurrentStatusIN ('Available', 'Out for Delivery')
     `;
 
     db.query(sql, (err, result) => {

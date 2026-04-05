@@ -15,7 +15,7 @@ router.get('/:orderId', (req, res) => {
      `SELECT pl.*, p.ProductName 
          FROM purchaseLines pl
          JOIN products p ON pl.ProductID = p.ProductID
-         WHERE PurchaseOrderID = ?`,
+         WHERE pl.PurchaseOrderID = ?`,
         [orderId],
         (err, results) => {
             if (err) return res.send(err);
@@ -72,6 +72,25 @@ router.post('/', (req, res) => {
 
 // update request
 
+router.put('/:lineId', (req, res) => {
 
+    const lineId = req.params.lineId;
+    const { ProductID, QuantityOrdered, UnitCostAtPurchase } = req.body;
+
+    const LineTotal = QuantityOrdered * UnitCostAtPurchase;
+
+    db.query(
+      `UPDATE purchaseLines 
+       SET ProductID=?, QuantityOrdered=?, UnitCostAtPurchase=?, LineTotal=? 
+       WHERE PLineID=?`,
+      [ProductID, QuantityOrdered, UnitCostAtPurchase, LineTotal, lineId],
+      (err) => {
+
+        if (err) return res.send(err);
+
+         res.json({message: lineId });
+      }
+    );
+});
 
 module.exports = router; 

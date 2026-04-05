@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const user = JSON.parse(localStorage.getItem("user"));
 
@@ -44,7 +45,7 @@ function PurchaseOrder() {
 
   // LINES BUTTON
   const goToLines = () => {
-    if (!selected) return alert("Select record first");
+    if (!selected) return toast.info("Select record first");
     navigate(`/purchase-lines/${selected}`);
   };
 
@@ -55,6 +56,7 @@ function PurchaseOrder() {
       VendorID: "",
       OrderStatus: "Pending",
       EmployeeID: user?.EmployeeID
+      
     });
     setEditMode(true);
     setSelected("new");
@@ -62,7 +64,7 @@ function PurchaseOrder() {
 
   // EDIT
   const handleEdit = () => {
-    if (!selected || selected === "new") return alert("Select record first");
+    if (!selected || selected === "new") return toast.info("Select record first");
     const current = orders.find(o => o.PurchaseOrderID === selected);
     setTempData(current);
     setEditMode(true);
@@ -85,7 +87,7 @@ function PurchaseOrder() {
       })
       .then(res => res.json())
       .then(() => {
-        alert("Inserted!");
+        toast.info("Inserted!");
         window.location.reload();
       });
 
@@ -97,7 +99,7 @@ function PurchaseOrder() {
         body: JSON.stringify(tempData)
       })
       .then(() => {
-        alert("Updated!");
+        toast.info("Updated!");
         window.location.reload();
       });
     }
@@ -153,16 +155,30 @@ function PurchaseOrder() {
                  ))}
                 
               </select>
+               <div>{user?.EmployeeID}</div>
+               {/* date */}
+                <input
+                type="date"
+                value={tempData.OrderDate || ""}
+                onChange={(e) => handleChange("OrderDate", e.target.value)}
+                />
 
+                {/* Total cost*/}
+                <input
+                type="number"
+                value={tempData.TotalCost || 0.00}
+                onChange={(e) => handleChange("TotalCost", e.target.value)}
+                />  
               <select
                 value={tempData.OrderStatus}
                 onChange={(e) => handleChange("OrderStatus", e.target.value)}
               >
                 <option>Pending</option>
                 <option>Received</option>
+                 <option>Cancel</option>
               </select>
 
-              <div>{user?.EmployeeID}</div>
+              {/* <div>{user?.EmployeeID}</div> */}
             </div>
           )}
 
@@ -209,10 +225,18 @@ function PurchaseOrder() {
                 ) : (
                   vendors.find(v => v.VendorID === o.VendorID)?.VendorName || o.VendorID
                 )}
-              </div>
-                {/* employee id */}
+                </div>
+                    {/* employee id */}
                  <div>{o.EmployeeID}</div>
-              {/* STATUS */}
+
+                 {/* ORDER DATE */}
+                <div>
+                {new Date(o.OrderDate).toLocaleDateString()}
+                </div>
+
+                    {/* TOTAL COST */}
+                    <div>{o.TotalCost}</div>
+                    {/* STATUS */}
               <div>
                 {editMode && selected === o.PurchaseOrderID ? (
                   <select

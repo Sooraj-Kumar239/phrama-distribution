@@ -36,3 +36,78 @@
     transform: rotate(360deg);
   }
 }
+
+/* Container for the whole grid area */
+.grid-wrapper {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  overflow: hidden; /* Rounds the corners of the table */
+  margin-top: 20px;
+  border: 1px solid #e0e0e0;
+}
+
+/* Header styling */
+.grid-header {
+  display: grid;
+  grid-template-columns: 60px 1fr 100px 120px 120px;
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+  padding: 12px 15px;
+  font-weight: 600;
+  color: #495057;
+  text-transform: uppercase;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+}
+
+/* Individual Row styling */
+.grid-row {
+  display: grid;
+  grid-template-columns: 60px 1fr 100px 120px 120px;
+  padding: 10px 15px;
+  border-bottom: 1px solid #f1f3f5;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.grid-row:hover {
+  background-color: #f1f8ff; /* Light blue tint on hover */
+}
+
+.grid-row.selected {
+  background-color: #e7f3ff;
+  border-left: 4px solid #007bff;
+}
+
+/* Input & Select Styling inside the grid */
+.grid-input, .grid-select {
+  width: 90%;
+  padding: 8px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.grid-input:focus, .grid-select:focus {
+  border-color: #80bdff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.grid-input:disabled {
+  background-color: #f8f9fa;
+  border-color: transparent;
+  color: #495057;
+  font-weight: 600;
+  cursor: not-allowed;
+}
+
+/* Total Column */
+.column-total {
+  font-weight: 700;
+  color: #28a745;
+  text-align: right;
+  padding-right: 10px;
+}

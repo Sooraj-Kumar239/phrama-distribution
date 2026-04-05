@@ -20,6 +20,23 @@ router.get('/', (req, res) => {
     });
 });
 
+//Return single user
+router.get('/:UserId', (req, res) => {
+
+    const UserId = req.params.UserId;
+    
+    db.query(
+     `SELECT * FROM USERS U1
+         WHERE U1.USERID = ?`,
+        [UserId],
+        (err, results) => {
+            if (err) return res.send(err);
+            res.json(results);
+        }
+    );
+       
+});
+
 //Inserts request
 router.post('/', (req, res) => {
     

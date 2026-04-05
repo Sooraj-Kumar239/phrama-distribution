@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
+import { toast } from "react-toastify";
+
 function Products(){
     // return <Layout>
     //         <h2>Product Page</h2>
@@ -139,8 +141,8 @@ function Products(){
                             }}>
                           {message}
                     </div>
-)}
-        <h3>Add Product</h3>
+)}          
+                            <h3>Add Product</h3>
                             
                             <input style={inputStyle} placeholder="Product Name" onChange={(e) => setName(e.target.value)} />
                             <input style={inputStyle} placeholder="Batch Number" onChange={(e) => setBatch(e.target.value)} />
@@ -151,65 +153,65 @@ function Products(){
 
                               <button style={addBtn} onClick={addProduct}>Add Product</button>
 
-        <h2>All Products</h2>
-        <table border="1" cellPadding="10">
-            <thead>
-                <tr>
-                    <th>Product Name</th>
-                    <th>Batch</th>
-                    <th>Expiry</th>
-                    <th>Stock</th>
-                    <th>Price</th>
-                    <th>Reorder</th>
-                    <th colSpan="2">Action</th>
-                </tr>
-            </thead>
+                                <h2>All Products</h2>
+                                <table border="1" cellPadding="10">
+                                <thead>
+                                    <tr>
+                                        <th>Product Name</th>
+                                        <th>Batch</th>
+                                        <th>Expiry</th>
+                                        <th>Stock</th>
+                                        <th>Price</th>
+                                        <th>Reorder</th>
+                                        <th colSpan="2">Action</th>
+                                    </tr>
+                                </thead>
 
-            <tbody>
-                {products.length === 0 ? (
-                    <tr>
-                        <td colSpan="6">No data found</td>
-                    </tr>
-                 ) : (
-                        products.map((p) => (
-                            <tr key={p.ProductID}>
-                                <td>{p.ProductName}</td>
-                                <td>{p.BatchNumber}</td>
-                                <td>{p.ExpiryDate}</td>
-                                <td>{p.StockQuantity}</td>
-                                <td>{p.UnitPrice}</td>
-                                <td>{p.ReorderLevel}</td>
-                                <td>
-                                    <button
-                                        onClick={() => window.location.href = `/edit/${p.ProductID}`}
-                                        style={{
-                                            backgroundColor: "#007bff",
-                                            color: "white",
-                                            border: "none",
-                                            padding: "5px 10px",
-                                            borderRadius: "5px",
-                                            cursor: "pointer"
-                                        }}
-                                    >
-                                        Edit
-                                    </button>
-                                </td>
-                                <td>
-                                    <button 
-                                    onClick={() => deleteProduct(p.ProductID)}
-                                    style={{
-                                        backgroundColor: "red",
-                                        color: "white",
-                                        border: "none",
-                                        padding: "5px 10px",
-                                        borderRadius: "5px",
-                                        cursor: "pointer"
-                                    }}
-                                >
-                                    Delete
-                                </button>
-                                </td>
-                            </tr>
+                                 <tbody>
+                                    {products.length === 0 ? (
+                                        <tr>
+                                             <td colSpan="6">No data found</td>
+                                         </tr>
+                                     ) : (
+                                     products.map((p) => (
+                                        <tr key={p.ProductID}>
+                                            <td>{p.ProductName}</td>
+                                            <td>{p.BatchNumber}</td>
+                                            <td>{p.ExpiryDate}</td>
+                                            <td>{p.StockQuantity}</td>
+                                            <td>{p.UnitPrice}</td>
+                                            <td>{p.ReorderLevel}</td>
+                                            <td>
+                                             <button
+                                                    onClick={() => window.location.href = `/edit/${p.ProductID}`}
+                                                    style={{
+                                                    backgroundColor: "#007bff",
+                                                    color: "white",
+                                                    border: "none",
+                                                    padding: "5px 10px",
+                                                    borderRadius: "5px",
+                                                    cursor: "pointer"
+                                                    }}
+                                                    >
+                                                    Edit
+                                                </button>
+                                            </td>
+                                            <td>
+                                                <button 
+                                                onClick={() => deleteProduct(p.ProductID)}
+                                                style={{
+                                                    backgroundColor: "red",
+                                                    color: "white",
+                                                    border: "none",
+                                                    padding: "5px 10px",
+                                                    borderRadius: "5px",
+                                                    cursor: "pointer"
+                                                }}
+                                                                    >
+                                                        Delete
+                                                    </button>
+                                                    </td>
+                                         </tr>
 
                             
                         ))

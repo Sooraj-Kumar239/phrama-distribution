@@ -31,6 +31,7 @@ router.get('/:id', (req, res) => {
     const query = `
         SELECT 
             PurchaseOrderID,
+            OrderDate,
             OrderName,
             VendorID,
             EmployeeID,

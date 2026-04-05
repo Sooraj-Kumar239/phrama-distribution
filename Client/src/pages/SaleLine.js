@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function SalesLines() {
 
@@ -51,7 +52,7 @@ function SalesLines() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(tempData)
     }).then(() => {
-      alert("Updated!");
+      toast.info("Updated!");
       setEditMode(false);
     });
   };

@@ -27,7 +27,8 @@ import PurchaseOrder from "./pages/PurchaseOrder";
 import PurchaseLines from "./pages/PurchaseLines";
 // sales
 import SaleOrder from "./pages/SaleOrder";
-import SaleLine from "./pages/SaleLine"
+import SaleLine from "./pages/SaleLine";
+
 
 
 function App() {
