@@ -2,9 +2,23 @@ const express = require('express');
 const router = express.Router();
 const db = require('../Model/db');
 
+router.get('/product-count', (req, res) => {
+    const sql = "SELECT COUNT(*) AS total FROM purchaseorders WHERE OrderStatus IN ('Received')";
+
+    db.query(sql, (err,result) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({error:"database error"});
+        }
+        return res.json({
+            activeProducts: result[0].total
+        });
+    })
+});
+
 router.get('/employee-count', (req, res) => {
 
-    const sql = "SELECT COUNT(*) AS total FROM employees WHERE IsActive = 1";
+    const sql = "SELECT COUNT(*) AS total FROM employees WHERE Is Active = '1'";
 
     db.query(sql, (err, result) => {
 
@@ -27,7 +41,7 @@ router.get('/vehicle-count', (req, res) => {
     const sql = `
         SELECT COUNT(*) AS total 
         FROM vehicles 
-        WHERE CurrentStatusIN ('Available', 'Out for Delivery')
+        WHERE CurrentStatus IN ('Available', 'Out for Delivery')
     `;
 
     db.query(sql, (err, result) => {

@@ -21,6 +21,18 @@ function Dashboard() {
     const [employeeCount, setEmployeeCount] = useState(0);
     // for all vehicles number
     const [vehicleCount, setVehicleCount] = useState(0);
+    // active / reveived products
+    const [ProductCount, setProductCount] = useState(0);
+    // active product api
+    useEffect(() => {
+        fetch("http://localhost:3003/dashboard/product-count")
+            .then(res => res.json())
+            .then(data =>{
+                console.log(data);
+                setProductCount(data.activeProducts);
+            })
+            .catch(err => console.log(err));
+    },[]);
     useEffect(() => {
                 fetch("http://localhost:3003/dashboard/employee-count")
                     .then(res => res.json())
@@ -112,7 +124,7 @@ function Dashboard() {
                            
                             <span style={{ fontSize: "20px" }}>Active Purchase Orders</span>
                             <br />
-                            <span style={{ fontSize: "50px", color: "#007bff" }}>50</span>
+                            <span style={{ fontSize: "50px", color: "#007bff" }}>{ProductCount}</span>
                         </div>
 
                         <div style={boxStyle}>
