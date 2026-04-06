@@ -4,7 +4,6 @@ import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
 function SalesLines() {
-
   const { id } = useParams(); // SalesOrderID
 
   const [order, setOrder] = useState({});
@@ -13,8 +12,12 @@ function SalesLines() {
   const [lines, setLines] = useState([]);
   const [editMode, setEditMode] = useState(false);
   const [tempData, setTempData] = useState({});
+  const [employees, setEmployees] = useState([]);
+  const [vehicles, setVehicles] = useState([]);
+  const [selectedIndex, setSelectedIndex] = useState(null);
+  const [lineEditMode, setLineEditMode] = useState(false);
 
-    //fetech orders
+  // Fetch Order Data
   useEffect(() => {
     fetch(`http://localhost:3003/sales-orders/${id}`)
       .then(res => res.json())
@@ -24,154 +27,204 @@ function SalesLines() {
       });
   }, [id]);
 
-  //fetch customers
+  // Fetch All Master Data
   useEffect(() => {
-    fetch(`http://localhost:3003/customers`)
-      .then(res => res.json())
-      .then(setCustomers);
+    fetch(`http://localhost:3003/customers`).then(res => res.json()).then(setCustomers);
+    fetch(`http://localhost:3003/employees`).then(res => res.json()).then(setEmployees);
+    fetch(`http://localhost:3003/vehicles`).then(res => res.json()).then(setVehicles);
+    fetch(`http://localhost:3003/products`).then(res => res.json()).then(setProducts);
   }, []);
 
-  //fetch product
-  useEffect(() => {
-    fetch(`http://localhost:3003/products`)
-      .then(res => res.json())
-      .then(setProducts);
-  }, []);
-
-  //line ko fetch karo
+  // Fetch Lines
   useEffect(() => {
     fetch(`http://localhost:3003/sales-lines/${id}`)
       .then(res => res.json())
       .then(setLines);
   }, [id]);
 
-  // save header
+  // Save Header Logic
   const handleSave = () => {
     fetch(`http://localhost:3003/sales-orders/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(tempData)
-    }).then(() => {
-      toast.info("Updated!");
-      setEditMode(false);
+    }).then((res) => {
+      if (res.ok) {
+        toast.success("Header Updated!");
+        setOrder(tempData);
+        setEditMode(false);
+      }
+      else{
+        toast.error("Failed to update header");
+      }
+    }).catch(err => {
+      console.error(err);
+      toast.error("Error saving data");
+    });
+
+  };
+  const handleSaveHeader = () => {
+    handleSave();
+  };
+
+ 
+
+  // 1.totla of all order
+    const updateOrderGrandTotal = (currentLines) => {
+    const total = currentLines.reduce((sum, l) => sum + (Number(l.LineTotal) || 0), 0);
+    
+    // Sales Orders table ko update 
+    fetch(`http://localhost:3003/sales-orders/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...order, TotalAmount: total }) 
+    })
+     .then(res => {
+       if(res.ok) {
+    //     // toast.success("Grand Total updated in database!");
+        setOrder(prev => ({ ...prev, TotalAmount: total }));
+        // toast.success("Grand Total updated!");
+     }
+     });
+  };
+
+  // 2.  check karega Line save or Update
+  const handleSaveLine = () => {
+    if (selectedIndex === null) return;
+    const line = lines[selectedIndex];
+
+    if (!line.ProductID) return toast.error("Please select a product first!");
+   
+    // FIXED: Strict check for ID
+    const isExisting = line.SLineID;
+    // const isExisting = line.SLineID !== undefined; 
+
+
+    const url = isExisting ? `http://localhost:3003/sales-lines/${line.SLineID}` : `http://localhost:3003/sales-lines`;
+    const method = isExisting ? "PUT" : "POST";
+
+    const body = JSON.stringify({ ...line, SalesOrderID: id });
+    fetch(url, {
+      method: method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...line, SalesOrderID: id })
+    })
+    .then(res =>{
+       if(!res.ok)throw new Error("Save failed");
+       return res.text();
+      })
+    .then(()=> {
+      toast.success(isExisting ? "Line Updated!" : "Line Saved!");
+      setLineEditMode(false);
+      setSelectedIndex(null);
+      return fetch(`http://localhost:3003/sales-lines/${id}`);
+    })
+      .then(res => res.json())
+      .then(freshLines => {
+      setLines(freshLines);
+     
+      updateOrderGrandTotal(freshLines);
+      })
+      
+      .catch(err => {
+      console.error(err);
+      toast.error("Save failed!");
     });
   };
 
-  // 
   const handleLineChange = (index, field, value) => {
-
     const updated = [...lines];
-    updated[index][field] = value;
+    updated[index]= { ...updated[index], [field]: value };
 
-    //  jb product select ho pricw auto ajae
     if (field === "ProductID") {
-      const product = products.find(p => p.ProductID == value);
+      const product = products.find(p =>String(p.ProductID) === String(value));
       if (product) {
-        updated[index].UnitPriceAtSale = product.UnitPrice; // 🔥 yahan change
+        updated[index].UnitPriceAtSale = product.UnitPrice;
       }
     }
 
-    // Total = Qty * Price - Discount
     const qty = parseFloat(updated[index].QuantitySold || 0);
     const price = parseFloat(updated[index].UnitPriceAtSale || 0);
     const discount = parseFloat(updated[index].Discount || 0);
-
     updated[index].LineTotal = (qty * price) - discount;
 
     setLines(updated);
   };
 
-  // add line
-  const addLine = () => {
-    setLines([
-      ...lines,
-      {
-        ProductID: "",
-        QuantitySold: 0,
-        UnitPriceAtSale: 0,
-        Discount: 0,
-        LineTotal: 0
-      }
-    ]);
-  };
-
   return (
     <Layout>
       <div style={{ padding: "20px" }}>
+        <h2>Sales Lines Management</h2>
 
-        <h2>Sales Lines</h2>
-
-        {/* HEADER BUTTONS */}
-        <div style={btnContainer}>
-          <button style={btnYellow} onClick={() => setEditMode(true)}>Edit</button>
-          <button style={btnBlue} onClick={handleSave}>Save</button>
-        </div>
-
-        {/* HEADER DATA */}
-        <div style={headerBox}>
-
-          <div><b>ID:</b> {order.SalesOrderID}</div>
-
-          <div>
-            <b>Customer:</b>
-            {editMode ? (
-              <select
-                value={tempData.CustomerID || ""}
-                onChange={(e) =>
-                  setTempData({ ...tempData, CustomerID: e.target.value })
-                }
-              >
-                {customers.map(c => (
-                  <option key={c.CustomerID} value={c.CustomerID}>
-                    {c.CustomerName}
-                  </option>
-                ))}
-              </select>
-            ) : (
-              customers.find(c => c.CustomerID === order.CustomerID)?.CustomerName
-            )}
+        {/* --- HEADER SECTION --- */}
+        <div style={{ background: "white", padding: "20px", borderRadius: "8px", boxShadow: "0 2px 10px rgba(0,0,0,0.1)", marginBottom: "20px" }}>
+          <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
+            <button style={{ ...btnStyle, backgroundColor: "#ffc107" }} onClick={() => setEditMode(true)}>Edit Header</button>
+            <button style={{ ...btnStyle, backgroundColor: "#007bff", color: "white" }} onClick={handleSaveHeader}>Save Header</button>
           </div>
 
-          <div>
-            <b>Status:</b>
-            {editMode ? (
-              <select
-                value={tempData.DeliveryStatus || ""}
-                onChange={(e) =>
-                  setTempData({ ...tempData, DeliveryStatus: e.target.value })
-                }
-              >
-                <option>Pending</option>
-                <option>Delivered</option>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "20px" }}>
+            <p><b>Order ID:</b> {order.SalesOrderID}</p>
+            
+            <p><b>Customer:</b> {editMode ? (
+              <select style={gridInput} value={tempData.CustomerID || ""} onChange={(e) => setTempData({ ...tempData, CustomerID: e.target.value })}>
+                {customers.map(c => <option key={c.CustomerID} value={c.CustomerID}>{c.CustomerName}</option>)}
               </select>
-            ) : order.DeliveryStatus}
-          </div>
+            ) : (customers.find(c => Number(c.CustomerID) === Number(order.CustomerID))?.CustomerName || "N/A")}</p>
 
-          <div>
-            <b>Payment:</b>
-            {editMode ? (
-              <select
-                value={tempData.PaymentStatus || ""}
-                onChange={(e) =>
-                  setTempData({ ...tempData, PaymentStatus: e.target.value })
-                }
-              >
-                <option>Unpaid</option>
-                <option>Paid</option>
+            <p><b>Employee:</b> <span>{employees.find(emp => Number(emp.EmployeeID) === Number(order.EmployeeID))?.EmployeeName || order.EmployeeID}</span></p>
+
+            <p><b>Vehicle:</b> {editMode ? (
+              <select style={gridInput}
+                    value={tempData.VehicleID || ""}
+                    onChange={(e) => setTempData({ ...tempData, VehicleID: e.target.value })}>
+                    {vehicles.map(v => <option key={v.VehicleID} value={v.VehicleID}>{v.PlateNumber} ({v.Model})</option>)}
               </select>
-            ) : order.PaymentStatus}
-          </div>
+              // display mode
+            ) : (vehicles.find(v => Number(v.VehicleID) === Number(order.VehicleID))?`${vehicles.find(v => Number(v.VehicleID) === Number(order.VehicleID)).PlateNumber} (${vehicles.find(v => Number(v.VehicleID) === Number(order.VehicleID)).Model})`
+            : "N/A")}</p>
 
+            <p><b>Date:</b> {order.OrderDate}</p>
+
+            <p style={{ fontSize: "1.2rem", color: "#28a745" }}><b>Grand Total: </b> 
+               {lines.reduce((sum, l) => Number(sum) + (Number(l.LineTotal) || 0), 0).toFixed(2)}
+            </p>
+
+            <p><b>Status:</b> {editMode ? (
+              <select style={gridInput} value={tempData.DeliveryStatus || ""} onChange={(e) => setTempData({ ...tempData, DeliveryStatus: e.target.value })}>
+                <option>Pending</option><option>Delivered</option>
+              </select>
+            ) : order.DeliveryStatus}</p>
+
+            <p><b>Payment:</b> {editMode ? (
+            <select style={gridInput} value={tempData.PaymentStatus || ""} onChange={(e) => setTempData({ ...tempData, PaymentStatus: e.target.value })}>
+              <option value="Unpaid">Unpaid</option>
+              <option value="Paid">Paid</option>
+            </select>
+          ) : order.PaymentStatus}</p>
+          </div>
         </div>
 
-        {/* ADD LINE */}
-        <div style={btnContainer}>
-          <button style={btnGreen} onClick={addLine}>+ Add Line</button>
+        {/* --- GRID ACTION BUTTONS --- */}
+        <div style={{ display: "flex", gap: "10px", marginBottom: "15px" }}>
+          <button style={{ ...btnStyle, backgroundColor: "#28a745", color: "white" }} onClick={() => {
+            const newLines = [...lines, { ProductID: "", QuantitySold: 0, UnitPriceAtSale: 0, Discount: 0, LineTotal: 0 }];
+            setLines(newLines);
+            setSelectedIndex(newLines.length - 1);
+            setLineEditMode(true);
+          }}>+ Add New Line</button>
+          
+          <button style={{ ...btnStyle, backgroundColor: "#ffc107" }} onClick={() => {
+            if (selectedIndex === null) return toast.info("Select a row first!");
+            setLineEditMode(true);
+          }}>Edit Line</button>
+
+          <button style={{ ...btnStyle, backgroundColor: "#007bff", color: "white" }} 
+          onClick= {handleSaveLine}>Save Line</button>
         </div>
 
-        {/* GRID */}
+        {/* --- DATA GRID (TABLE) --- */}
         <div style={tableContainer}>
-
           <div style={tableHeader}>
             <div>#</div>
             <div>Product</div>
@@ -182,58 +235,48 @@ function SalesLines() {
           </div>
 
           {lines.map((l, index) => (
-            <div key={index} style={tableRow}>
-
+            <div 
+              key={index} 
+              onClick={() => setSelectedIndex(index)}
+              style={{ ...tableRow, backgroundColor: selectedIndex === index ? "#e9ecef" : "transparent", cursor: "pointer" }}
+            >
               <div>{index + 1}</div>
-
-              {/* PRODUCT */}
-              <select
-                value={l.ProductID || ""}
-                onChange={(e) =>
-                  handleLineChange(index, "ProductID", e.target.value)
-                }
-              >
-                <option value="">Select</option>
-                {products.map(p => (
-                  <option key={p.ProductID} value={p.ProductID}>
-                    {p.ProductName}
-                  </option>
-                ))}
-              </select>
-
-              {/* QTY */}
-              <input
-                type="number"
-                value={l.QuantitySold || 0}
-                onChange={(e) =>
-                  handleLineChange(index, "QuantitySold", e.target.value)
-                }
-              />
-
-              {/* PRICE */}
-              <input
-                value={l.UnitPriceAtSale || 0}
-                onChange={(e) =>
-                  handleLineChange(index, "UnitPriceAtSale", e.target.value)
-                }
-              />
-
-              {/* DISCOUNT */}
-              <input
-                value={l.Discount || 0}
-                onChange={(e) =>
-                  handleLineChange(index, "Discount", e.target.value)
-                }
-              />
-
-              {/* TOTAL */}
-              <div>{l.LineTotal || 0}</div>
-
+              <div>
+                <select
+                  disabled={!lineEditMode || selectedIndex !== index}
+                  value={l.ProductID || ""}
+                  onChange={(e) => handleLineChange(index, "ProductID", e.target.value)}
+                >
+                  <option value="">Select Product</option>
+                  {products.map(p => <option key={p.ProductID} value={p.ProductID}>{p.ProductName}</option>)}
+                </select>
+              </div>
+              <div>
+                <input
+                  type="number"
+                  disabled={!lineEditMode || selectedIndex !== index}
+                  value={l.QuantitySold || 0}
+                  onChange={(e) => handleLineChange(index, "QuantitySold", e.target.value)}
+                />
+              </div>
+              <div>
+                <input
+                  disabled={!lineEditMode || selectedIndex !== index}
+                  value={l.UnitPriceAtSale || 0}
+                  onChange={(e) => handleLineChange(index, "UnitPriceAtSale", e.target.value)}
+                />
+              </div>
+              <div>
+                <input
+                  disabled={!lineEditMode || selectedIndex !== index}
+                  value={l.Discount || 0}
+                  onChange={(e) => handleLineChange(index, "Discount", e.target.value)}
+                />
+              </div>
+              <div style={{ fontWeight: "bold" }}>{Number(l.LineTotal || 0).toFixed(2)}</div>
             </div>
           ))}
-
         </div>
-
       </div>
     </Layout>
   );
@@ -241,67 +284,9 @@ function SalesLines() {
 
 export default SalesLines;
 
-const headerBox = {
-  display: "grid",
-  gridTemplateColumns: "1fr 1fr 1fr 1fr",
-  gap: "10px",
-  backgroundColor: "#f8f9fa",
-  padding: "15px",
-  borderRadius: "10px",
-  marginBottom: "15px"
-};
-
-const btnContainer = {
-  marginBottom: "15px"
-};
-
-const tableContainer = {
-  borderRadius: "10px",
-  overflow: "hidden",
-  boxShadow: "0 2px 8px rgba(0,0,0,0.1)"
-};
-
-const tableHeader = {
-  display: "grid",
-  gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr 1fr",
-  backgroundColor: "#343a40",
-  color: "white",
-  padding: "12px",
-  fontWeight: "600"
-};
-
-const tableRow = {
-  display: "grid",
-  gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr 1fr",
-  padding: "12px",
-  borderBottom: "1px solid #ddd"
-};
-
-const btnGreen = {
-  backgroundColor: "#28a745",
-  color: "white",
-  border: "none",
-  padding: "8px 14px",
-  borderRadius: "6px",
-  marginRight: "8px",
-  cursor: "pointer"
-};
-
-const btnYellow = {
-  backgroundColor: "#ffc107",
-  border: "none",
-  padding: "8px 14px",
-  borderRadius: "6px",
-  marginRight: "8px",
-  cursor: "pointer"
-};
-
-const btnBlue = {
-  backgroundColor: "#007bff",
-  color: "white",
-  border: "none",
-  padding: "8px 14px",
-  borderRadius: "6px",
-  marginRight: "8px",
-  cursor: "pointer"
-};
+// --- STYLES ---
+const btnStyle = { padding: "8px 15px", borderRadius: "5px", border: "none", cursor: "pointer", fontWeight: "bold" };
+const gridInput = { width: "100%", padding: "5px", borderRadius: "4px", border: "1px solid #ccc" };
+const tableContainer = { borderRadius: "10px", overflow: "hidden", boxShadow: "0 2px 8px rgba(0,0,0,0.1)", background: "white" };
+const tableHeader = { display: "grid", gridTemplateColumns: "0.5fr 2fr 1fr 1fr 1fr 1fr", backgroundColor: "#343a40", color: "white", padding: "12px", fontWeight: "600" };
+const tableRow = { display: "grid", gridTemplateColumns: "0.5fr 2fr 1fr 1fr 1fr 1fr", padding: "10px", borderBottom: "1px solid #ddd", alignItems: "center" };

@@ -7,19 +7,19 @@ const router = express.Router();
 const LabelService = require('../labels/labelService');
 
 //Return all u
-router.get("/sales-orders/:id", (req, res) => {
-     const id = req.params.id;
+router.get("/:id", (req, res) => {
+    const id = req.params.id;
+    const sql = "SELECT * FROM SalesLines WHERE SalesOrderID = ?";
 
-   db.query(
-        "SELECT * FROM salesorders WHERE SalesOrderID = ?",
-        [id],
-        (err, results) => {
+   db.query(sql, [id],(err, results) => {
             if (err) {
-                console.log(err);
-                return res.status(500).send("Error fetching sales order");
+                return res.status(500).json(err);
+                return res.json(result);
+                // return res.status(500).send("Error fetching sales order");
             }
 
-            res.json(results[0]); // single object
+            // res.json(results[0]); // single object
+            res.json(results);
         }
     );
 });
@@ -35,7 +35,7 @@ router.post('/', (req, res) => {
     	LineTotal
     } = req.body;
 
-    const sql = `INSERT INTO  saleslines
+    const sql = `INSERT INTO  SalesLines
         (SalesOrderID,	ProductID, QuantitySold, UnitPriceAtSale, Discount, LineTotal)
         values (?,?,?,?,?,?)`;
 
@@ -46,13 +46,34 @@ router.post('/', (req, res) => {
                 console.log(err.message);
                 res.send('Error inserting user' + err.message);
             } else {
-                res.send('User added successfully');
-            }
+                res.json({
+                    message: "Line added successfully",
+                    insertId: result.insertId
+                    });
+                }
         }
     );
 
-// update request
 });
 
+// update request
+router.put('/:lineId', (req, res) => {
+
+    const lineId = req.params.lineId;
+    const { SLineID, SalesOrderID, ProductID, QuantitySold, UnitPriceAtSale, Discount, LineTotal } = req.body;
+
+    db.query(
+     `UPDATE SALESLINES 
+             SET ProductID=?, QuantitySold=?, UnitPriceAtSale=?, Discount=?, LineTotal=? 
+             WHERE SLineID=? AND SalesOrderID=?`,
+      [ProductID, QuantitySold, UnitPriceAtSale, Discount, LineTotal, SLineID, SalesOrderID],
+      (err) => {
+
+        if (err) return res.send(err);
+
+         res.json({message: lineId });
+      }
+    );
+});
 
 module.exports = router; 

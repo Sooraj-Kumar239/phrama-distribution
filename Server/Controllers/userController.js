@@ -26,7 +26,8 @@ router.get('/:UserId', (req, res) => {
     const UserId = req.params.UserId;
     
     db.query(
-     `SELECT * FROM USERS U1
+     `SELECT U1.*, E1 FROM USERS U1
+        JOIN EMPLOYEES E1 ON E1.EmployeeID = U1.EmployeeID
          WHERE U1.USERID = ?`,
         [UserId],
         (err, results) => {
