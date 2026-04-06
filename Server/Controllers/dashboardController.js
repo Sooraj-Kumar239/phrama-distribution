@@ -16,9 +16,29 @@ router.get('/product-count', (req, res) => {
     })
 });
 
+// all sale products who's payment or delivery not confrmed
+    router.get('/sale-count', (req, res) => {
+    const sql= `SELECT COUNT(*) AS total
+        FROM salesorders
+        WHERE 
+        (DeliveryStatus IS NULL OR DeliveryStatus != 'Delivered')
+        AND 
+        (PaymentStatus IS NULL OR PaymentStatus != 'Paid')`;
+
+            db.query(sql, (err, result) => {
+                if (err) {
+                console.log(err);
+                return res.status(500).json({ error: "Database Error" });
+            }
+            return res.json({
+                activeSaleOrder: result[0].total
+        });
+    });
+});
+// 
 router.get('/employee-count', (req, res) => {
 
-    const sql = "SELECT COUNT(*) AS total FROM employees WHERE Is Active = '1'";
+    const sql = `SELECT COUNT(*) AS total FROM employees WHERE IsActive = 1`;
 
     db.query(sql, (err, result) => {
 

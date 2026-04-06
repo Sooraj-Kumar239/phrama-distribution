@@ -1,11 +1,6 @@
 import { useState, useEffect } from "react";
 import Layout from "../components/Layout";
 
-
-
-
-
-
 const boxStyle = {
     background: "#ffffff",
     padding: "20px",
@@ -23,6 +18,10 @@ function Dashboard() {
     const [vehicleCount, setVehicleCount] = useState(0);
     // active / reveived products
     const [ProductCount, setProductCount] = useState(0);
+    // active sale order
+    const[SaleProductCount, setSaleProductCount] = useState(0);
+    
+    
     // active product api
     useEffect(() => {
         fetch("http://localhost:3003/dashboard/product-count")
@@ -33,6 +32,20 @@ function Dashboard() {
             })
             .catch(err => console.log(err));
     },[]);
+
+    // active sale count
+    useEffect(() => {
+        fetch("http://localhost:3003/dashboard/sale-count")
+        .then(res => res.json())
+        .then(data => {
+            console.log(data);
+            setSaleProductCount(data.activeSaleOrder);
+        })
+        .catch(err => console.log(err));
+    }, []);
+
+    
+    // 
     useEffect(() => {
                 fetch("http://localhost:3003/dashboard/employee-count")
                     .then(res => res.json())
@@ -131,7 +144,7 @@ function Dashboard() {
                            
                             <span style={{ fontSize: "20px" }}>Active Sales Orders</span>
                             <br />
-                            <span style={{ fontSize: "50px", color: "#28a745" }}>20</span>
+                            <span style={{ fontSize: "50px", color: "#28a745" }}>{SaleProductCount}</span>
                         </div>
 
                         <div style={boxStyle}>
