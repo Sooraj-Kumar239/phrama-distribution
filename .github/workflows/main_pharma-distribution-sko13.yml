@@ -1,4 +1,4 @@
-name: Build and deploy Node.js app to Azure Web App - pharma-distribution-sko13
+name: Build and deploy Node.js + React app to Azure Web App - pharma-distribution-sko13
 
 on:
   push:
@@ -11,7 +11,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
@@ -27,7 +28,11 @@ jobs:
         run: |
           cd Client
           npm install
-          npm run build
+          CI=false npm run build
+
+      - name: Copy Client build to Server
+        run: |
+          cp -r Client/build Server/public
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -57,4 +62,4 @@ jobs:
         with:
           app-name: pharma-distribution-sko13
           slot-name: Production
-          package: .
+          package: node-app
