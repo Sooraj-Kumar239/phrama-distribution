@@ -1,6 +1,7 @@
 // const console.log("SERVER FILE checking");
 const cors                      = require("cors");
 const express                   = require('express');
+const path = require('path');
 // const app                        = express();
 // auth controleer
 const authController = require('./Controllers/authController');
@@ -31,15 +32,15 @@ const dashboardRoutes = require('./Controllers/dashboardController');
 
 const app = express();
 app.use(cors());
-app.use(express.json());
+// app.use(express.json());
 app.use(express.json());//enable json body for post request
 //Add controller
 app.use('/products', productController);
 app.use('/customers', customerController);
 //Home route
-app.get('/', (req, res) => {
-    res.send(LabelService.get('HOME_ROUTE'));
-});
+// app.get('/', (req, res) => {
+//     res.send(LabelService.get('HOME_ROUTE'));
+// });
 // user
 app.use('/users', userController);
 // auth
@@ -65,7 +66,12 @@ app.use('/dashboard', dashboardRoutes);
 //Start creting server on the browser
 
 // temprary
-    
+    // Serve React build
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 // 
 app.listen(LabelService.get('PORT'), () => {
     console.log(`${LabelService.get('SERVER_START')}: ${LabelService.get('PORT')}`);
