@@ -1,4 +1,7 @@
 // const console.log("SERVER FILE checking");
+const LabelService              = require('./labels/labelService');
+// server port
+const PORT = process.env.PORT || 3003;
 const cors                      = require("cors");
 const express                   = require('express');
 const path = require('path');
@@ -26,7 +29,7 @@ const vehiclesController        = require('./Controllers/vehiclesController');
 
 const vendorsController         = require('./Controllers/vendorsController');
 
-const LabelService              = require('./labels/labelService');
+
 // dashboard
 const dashboardRoutes = require('./Controllers/dashboardController');
 
@@ -73,6 +76,10 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 // 
-app.listen(LabelService.get('PORT'), () => {
-    console.log(`${LabelService.get('SERVER_START')}: ${LabelService.get('PORT')}`);
+// app.listen(LabelService.get('PORT'), () => {
+//     console.log(`${LabelService.get('SERVER_START')}: ${LabelService.get('PORT')}`);
+// });
+
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 });
