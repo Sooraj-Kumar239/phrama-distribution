@@ -71,10 +71,21 @@ app.use('/dashboard', dashboardRoutes);
 // temprary
     // Serve React build
 app.use(express.static(path.join(__dirname, 'public')));
+//  trying tos et both port for loccalhost and  azzure product
 
-app.get('*', (req, res) => {
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'public')));
+
+  app.get('/*', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
+  });
+}
+// 
+
+// app.get('/*', (req, res) => {
+//     res.sendFile(path.join(__dirname, 'public', 'index.html'));
+// });
 // 
 // app.listen(LabelService.get('PORT'), () => {
 //     console.log(`${LabelService.get('SERVER_START')}: ${LabelService.get('PORT')}`);
