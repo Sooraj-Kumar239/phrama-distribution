@@ -35,8 +35,8 @@ jobs:
 
       - name: Copy Client build to Server
         run: |
-         mkdir -p Server/public
-         cp -r Client/build/* Server/public
+          mkdir -p Server/public
+          cp -r Client/build/* Server/public
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -66,4 +66,4 @@ jobs:
         with:
           app-name: pharma-distribution-sko13
           slot-name: Production
-          package: node-app
+          package: .
