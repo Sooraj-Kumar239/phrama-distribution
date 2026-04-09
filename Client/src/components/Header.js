@@ -1,4 +1,3 @@
-{/* <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta> */}
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -23,6 +22,7 @@ function Header() {
     // state for purchaseLines
     // state for purchase
     const [salesOpen, setSalesOpen] = useState(false);
+    // const [employeessOpen, setEmployeesOpen] = useState(false);
     
 
     return (
@@ -103,7 +103,7 @@ function Header() {
             <span style={{ position: "relative" }}>
                 <button
                 
-            // const [employeessOpen, setEmployeesOpen] = useState(false);
+            
 
                   onClick={() => setProductOpen(!productOpen)}
                     style={{

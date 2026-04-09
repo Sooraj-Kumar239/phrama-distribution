@@ -61,7 +61,8 @@ function Customers(){
 
     // fetch data
     useEffect(() => {
-        fetch(`http://localhost:3003/customers`)
+        // fetch(`http://localhost:3003/customers`)
+        fetch("/api/customers")
         .then(res => res.json())
         .then(data => setCustomers(data));
     },[]);
@@ -112,7 +113,8 @@ function Customers(){
         .then(msg => {
 
             // refresh list
-            fetch(`http://localhost:3003/customers`)
+            // fetch(`http://localhost:3003/customers`)
+            fetch("/api/customers")
             .then(res => res.json())
             .then(data => setCustomers(data));
             // set error
@@ -140,7 +142,8 @@ function Customers(){
         .then(res => res.text())
         .then(() => {
 
-            fetch(`http://localhost:3003/customers`)
+            // fetch(`http://localhost:3003/customers`)
+            fetch("/api/customers")
             .then(res => res.json())
             .then(data => setCustomers(data));
 

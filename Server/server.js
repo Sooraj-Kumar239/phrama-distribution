@@ -1,33 +1,33 @@
 // const console.log("SERVER FILE checking");
-const LabelService              = require('./labels/labelService');
+const LabelService = require('./labels/labelService');
 // server port
 const PORT = process.env.PORT || 3003;
-const cors                      = require("cors");
-const express                   = require('express');
+const cors = require("cors");
+const express = require('express');
 const path = require('path');
 // const app                        = express();
 // auth controleer
-const authController            = require('./Controllers/authController');
+const authController = require('./Controllers/authController');
 
 //server start and database will connectg
 // const sql                        = require('./Model/db');
-const db                        = require('./Model/db');
-const productController         = require('./Controllers/productController');
+const db = require('./Model/db');
+const productController = require('./Controllers/productController');
 
-const customerController        = require('./Controllers/customerController');
-const userController            = require('./Controllers/userController');
-const designationsController    = require('./Controllers/designationsController');
-const employeesController       = require('./Controllers/employeesController');
+const customerController = require('./Controllers/customerController');
+const userController = require('./Controllers/userController');
+const designationsController = require('./Controllers/designationsController');
+const employeesController = require('./Controllers/employeesController');
 
-const purchaseLineController    = require('./Controllers/purchaseLineController');
-const purchaseOrderController   = require('./Controllers/purchaseOrderController');
+const purchaseLineController = require('./Controllers/purchaseLineController');
+const purchaseOrderController = require('./Controllers/purchaseOrderController');
 
-const salesLinesController      = require('./Controllers/salesLinesController');
-const salesOrdersController     = require('./Controllers/salesOrdersController');
+const salesLinesController = require('./Controllers/salesLinesController');
+const salesOrdersController = require('./Controllers/salesOrdersController');
 
-const vehiclesController        = require('./Controllers/vehiclesController');
+const vehiclesController = require('./Controllers/vehiclesController');
 
-const vendorsController         = require('./Controllers/vendorsController');
+const vendorsController = require('./Controllers/vendorsController');
 
 
 // dashboard
@@ -61,7 +61,7 @@ app.use('/sales-lines', salesLinesController);
 // salesOrder
 app.use('/sales-orders', salesOrdersController);
 // vehicles
-app.use('/vehicles' , vehiclesController);
+app.use('/vehicles', vehiclesController);
 // const vendors
 app.use('/vendors', vendorsController);
 // dashboard/hoempage
@@ -69,23 +69,23 @@ app.use('/dashboard', dashboardRoutes);
 //Start creting server on the browser
 
 // temprary
-    // Serve React build
-app.use(express.static(path.join(__dirname, 'public')));
+// Serve React build
+// app.use(express.static(path.join(__dirname, 'public')));
 //  trying tos et both port for loccalhost and  azzure product
 
 
 // if (process.env.NODE_ENV === 'production') {
 //   app.use(express.static(path.join(__dirname, 'public')));
 
-  app.get('/*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-//   });
+// app.get('*', (req, res) => {
+//     res.sendFile(path.join(__dirname, 'public', 'index.html'));
+// });
 // }
 // // trying to connect db with host railway
 
 // trying to connect db with host end railway
-            app.get('/test-db', (req, res) => {
-            db.query('SELECT * FROM products', (err, result) => {
+app.get('/test-db', (req, res) => {
+    db.query('SELECT * FROM products', (err, result) => {
         if (err) {
             res.status(500).send(err);
         } else {
@@ -102,10 +102,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 //     }
 // });
 // 
-// app.listen(LabelService.get('PORT'), () => {
-//     console.log(`${LabelService.get('SERVER_START')}: ${LabelService.get('PORT')}`);
-// });
-
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+app.listen(LabelService.get('PORT'), () => {
+    console.log(`${LabelService.get('SERVER_START')}: ${LabelService.get('PORT')}`);
 });
+
+// app.listen(PORT, () => {
+//     console.log(`Server running on port ${PORT}`);
+// });
