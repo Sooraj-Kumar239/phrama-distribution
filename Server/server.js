@@ -34,6 +34,21 @@ const vendorsController         = require('./Controllers/vendorsController');
 const dashboardRoutes = require('./Controllers/dashboardController');
 
 const app = express();
+
+// checking host db
+app.get('/test-db', (req, res) => {
+  db.query("SHOW TABLES", (err, result) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+
+// 
+
 app.use(cors());
 // app.use(express.json());
 app.use(express.json());//enable json body for post request
@@ -90,6 +105,7 @@ if (process.env.NODE_ENV === 'production') {
 // app.listen(LabelService.get('PORT'), () => {
 //     console.log(`${LabelService.get('SERVER_START')}: ${LabelService.get('PORT')}`);
 // });
+
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
