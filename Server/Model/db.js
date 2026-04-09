@@ -4,11 +4,13 @@ const mysql = require('mysql2');
 const db = mysql.createConnection({
     
    
-        host: 'metro.proxy.rlwy.net',
-        user: 'root',
-        password: 'mRsDvDTjZuckqblgQTsJbNGjWnDPwxoO',
-        database: 'railway',
-        port: 30200,
+        
+    host: process.env.MYSQLHOST,
+    user: process.env.MYSQLUSER,
+    password: process.env.MYSQLPASSWORD,
+    database: process.env.MYSQLDATABASE,
+    port: process.env.MYSQLPORT,
+    
         ssl: {
         rejectUnauthorized: false
     }
