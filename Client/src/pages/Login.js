@@ -28,7 +28,7 @@ function Login() {
         return;
     }
     setLoading(true);
-    fetch("http://localhost:3003/auth/login", {
+    fetch("https://pharma-distribution-sko13-arfmd5c3fdgvgpcv.spaincentral-01.azurewebsites.net/auth/login", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
