@@ -7,11 +7,11 @@ const express                   = require('express');
 const path = require('path');
 // const app                        = express();
 // auth controleer
-const authController = require('./Controllers/authController');
+const authController            = require('./Controllers/authController');
 
 //server start and database will connectg
+// const sql                        = require('./Model/db');
 const db                        = require('./Model/db');
-
 const productController         = require('./Controllers/productController');
 
 const customerController        = require('./Controllers/customerController');
@@ -34,21 +34,6 @@ const vendorsController         = require('./Controllers/vendorsController');
 const dashboardRoutes = require('./Controllers/dashboardController');
 
 const app = express();
-
-// checking host db
-app.get('/test-db', (req, res) => {
-  db.query("SHOW TABLES", (err, result) => {
-    if (err) {
-      res.send(err);
-    } else {
-      res.send(result);
-    }
-  });
-});
-
-
-// 
-
 app.use(cors());
 // app.use(express.json());
 app.use(express.json());//enable json body for post request
@@ -80,8 +65,7 @@ app.use('/vehicles' , vehiclesController);
 // const vendors
 app.use('/vendors', vendorsController);
 // dashboard/hoempage
-// app.use('/dashboard', dashboardRoutes);
-app.use('/api/dashboard', dashboardRoutes);
+app.use('/dashboard', dashboardRoutes);
 //Start creting server on the browser
 
 // temprary
@@ -90,13 +74,37 @@ app.use(express.static(path.join(__dirname, 'public')));
 //  trying tos et both port for loccalhost and  azzure product
 
 
+// if (process.env.NODE_ENV === 'production') {
+//   app.use(express.static(path.join(__dirname, 'public')));
 
-
-  app.get('*', (req, res) => {
+  app.get('/*', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
-  });
+//   });
+// }
+// // trying to connect db with host railway
 
-
+// trying to connect db with host end railway
+            app.get('/test-db', (req, res) => {
+            db.query('SELECT * FROM products', (err, result) => {
+        if (err) {
+            res.status(500).send(err);
+        } else {
+            res.json(result); // 
+        }
+    });
+});
+// app.get('/test-db', async (req, res) => {
+//     try {
+//         const result = await sql.query('SELECT * FROM products');
+//         res.json(result.recordset);
+//     } catch (err) {
+//         res.status(500).send(err.message);
+//     }
+// });
+// 
+// app.listen(LabelService.get('PORT'), () => {
+//     console.log(`${LabelService.get('SERVER_START')}: ${LabelService.get('PORT')}`);
+// });
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);

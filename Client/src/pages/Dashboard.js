@@ -24,7 +24,8 @@ function Dashboard() {
     
     // active product api
     useEffect(() => {
-        fetch("http://localhost:3003/dashboard/product-count")
+        fetch("https://pharma-distribution-sko13-arfmd5c3fdgvgpcv.spaincentral-01.azurewebsites.net/api/dashboard/product-count")
+        // fetch("http://localhost:3003/dashboard/product-count")
             .then(res => res.json())
             .then(data =>{
                 console.log(data);
@@ -35,7 +36,8 @@ function Dashboard() {
 
     // active sale count
     useEffect(() => {
-        fetch("http://localhost:3003/dashboard/sale-count")
+        // fetch("http://localhost:3003/dashboard/sale-count")
+        fetch("https://pharma-distribution-sko13-arfmd5c3fdgvgpcv.spaincentral-01.azurewebsites.net/api/dashboard/sale-count")
         .then(res => res.json())
         .then(data => {
             console.log(data);
@@ -47,7 +49,8 @@ function Dashboard() {
     
     // 
     useEffect(() => {
-                fetch("http://localhost:3003/dashboard/employee-count")
+                // fetch("http://localhost:3003/dashboard/employee-count")
+                fetch("https://pharma-distribution-sko13-arfmd5c3fdgvgpcv.spaincentral-01.azurewebsites.net/api/dashboard/employee-count")
                     .then(res => res.json())
                     .then(data => {
                         console.log(data); // check ke liye
@@ -60,7 +63,8 @@ function Dashboard() {
     // all vehicles api 
     useEffect(() => {
 
-        fetch("http://localhost:3003/dashboard/vehicle-count")
+        // fetch("http://localhost:3003/dashboard/vehicle-count")
+        fetch("https://pharma-distribution-sko13-arfmd5c3fdgvgpcv.spaincentral-01.azurewebsites.net/api/dashboard/vehicle-count")
         .then(res => res.json())
         .then(data => {
             setVehicleCount(data.activeVehicles);

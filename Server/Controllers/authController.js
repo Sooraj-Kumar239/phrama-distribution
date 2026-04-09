@@ -31,7 +31,7 @@ router.post('/login', (req, res) => {
                 id: user.UserID,
                 username: user.Username,
                 role: user.role,
-                 EmployeeID: user.EmployeeID
+                EmployeeID: user.EmployeeID
             }
         });
     });
