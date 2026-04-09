@@ -5,14 +5,18 @@ const mysql = require('mysql2');
     // railwqay
         // const db = require('mysql2');
 
-            const db = mysql.createConnection({
+            const db = mysql.createPool({
            
             host: "metro.proxy.rlwy.net",
             user: "root",
             password: "mRsDvDTjZuckqblgQTsJbNGjWnDPwxoO",
             database: "railway",
-            port: 30200
-            
+            port: 30200,
+
+            waitForConnections: true,
+            connectionLimit: 10,
+            queueLimit: 0
+                            
         });
 
     // railway end
@@ -38,12 +42,12 @@ const mysql = require('mysql2');
 // .catch(err => {
 //     console.log("Connection failed ❌", err);
 // }); 
-db.connect((err) => {
-  if (err) {
-    console.log("DB Error:", err);
-  } else {
-    console.log("Connected ✅");
-  }
-});
+// db.connect((err) => {
+//   if (err) {
+//     console.log("DB Error:", err);
+//   } else {
+//     console.log("Connected ✅");
+//   }
+// });
 // module.exports = sql;
 module.exports = db;
