@@ -65,7 +65,7 @@ app.use('/vehicles' , vehiclesController);
 // const vendors
 app.use('/vendors', vendorsController);
 // dashboard/hoempage
-app.use('/dashboard', dashboardRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 //Start creting server on the browser
 
 // temprary
