@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import { useNavigate } from "react-router-dom";
+import API_BASE_URL from "../config";
 
 
 function Designation() {
@@ -36,7 +37,7 @@ function Designation() {
 
     // Fetch Data
     const fetchDesignation = () => {
-        fetch("http://localhost:3003/designation")
+        fetch(`${API_BASE_URL}/designation`)
             .then(res => res.json())
             .then(data => setDesignation(data))
             .catch(err => console.log(err));
@@ -69,7 +70,7 @@ function Designation() {
             return;
         }
 
-        fetch("http://localhost:3003/designation", {
+        fetch(`${API_BASE_URL}/designation`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -105,7 +106,7 @@ function Designation() {
                     {
                         return;
                     }
-            fetch(`http://localhost:3003/designation/${id}`, {
+            fetch(`${API_BASE_URL}/designation/${id}`, {
             method: "DELETE"
         })
         .then(() => {

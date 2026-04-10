@@ -11,7 +11,7 @@ function Login() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
 
-   const login = () => {
+    const login = () => {
 
     const newErrors = {};
 
@@ -73,7 +73,7 @@ function Login() {
                 textAlign: "center"
             }}>
 
-                <h2 style={{ marginBottom: "20px" }}>Welcome Back</h2>
+                <h2 style={{ marginBottom: "20px" }}>Login</h2>
                 <input
                     type="text"
                     placeholder="Username"
@@ -94,9 +94,10 @@ function Login() {
                 <div style={{ color: "red", fontSize: "12px", height: "14px" }}>
                     {errors.username}
                 </div>
-                    {/* username section closed */}
-                    {/* password section start */}
-               <input
+                {/* username section closed */}
+
+                {/* password section start */}
+                <input
                     type="password"
                     placeholder="Password"
                     value={password}
@@ -121,7 +122,6 @@ function Login() {
                 </div>
 
                 {/* button section satrt */}
-               
                 <button
                     onClick={login} disabled={loading}
                     style={{
@@ -134,13 +134,11 @@ function Login() {
                         fontWeight: "bold",
                         cursor: "pointer"
                     }}
-                >
+                    >
                     Login
                 </button>
-
             </div>
         </div>
     );
 }
-
 export default Login;
