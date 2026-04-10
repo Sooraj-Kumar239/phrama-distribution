@@ -1,53 +1,53 @@
-// const sql = require('mssql');
-const mysql = require('mysql2');
-// Database connection create
-// const config = {
-    // railwqay
-        // const db = require('mysql2');
+    // const sql = require('mssql');
+    const mysql = require('mysql2');
+    // Database connection create
+    // const config = {
+        // railwqay
+            // const db = require('mysql2');
 
-            const db = mysql.createPool({
-           
-            host: "metro.proxy.rlwy.net",
-            user: "root",
-            password: "mRsDvDTjZuckqblgQTsJbNGjWnDPwxoO",
-            database: "railway",
-            port: 30200,
+                const db = mysql.createPool({
+            
+                host: "metro.proxy.rlwy.net",
+                user: "root",
+                password: "mRsDvDTjZuckqblgQTsJbNGjWnDPwxoO",
+                database: "railway",
+                port: 30200,
 
-            waitForConnections: true,
-            connectionLimit: 10,
-            queueLimit: 0
-                            
-        });
+                waitForConnections: true,
+                connectionLimit: 10,
+                queueLimit: 0
+                                
+            });
 
-    // railway end
-    // user: 'adminuser',
-    // password:  'sooraj.1',
-    // server: 'pharma-sql-server123.database.windows.net', 
-    // database: 'pharma_db',
-    // options: {
-    //     encrypt: true,
-    //     trustServerCertificate: true
-    
-    // host: 'localhost',
-    // user: 'root',
-    // password: '', // apna MySQL password yahan likho
-    // database: 'pharma_distribution' //name of the my database
-// };
+        // railway end
+        // user: 'adminuser',
+        // password:  'sooraj.1',
+        // server: 'pharma-sql-server123.database.windows.net', 
+        // database: 'pharma_db',
+        // options: {
+        //     encrypt: true,
+        //     trustServerCertificate: true
+        
+        // host: 'localhost',
+        // user: 'root',
+        // password: '', // apna MySQL password yahan likho
+        // database: 'pharma_distribution' //name of the my database
+    // };
 
-// Connect to database
-// sql.connect(config)
-// .then(() => {
-//     console.log("Connected to Azure SQL ✅");
-// })
-// .catch(err => {
-//     console.log("Connection failed ❌", err);
-// }); 
-// db.connect((err) => {
-//   if (err) {
-//     console.log("DB Error:", err);
-//   } else {
-//     console.log("Connected ✅");
-//   }
-// });
-// module.exports = sql;
-module.exports = db;
+    // Connect to database
+    // sql.connect(config)
+    // .then(() => {
+    //     console.log("Connected to Azure SQL ✅");
+    // })
+    // .catch(err => {
+    //     console.log("Connection failed ❌", err);
+    // }); 
+    // db.connect((err) => {
+    //   if (err) {
+    //     console.log("DB Error:", err);
+    //   } else {
+    //     console.log("Connected ✅    ");
+    //   }
+    // });
+    // module.exports = sql;
+    module.exports = db;

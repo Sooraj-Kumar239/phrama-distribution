@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
+import API_BASE_URL from "../config";
 
 function Employees() {
 
@@ -38,7 +39,7 @@ function Employees() {
     };
     
     const fetchDesignations = () => {
-    fetch("http://localhost:3003/designation")
+    fetch(`${API_BASE_URL}/designation`)
         .then(res => res.json())
         .then(data => setDesignations(data))
         .catch(err => console.log(err));
@@ -52,7 +53,7 @@ function Employees() {
 
     //  Fetch Employees
     const fetchEmployees = () => {
-        fetch("http://localhost:3003/employees")
+        fetch(`${API_BASE_URL}/employees`)
             .then(res => res.json())
             .then(data => setEmployees(data))
             .catch(err => console.log(err));
@@ -62,7 +63,7 @@ function Employees() {
 
     //  Add Employee
     const addEmployee = () => {
-        fetch("http://localhost:3003/employees", {
+        fetch(`${API_BASE_URL}/employees`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -100,7 +101,7 @@ function Employees() {
 
             // Delete Employee
             const deleteEmployee = (id) => {
-                fetch(`http://localhost:3003/employees/${id}`, {
+                fetch(`${API_BASE_URL}/employees/${id}`, {
                     method: "DELETE"
                 })
                 .then(() => {

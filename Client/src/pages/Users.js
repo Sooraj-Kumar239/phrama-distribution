@@ -24,7 +24,7 @@ function Users() {
   };
 
   const fetchUsers = () => {
-    fetch(`${API_BASE_URL}/users`)
+    fetch(`${API_BASE_URL}/api/users`)
       .then((res) => res.json())
       .then((data) => {
         console.log("Users Data from API:", data); // CHECK YOUR CONSOLE FOR FIELD NAMES
@@ -47,7 +47,7 @@ function Users() {
   const deleteUser = (id) => {
     if (!window.confirm("Are you sure you want to delete this user?")) return;
     
-    fetch(`${API_BASE_URL}/users/${id}`, { method: "DELETE" })
+    fetch(`${API_BASE_URL}/api/users/${id}`, { method: "DELETE" })
       .then(() => {
         toast.error("User Deleted! ");
         fetchUsers();
@@ -61,7 +61,7 @@ function Users() {
       return;
     }
 
-    fetch(`${API_BASE_URL}/users`, {
+    fetch(`${API_BASE_URL}/api/users`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ EmployeeID, username, PasswordH, role }),

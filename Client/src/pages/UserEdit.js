@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Layout from "../components/Layout";
+import API_BASE_URL from "../config";
 
 function UserEdit() {
 
@@ -14,7 +15,7 @@ function UserEdit() {
 
     //  Fetch user data (auto-fill form)
     useEffect(() => {
-        fetch(`http://localhost:3003/users/${id}`)
+        fetch(`${API_BASE_URL}/api/users/${id}`)
             .then(res => res.json())
             .then(data => {
                 // Since the API returns an array, we must use data[0]
@@ -33,7 +34,7 @@ function UserEdit() {
 
     // Update user
     const updateUser = () => {
-        fetch(`http://localhost:3003/users/${id}`, {
+        fetch(`${API_BASE_URL}/api/users/${id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
