@@ -218,7 +218,7 @@ function Designation() {
                                     <td>{d.BaseSalary}</td>
                                      <td>
                                         <button
-                                            onClick={() => navigate(`/edit-designation/${d.DesignationID}`)}
+                                            onClick={() => navigate(`/designations/edit/${d.DesignationID}`)}
                                             style={{
                                                 backgroundColor: "blue",
                                                 color: "white",

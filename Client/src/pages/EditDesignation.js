@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-// import { useParams } from "react-router-dom";
 import Layout from "../components/Layout";
 import { useParams, useNavigate } from "react-router-dom";
+import API_BASE_URL from "../config";
 
 function EditDesignation() {
 
     const { id } = useParams();
-
     const [title, setTitle] = useState("");
     const [baseSalary, setBaseSalary] = useState("");
     const navigate = useNavigate();
@@ -15,7 +14,7 @@ function EditDesignation() {
 
         // fetch data by id
     useEffect(() => {
-        fetch(`http://localhost:3003/designation/${id}`)
+        fetch(`${API_BASE_URL}/designation/${id}`)
             .then(res => res.json())
             .then(data => {
                 
@@ -23,7 +22,8 @@ function EditDesignation() {
                 setBaseSalary(data.BaseSalary);
             });
     }, [id]);
-// update
+
+    // update
     const updateDesignation = () => {
         // validation
         const newErrors = {};
@@ -39,7 +39,7 @@ function EditDesignation() {
         // end validation
 
 
-        fetch(`http://localhost:3003/designation/${id}`, {
+        fetch(`${API_BASE_URL}/designation/${id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
