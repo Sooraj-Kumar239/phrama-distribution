@@ -15,29 +15,29 @@ function Header() {
     const [productOpen, setProductOpen] = useState(false);
     const [employeesOpen, setEmployeesOpen] = useState(false);
     const [designationOpen, setDesignationOpen] = useState(false);
-    const [vendorsOpen, setVendorsOpen] =useState(false);
-    const [customersOpen, setCustomersOpen] =useState(false);
+    const [vendorsOpen, setVendorsOpen] = useState(false);
+    const [customersOpen, setCustomersOpen] = useState(false);
     // state for purchase
     const [purchaseOpen, setPurchaseOpen] = useState(false);
     // state for purchaseLines
     // state for purchase
     const [salesOpen, setSalesOpen] = useState(false);
     // const [employeessOpen, setEmployeesOpen] = useState(false);
-    
+
 
     return (
         <div style={{
-                    position: "fixed",
-                    top: 0,
-                    width: "100%",
-                    backgroundColor: "#333",
-                    padding: "15px 40px",
-                    color: "white",
-                    zIndex: 1000,
-                    display: "flex",
-                    gap: "20px",
-                    alignItems: "center"
-                }}>
+            position: "fixed",
+            top: 0,
+            width: "100%",
+            backgroundColor: "#333",
+            padding: "15px 40px",
+            color: "white",
+            zIndex: 1000,
+            display: "flex",
+            gap: "20px",
+            alignItems: "center"
+        }}>
 
             {/* Logo */}
             <span style={{ fontWeight: "bold" }}>
@@ -51,23 +51,23 @@ function Header() {
             >
                 Dashboard
             </span>
-                {/* designations */}
-                 <span style={{ position: "relative" }}>
+            {/* designations */}
+            <span style={{ position: "relative" }}>
                 <button
-                        onClick={() => navigate("/designations")}
-                        style={{
+                    onClick={() => navigate("/designations")}
+                    style={{
                         background: "none",
                         color: "white",
                         border: "none",
                         cursor: "pointer"
                     }}
-                    >
-                        Manage Designation
+                >
+                    Manage Designation
                 </button>
-                </span>
-                {/* users */}
-                {/* users Dropdown */}
-                 <span style={{ position: "relative" }}>
+            </span>
+            {/* users */}
+            {/* users Dropdown */}
+            <span style={{ position: "relative" }}>
                 <button
                     onClick={() => setUserOpen(!userOpen)}
                     style={{
@@ -77,10 +77,10 @@ function Header() {
                         cursor: "pointer"
                     }}
                 >
-                    Manage Users 
+                    Manage Users
                 </button>
 
-                {userOpen &&  (
+                {userOpen && (
                     <div style={{
                         position: "absolute",
                         backgroundColor: "white",
@@ -91,7 +91,7 @@ function Header() {
                     }}>
                         <div
                             style={{ cursor: "pointer" }}
-                            onClick={() => window.location.href = "/users"}
+                            onClick={() => navigate("/users")}
                         >
                             All users
                         </div>
@@ -102,10 +102,10 @@ function Header() {
             {/* Products Dropdown */}
             <span style={{ position: "relative" }}>
                 <button
-                
-            
 
-                  onClick={() => setProductOpen(!productOpen)}
+
+
+                    onClick={() => setProductOpen(!productOpen)}
                     style={{
                         background: "none",
                         color: "white",
@@ -127,7 +127,7 @@ function Header() {
                     }}>
                         <div
                             style={{ cursor: "pointer" }}
-                            onClick={() => window.location.href = "/products"}
+                            onClick={() =>navigate("/products")}
                         >
                             All Products
                         </div>
@@ -137,7 +137,7 @@ function Header() {
             {/* employees  */}
             <span style={{ position: "relative" }}>
                 <button
-                  onClick={() => setEmployeesOpen(!employeesOpen)}
+                    onClick={() => setEmployeesOpen(!employeesOpen)}
                     style={{
                         background: "none",
                         color: "white",
@@ -159,7 +159,7 @@ function Header() {
                     }}>
                         <div
                             style={{ cursor: "pointer" }}
-                            onClick={() => window.location.href = "/employees"}
+                            onClick={() => navigate("/employees")}
                         >
                             All Employees
                         </div>
@@ -167,9 +167,9 @@ function Header() {
                 )}
             </span>
             {/* vendors */}
-             <span style={{ position: "relative" }}>
+            <span style={{ position: "relative" }}>
                 <button
-                  onClick={() => setVendorsOpen(!vendorsOpen)}
+                    onClick={() => setVendorsOpen(!vendorsOpen)}
                     style={{
                         background: "none",
                         color: "white",
@@ -191,7 +191,7 @@ function Header() {
                     }}>
                         <div
                             style={{ cursor: "pointer" }}
-                            onClick={() => window.location.href = "/vendors"}
+                            onClick={() => navigate("/vendors")}
                         >
                             All Vendors
                         </div>
@@ -203,157 +203,157 @@ function Header() {
                         </div>
                     </div>
                 )}
-             </span>
-             {/* customers */}
+            </span>
+            {/* customers */}
             <span style={{ position: "relative" }}>
                 <button
                     onClick={() => setCustomersOpen(!customersOpen)}
-                        style={{
-                            background  : "none",
-                            color       : "white",
-                            border      : "none",
-                            cursor      : "pointer"
-                        }}
-                        >
-                        Customers
-                    </button>
+                    style={{
+                        background: "none",
+                        color: "white",
+                        border: "none",
+                        cursor: "pointer"
+                    }}
+                >
+                    Customers
+                </button>
 
-                    {customersOpen && (
-                        <div style={{
-                            position        : "absolute",
-                            backgroundColor : "white",
-                            color           : "black",
-                            marginTop       : "10px",
-                            padding         : "10px",
-                            borderRadius    : "5px"
-                        }}>
+                {customersOpen && (
+                    <div style={{
+                        position: "absolute",
+                        backgroundColor: "white",
+                        color: "black",
+                        marginTop: "10px",
+                        padding: "10px",
+                        borderRadius: "5px"
+                    }}>
                         <div
                             style={{ cursor: "pointer" }}
                             onClick={() => window.location.href = "/customers"}
-                            >
+                        >
                             All Customers
-                            </div>
                         </div>
-                    )}
-                </span>
+                    </div>
+                )}
+            </span>
 
-                    {/* purchase */}
-                     <span style={{ position: "relative" }}>
+            {/* purchase */}
+            <span style={{ position: "relative" }}>
                 <button
                     onClick={() => setPurchaseOpen(!purchaseOpen)}
-                        style={{
-                            background  : "none",
-                            color       : "white",
-                            border      : "none",
-                            cursor      : "pointer"
-                        }}
+                    style={{
+                        background: "none",
+                        color: "white",
+                        border: "none",
+                        cursor: "pointer"
+                    }}
+                >
+                    Purchase
+                </button>
+
+                {purchaseOpen && (
+                    <div style={{
+                        position: "absolute",
+                        backgroundColor: "white",
+                        color: "black",
+                        marginTop: "10px",
+                        padding: "10px",
+                        borderRadius: "5px"
+                    }}>
+                        <div
+                            style={{ cursor: "pointer" }}
+                            onClick={() => navigate("/purchase-order")}
                         >
-                        Purchase
-                    </button>
-
-                    {purchaseOpen && (
-                        <div style={{
-                            position        : "absolute",
-                            backgroundColor : "white",
-                            color           : "black",
-                            marginTop       : "10px",
-                            padding         : "10px",
-                            borderRadius    : "5px"
-                        }}>
-                            <div
-                                style={{ cursor: "pointer" }}
-                                onClick={() => navigate ("/purchase-order")}
-                                >
-                                Purchse Orders
-                            </div>
-
-                            <div
-                                style={{ cursor: "pointer" }}
-                                onClick={() => navigate ("/purchase-lines")}
-                                >
-                                Purchse Lines
-                            </div>
+                            Purchse Orders
                         </div>
-                    )}
-                </span>
 
-                    {/* sale */}
-                    <span style={{ position: "relative" }}>
-                        <button
-                            onClick={() => setSalesOpen(!salesOpen)}
-                            style={{
-                                background  : "none",
-                                color       : "white",
-                                border      : "none",
-                                cursor      : "pointer"
-                            }}
-                            >
-                            Sale
-                        </button>
+                        <div
+                            style={{ cursor: "pointer" }}
+                            onClick={() => navigate("/purchase-lines")}
+                        >
+                            Purchse Lines
+                        </div>
+                    </div>
+                )}
+            </span>
 
-                        {salesOpen && (
-                            <div style={{
-                                    position        : "absolute",
-                                    backgroundColor : "white",
-                                    color           : "black",
-                                    marginTop       : "10px",
-                                    padding         : "10px",
-                                    borderRadius    : "5px"
-                                }}>
-                                
-                                <div
-                                    style={{ cursor: "pointer" }}
-                                    onClick={() => navigate ("/sale-order")}
-                                    >
-                                    SaleOrders
-                                </div>
+            {/* sale */}
+            <span style={{ position: "relative" }}>
+                <button
+                    onClick={() => setSalesOpen(!salesOpen)}
+                    style={{
+                        background: "none",
+                        color: "white",
+                        border: "none",
+                        cursor: "pointer"
+                    }}
+                >
+                    Sale
+                </button>
 
-                                <div
-                                    style={{ cursor: "pointer" }}
-                                    onClick={() => navigate ("/sale-lines")}
-                                    >
-                                    SaleLines
-                                </div>
-                            </div>
-                        )}
-                    </span>
+                {salesOpen && (
+                    <div style={{
+                        position: "absolute",
+                        backgroundColor: "white",
+                        color: "black",
+                        marginTop: "10px",
+                        padding: "10px",
+                        borderRadius: "5px"
+                    }}>
+
+                        <div
+                            style={{ cursor: "pointer" }}
+                            onClick={() => navigate("/sale-order")}
+                        >
+                            SaleOrders
+                        </div>
+
+                        <div
+                            style={{ cursor: "pointer" }}
+                            onClick={() => navigate("/sale-lines")}
+                        >
+                            SaleLines
+                        </div>
+                    </div>
+                )}
+            </span>
 
 
 
-                    {/*  */}
-                <div style={{
-                    marginLeft  : "auto",
-                    marginRight :"20px",
-                    display     : "flex",
-                    alignItems  : "center",
-                    gap         : "15px"
-                }}>
+            {/*  */}
+            <div style={{
+                marginLeft: "auto",
+                marginRight: "20px",
+                display: "flex",
+                alignItems: "center",
+                gap: "15px"
+            }}>
 
                 {/* Username */}
                 <span>
-                    Welcome, {user?.username || "User"} 
+                    Welcome, {user?.username || "User"}
                 </span>
 
                 {/* Logout Button */}
                 <button
                     onClick={handleLogout}
-            
+
                     style={{
-                        background  : "#dc3545",
-                        color       : "white",
-                        border      : "none",
-                        padding     : "15px 40px",
+                        background: "#dc3545",
+                        color: "white",
+                        border: "none",
+                        padding: "15px 40px",
                         borderRadius: "5px",
-                        cursor      : "pointer"
+                        cursor: "pointer"
                     }}
-                    >
+                >
                     Logout
                 </button>
 
-        </div>
+            </div>
         </div>
 
-        
+
     );
 }
 
