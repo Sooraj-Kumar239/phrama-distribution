@@ -24,7 +24,7 @@ function Users() {
   };
 
   const fetchUsers = () => {
-    fetch("http://localhost:3003/users")
+    fetch(`${API_BASE_URL}/users`)
       .then((res) => res.json())
       .then((data) => {
         console.log("Users Data from API:", data); // CHECK YOUR CONSOLE FOR FIELD NAMES
@@ -49,7 +49,7 @@ function Users() {
     
     fetch(`${API_BASE_URL}/users/${id}`, { method: "DELETE" })
       .then(() => {
-        toast.error("User Deleted! 🗑️");
+        toast.error("User Deleted! ");
         fetchUsers();
       })
       .catch((err) => console.error(err));
@@ -61,7 +61,7 @@ function Users() {
       return;
     }
 
-    fetch("${API_BASE_URL}/users", {
+    fetch(`${API_BASE_URL}/users`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ EmployeeID, username, PasswordH, role }),
