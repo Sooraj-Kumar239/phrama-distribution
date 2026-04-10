@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import API_BASE_URL from "../config";
 
 function Users() {
   const [employees, setEmployees] = useState([]);
@@ -16,7 +17,7 @@ function Users() {
 
   // --- Data Fetching ---
   const fetchEmployees = () => {
-    fetch("http://localhost:3003/employees")
+    fetch(`${API_BASE_URL}/employees`)
       .then((res) => res.json())
       .then((data) => setEmployees(data))
       .catch((err) => console.error("Employee Fetch Error:", err));
@@ -46,7 +47,7 @@ function Users() {
   const deleteUser = (id) => {
     if (!window.confirm("Are you sure you want to delete this user?")) return;
     
-    fetch(`http://localhost:3003/users/${id}`, { method: "DELETE" })
+    fetch(`${API_BASE_URL}/users/${id}`, { method: "DELETE" })
       .then(() => {
         toast.error("User Deleted! 🗑️");
         fetchUsers();
@@ -60,7 +61,7 @@ function Users() {
       return;
     }
 
-    fetch("http://localhost:3003/users", {
+    fetch("${API_BASE_URL}/users", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ EmployeeID, username, PasswordH, role }),
