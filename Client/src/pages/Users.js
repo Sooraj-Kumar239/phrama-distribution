@@ -56,24 +56,33 @@ function Users() {
   };
 
   const addUser = () => {
-    if (!EmployeeID || !username || !PasswordH || !role) {
-      toast.warning("Please fill all fields! ❗");
+    if (!EmployeeID || !username || !PasswordH ) {
+      toast.warning("Please fill all fields!");
       return;
     }
 
     fetch(`${API_BASE_URL}/api/users`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ EmployeeID, username, PasswordH, role }),
+      body: JSON.stringify({ EmployeeID, username, PasswordH,  }),
     })
-      .then(() => {
-        toast.success("User Added Successfully! ✨");
-        setEmployeeId("");
-        setUsername("");
-        setPassword("");
-        setrole("");
-        fetchUsers();
-      })
+      // .then(() => {
+      //   toast.success("User Added Successfully! ✨");
+      //   setEmployeeId("");
+      //   setUsername("");
+      //   setPassword("");
+      //   setrole("");
+      //   fetchUsers();
+      // })
+        .then(res => res.json())
+  .then(data => {
+      if (data.success) {
+          toast.success("User Added Successfully! ✨");
+          fetchUsers();
+      } else {
+          toast.error("User not added!"); 
+      }
+})
       .catch((err) => console.error(err));
   };
 

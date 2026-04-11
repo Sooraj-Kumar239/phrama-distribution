@@ -4,27 +4,9 @@ const router = express.Router();
 const LabelService = require('../labels/labelService');
 
 
-        // Get SINGLE employee (for edit page)
-    router.get('/:id', (req, res) => {
-        const id = req.params.id;
-
-        db.query(
-            "SELECT * FROM employees WHERE EmployeeID = ?",
-            [id],
-            (err, result) => {
-                if (err) {
-                    console.log(err);
-                    return res.send("Error fetching employee");
-                }
-                res.json(result);
-            }
-        );
-    }); 
-
-
-//Return all employee
-    router.get('/:id', (req, res) => {
-      const id = req.params.id;
+        //Return all employee
+    router.get('/', (req, res) => {
+     
 
     const sql = `
         SELECT 
@@ -43,43 +25,49 @@ const LabelService = require('../labels/labelService');
         }
     });
 });
+    
+      // 2: Get SINGLE employee (for edit page)
+    router.get('/:id', (req, res) => {
+        const id = req.params.id;
 
-//Inserts request
-router.post('/', (req, res) => {
-    const { DesignationID, FullName, Email, PhoneNumber, HireDate, EndDate, IsActive} = req.body;
-
-    const sql = `INSERT INTO  employees
-        (DesignationID,FullName,Email,PhoneNumber,HireDate,EndDate,IsActive)
-        values (?,?,?,?,?,?,?)`;
-
-    db.query(sql,
-        [DesignationID,FullName,Email,PhoneNumber,HireDate,EndDate,Number(IsActive)],
-        (err, result) => {
-            if (err) {
-                console.log("SQL ERROR:", err.sqlMessage);
-                res.send('Error inserting employss');
-            } else {
-                res.send('employee added successfully');
-            }
-        }
-    )
-});
-// delete employee
-                router.delete('/:id', (req, res) => {
-                const id = req.params.id;
-
-                db.query('DELETE FROM employees WHERE EmployeeID = ?', [id], (err, result) => {
+        db.query(
+            "SELECT * FROM employees WHERE EmployeeID = ?",
+            [id],
+            (err, result) => {
                 if (err) {
-                            console.log(err);
-                            res.send('Error deleting employee');
-                        }
-                        else {
-                                res.send('Employee deleted successfully');
-                             }
-                });
-                });
-// update request
-                // UPDATE employee (optional but important)
+                    console.log(err);
+                    return res.send("Error fetching employee");
+                }
+                // res.json(result);
+                res.json(result[0]);
+            }
+        );
+    });
+    
+    
+    // 3: add/Inserts request
+    router.post('/', (req, res) => {
+        const { DesignationID, FullName, Email, PhoneNumber, HireDate, EndDate, IsActive} = req.body;
+
+        const sql = `INSERT INTO  employees
+            (DesignationID,FullName,Email,PhoneNumber,HireDate,EndDate,IsActive)
+            values (?,?,?,?,?,?,?)`;
+
+        db.query(sql,
+            [DesignationID,FullName,Email,PhoneNumber,HireDate,EndDate,Number(IsActive)],
+            (err, result) => {
+                if (err) {
+                    console.log("SQL ERROR:", err.sqlMessage);
+                    res.send('Error inserting employss');
+                } else {
+                    res.send('employee added successfully');
+                }
+            }
+        )
+    }); 
+
+     // 4:  update request /employe
+                
                     router.put('/:id', (req, res) => {
                         const id = req.params.id;
 
@@ -111,6 +99,32 @@ router.post('/', (req, res) => {
                             }
                         );
                     });
+
+                    // 5: delete employee
+                router.delete('/:id', (req, res) => {
+                const id = req.params.id;
+
+                db.query('DELETE FROM employees WHERE EmployeeID = ?', [id], (err, result) => {
+                if (err) {
+                            console.log(err);
+                            res.send('Error deleting employee');
+                        }
+                        else {
+                                res.send('Employee deleted successfully');
+                             }
+                });
+                });
+               
+
+
+
+
+
+
+      
+
+
+                
 
                 
 

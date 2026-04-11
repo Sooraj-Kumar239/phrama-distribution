@@ -193,7 +193,7 @@ function Employees() {
                                                                 <td>{e.IsActive}</td>
                                                                 <td>
                                                                     <button
-                                                                    onClick={() => window.location.href = `employees/edit/${e.EmployeeID}`}
+                                                                    onClick={() => window.location.href = `/employees/edit/${e.EmployeeID}`}
                                                                     style={{
                                                                         backgroundColor: "#007bff",
                                                                         color: "white",
