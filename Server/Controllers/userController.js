@@ -46,12 +46,12 @@
             EmployeeID,
             username,
             PasswordH,
-            role
+            // role
         } = req.body;
 
         const sql = `INSERT INTO  users
-            (EmployeeID, Username, PasswordH, role)
-            values (?,?,?,?)`;
+            (EmployeeID, Username, PasswordH, )
+            values (?,?,?,)`;
 
         db.query(sql,
             [EmployeeID, username, PasswordH, role],

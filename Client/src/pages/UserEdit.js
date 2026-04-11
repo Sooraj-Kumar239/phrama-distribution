@@ -44,7 +44,7 @@ function UserEdit() {
                 EmployeeID: employeeId,
                 Username: username,
                 Password: password,
-                Role: role
+                // Role: role
             })
         })
         .then(res => res.text())
