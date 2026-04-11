@@ -1,17 +1,16 @@
-import { Navigate, Outlet } from "react-router-dom";
+import Header from "./Header";
 
-const ProtectedRoute = () => {
-//   const isAuth = localStorage.getItem("token");
-    const user = localStorage.getItem("user");
-     // debug
-    console.log("ProtectedRoute user:", user);
-    if (!user) {
-        return <Navigate to="/login" />;
-    }
+function Layout({ children }) {
+    return (
+        <div>
+            <Header />
 
-    return <Outlet />;
+            {/* content neeche shift hoga */}
+            <div style={{ marginTop: "80px", padding: "20px" }}>
+                {children}
+            </div>
+        </div>
+    );
+}
 
-//   return isAuth ? <Outlet /> : <Navigate to="/login" />;
-};
-
-export default ProtectedRoute;
+export default Layout;

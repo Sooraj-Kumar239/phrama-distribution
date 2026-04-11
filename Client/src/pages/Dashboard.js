@@ -2,6 +2,7 @@
     import Layout from "../components/Layout";
     
     import API_BASE_URL from "../config";
+    console.log("Dashboard loaded");
 
     const boxStyle = {
         background: "#ffffff",
