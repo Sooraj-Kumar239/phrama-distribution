@@ -50,11 +50,11 @@
         } = req.body;
 
         const sql = `INSERT INTO  users
-            (EmployeeID, Username, PasswordH, )
-            values (?,?,?,)`;
+            (EmployeeID, Username, PasswordH )
+            values (?,?,?)`;
 
         db.query(sql,
-            [EmployeeID, username, PasswordH, role],
+            [EmployeeID, username, PasswordH] ,
             (err, result) => {
                 if (err) {
                     console.log(err.message);
@@ -68,15 +68,15 @@
 
     // update api
         router.put('/:id', (req, res) => {
-        const { EmployeeID, username, PasswordH, role } = req.body;
+        const { EmployeeID, username, PasswordH,  } = req.body;
 
         const sql = `
             UPDATE users
-            SET EmployeeID = ?, Username = ?, PasswordH = ?, role = ?
+            SET EmployeeID = ?, Username = ?, PasswordH = ?
             WHERE UserID = ?
         `;
 
-        db.query(sql, [EmployeeID, username, PasswordH, role, req.params.id],
+        db.query(sql, [EmployeeID, username, PasswordH, req.params.id],
             (err, result) => {
                 if (err) {
                     console.log("UPDATE ERROR:", err);

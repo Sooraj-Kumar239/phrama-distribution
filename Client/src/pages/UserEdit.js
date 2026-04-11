@@ -22,8 +22,8 @@ function UserEdit() {
                 if (data && data.length > 0) {
                     const user = data[0];
 
-                    // setEmployeeId(user.EmployeeID || "");
-                    // setUserId(user.UserID || "");
+                    setEmployeeId(user.EmployeeID || "");
+                    setUserId(user.UserID || "");
                     setUsername(user.Username ||user.username ||  "");
                     setPassword(user.PasswordH || user.Password || "");
                     setRole(user.role || "");
@@ -42,8 +42,8 @@ function UserEdit() {
             body: JSON.stringify({
                 // UserId: userId,
                 EmployeeID: employeeId,
-                Username: username,
-                Password: password,
+                username: username,
+                PasswordH: password,
                 // Role: role
             })
         })
