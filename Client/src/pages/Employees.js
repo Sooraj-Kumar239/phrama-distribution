@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import API_BASE_URL from "../config";
+import { useNavigate } from "react-router-dom";
 // import API_BASE_URL from "../config";
 
 function Employees() {
@@ -19,6 +20,7 @@ function Employees() {
 
     const [message, setMessage] = useState("");
     const [msgType, setMsgType] = useState("");
+    const navigate = useNavigate();
 
     //  Styling
     const inputStyle = {
@@ -193,7 +195,7 @@ function Employees() {
                                                                 <td>{e.IsActive}</td>
                                                                 <td>
                                                                     <button
-                                                                    onClick={() => window.location.href = `/employees/edit/${e.EmployeeID}`}
+                                                                    onClick={() => navigate(`/employees/edit/${e.EmployeeID}`)}
                                                                     style={{
                                                                         backgroundColor: "#007bff",
                                                                         color: "white",

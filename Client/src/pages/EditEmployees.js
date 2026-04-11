@@ -31,7 +31,7 @@ function EmployeeEdit() {
                 setPhone(emp.PhoneNumber || "");
                 setDesignationId(emp.DesignationID || "");
                 setHireDate(emp.HireDate?.split("T")[0] || "");
-                setEndDate(emp.EndDate?.split("T")[0] || "");
+                setEndDate(emp.Endate?.split("T")[0] || "");
                 setIsActive(emp.IsActive || "");
             });
 
@@ -59,11 +59,16 @@ function EmployeeEdit() {
                 IsActive: isActive
             })
         })
-        .then(() => {
-            window.location.href = "/employees?msg=updated";
-        });
-    };
+        .then(res => res.text())
+.then(data => {
+    console.log("UPDATE RESPONSE:", data);
 
+    setTimeout(() => {
+        window.location.href = "/employees?msg=updated";
+    }, 500);
+})
+.catch(err => console.log(err));
+    };
     return (
         <Layout>
             <div style={{ width: "400px", margin: "40px auto" }}>
