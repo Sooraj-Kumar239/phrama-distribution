@@ -22,11 +22,11 @@ function UserEdit() {
                 if (data && data.length > 0) {
                     const user = data[0];
 
-                    setEmployeeId(user.EmployeeID || "");
-                    setUserId(user.UserID || "");
-                    setUsername(user.Username || "");
+                    // setEmployeeId(user.EmployeeID || "");
+                    // setUserId(user.UserID || "");
+                    setUsername(user.Username ||user.username ||  "");
                     setPassword(user.PasswordH || user.Password || "");
-                    setRole(user.role || user.Role || "");
+                    setRole(user.role || "");
                 }
             })
             .catch(err => console.log(err));
@@ -40,7 +40,7 @@ function UserEdit() {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                UserId: userId,
+                // UserId: userId,
                 EmployeeID: employeeId,
                 Username: username,
                 Password: password,

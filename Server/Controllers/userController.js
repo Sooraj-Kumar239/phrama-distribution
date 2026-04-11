@@ -68,7 +68,7 @@
 
     // update api
         router.put('/:id', (req, res) => {
-        const { EmployeeID, Username, Password, Role } = req.body;
+        const { EmployeeID, username, PasswordH, role } = req.body;
 
         const sql = `
             UPDATE users
@@ -76,7 +76,7 @@
             WHERE UserID = ?
         `;
 
-        db.query(sql, [EmployeeID, Username, Password, Role, req.params.id],
+        db.query(sql, [EmployeeID, username, PasswordH, role, req.params.id],
             (err, result) => {
                 if (err) {
                     console.log("UPDATE ERROR:", err);
