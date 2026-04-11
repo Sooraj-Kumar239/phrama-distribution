@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import API_BASE_URL from "../config";
+// import API_BASE_URL from "../config";
 
 function Employees() {
 
-    // ✅ States
+    //  States
     const [fullName, setFullName] = useState("");
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
@@ -192,7 +193,7 @@ function Employees() {
                                                                 <td>{e.IsActive}</td>
                                                                 <td>
                                                                     <button
-                                                                    onClick={() => window.location.href = `/edit/${e.EmployeeID}`}
+                                                                    onClick={() => window.location.href = `employees/edit/${e.EmployeeID}`}
                                                                     style={{
                                                                         backgroundColor: "#007bff",
                                                                         color: "white",

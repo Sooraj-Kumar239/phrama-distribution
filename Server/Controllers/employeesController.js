@@ -3,8 +3,28 @@ const express = require('express');
 const router = express.Router();
 const LabelService = require('../labels/labelService');
 
+
+        // Get SINGLE employee (for edit page)
+    router.get('/:id', (req, res) => {
+        const id = req.params.id;
+
+        db.query(
+            "SELECT * FROM employees WHERE EmployeeID = ?",
+            [id],
+            (err, result) => {
+                if (err) {
+                    console.log(err);
+                    return res.send("Error fetching employee");
+                }
+                res.json(result);
+            }
+        );
+    }); 
+
+
 //Return all employee
-router.get('/', (req, res) => {
+    router.get('/:id', (req, res) => {
+      const id = req.params.id;
 
     const sql = `
         SELECT 
@@ -59,7 +79,7 @@ router.post('/', (req, res) => {
                 });
                 });
 // update request
-                // ✅ UPDATE employee (optional but important)
+                // UPDATE employee (optional but important)
                     router.put('/:id', (req, res) => {
                         const id = req.params.id;
 

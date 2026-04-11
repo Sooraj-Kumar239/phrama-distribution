@@ -9,7 +9,10 @@ import EditProduct from "./pages/editProduct";
 import Users from "./pages/Users";
 import UserEdit from "./pages/UserEdit";
 import Designation from "./pages/Designation";
+
 import Employees from "./pages/Employees";
+import EditEmployees from "./pages/EditEmployees";
+
 import Vendors from "./pages/Vendors";
 // for edit distributor
 import EditVendor from "./pages/EditVendor";
@@ -56,6 +59,7 @@ function App() {
           <Route path="/designations/edit/:id" element={<EditDesignation />} />
 
           <Route path="/employees" element={<Employees />} />
+          <Route path="/employees/edit/:id" element={<EditEmployees />} />
 
           <Route path="/vendors" element={<Vendors />} />
           <Route path="/vendors/edit/:id" element={<EditVendor />} />
