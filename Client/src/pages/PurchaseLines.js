@@ -18,24 +18,36 @@ function PurchaseLines() {
 
   // --- Data Fetching ---
   const fetchLines = () => {
-    fetch(`${API_BASE_URL}/purchaselines/${id}`)
+    fetch(`${API_BASE_URL}/purchase-lines/${id}`)
       .then((res) => res.json())
-      .then((data) => setLines(data));
+      // .then((data) => setLines(data));
+      .then((data) => setLines(data.recordset || []));
   };
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/purchase-orders/${id}`)
       .then((res) => res.json())
       .then((data) => {
+        console.log("API RESPONSE:", data); // debugging
         setOrder(data);
         setTempData(data);
+      
+       // FIX: handle both cases
+      if (Array.isArray(data)) {
+        setLines(data);
+      } else if (data.recordset) {
+        setLines(data.recordset);
+      } else {
+        setLines([]);
+      }
+      
       });
 
     fetch(`${API_BASE_URL}/vendors`)
       .then((res) => res.json())
       .then(setVendors);
 
-    fetch(`${API_BASE_URL}/products`)
+    fetch(`${API_BASE_URL}/api/products`)
       .then((res) => res.json())
       .then(setProducts);
 
@@ -108,7 +120,7 @@ function PurchaseLines() {
           return;
         }
 
-        await fetch(`${API_BASE_URL}/purchaselines`, {
+        await fetch(`${API_BASE_URL}/purchase-lines`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -121,7 +133,7 @@ function PurchaseLines() {
       }
 
       toast.info("New lines saved ");
-      setLines([]);
+      // setLines([]);
       fetchLines();
       setSelectedIndex(null);
     } catch (err) {
@@ -131,7 +143,7 @@ function PurchaseLines() {
 
   const updateLine = async (line) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/purchaselines/${line.PLineID}`, {
+      const response = await fetch(`${API_BASE_URL}/purchase-lines/${line.PLineID}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

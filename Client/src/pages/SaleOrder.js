@@ -49,13 +49,13 @@ function SaleOrder() {
   // ID CLICK -> NAVIGATE ->to SaleLinie page
   const handleIDClick = (e, id) => {
     e.stopPropagation();
-    navigate(`/api/sales-lines/${id}`);
+    navigate(`/sales-lines/${id}`);
   };
 
   // LINES BUTTON click p lines page p jawhi
   const goToLines = () => {
     if (!selected) return toast.info("Select record first");
-    navigate(`/api/sales-lines/${selected}`);
+    navigate(`/sales-lines/${selected}`);
   };
 
   // ADD new record

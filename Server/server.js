@@ -58,7 +58,7 @@
     // employees
     app.use('/employees', employeesController);
     // purchaseLine
-    app.use('/purchaselines', purchaseLineController);
+    app.use('/purchase-lines', purchaseLineController);
     // purchase order
     app.use('/purchase-orders', purchaseOrderController);
     // sales LinesAC
