@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Layout from "../components/Layout";
+import API_BASE_URL from "../config";
 
 function EditProduct() {
 
@@ -14,7 +15,7 @@ function EditProduct() {
     const [reorder, setReorder] = useState("");
 
     useEffect(() => {
-        fetch(`http://localhost:3003/products/${id}`)
+        fetch(`${API_BASE_URL}/products/${id}`)
             .then(res => res.json())
             .then(data => {
                 setName(data.ProductName);
@@ -27,7 +28,7 @@ function EditProduct() {
     }, [id]);
 
     const updateProduct = () => {
-        fetch(`http://localhost:3003/products/${id}`, {
+        fetch(`${API_BASE_URL}/products/${id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"

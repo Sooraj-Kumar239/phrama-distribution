@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 import Layout from "../components/Layout";
 // import { useNavigate } from "react-router-dom";
+import API_BASE_URL from "../config";
 
 function Vendors() {
 
@@ -22,7 +23,7 @@ function Vendors() {
                 setMessage("Distributor updated successfully");
                 setMsgType("update");
             }
-            fetch("http://localhost:3003/vendors")
+            fetch(`${API_BASE_URL}/vendors`)
                 .then(res => res.json())
                 .then(data => setVendors(data))
                 .catch(err => console.log(err));
@@ -44,7 +45,7 @@ function Vendors() {
             }
 }, [message]);
             const deleteVendor = (id) => {
-                fetch(`http://localhost:3003/vendors/${id}`,{
+                fetch(`${API_BASE_URL}/vendors/${id}`,{
                 method: "DELETE"
                 })
                 .then(res => res.json())
@@ -56,7 +57,7 @@ function Vendors() {
             }
     
             const addVendor = () => {
-                fetch("http://localhost:3003/vendors", {
+                fetch(`${API_BASE_URL}/vendors`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -76,7 +77,7 @@ function Vendors() {
             .then(() => {
 
         
-                fetch("http://localhost:3003/vendors")
+                fetch(`${API_BASE_URL}/vendors`)
                 .then(res => res.json())
                 .then(data => setVendors(data));
 

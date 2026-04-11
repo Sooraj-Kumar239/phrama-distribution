@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import { toast } from "react-toastify";
+import API_BASE_URL from "../config";
 
 function Products(){
     // return <Layout>
@@ -41,7 +42,7 @@ function Products(){
                 };
 
     const fetchProducts = () => {
-    fetch("http://localhost:3003/products")
+    fetch(`${API_BASE_URL}/api/products`)
         .then(res => res.json())
         .then(data => {setProducts(data);
         })
@@ -66,7 +67,7 @@ function Products(){
         }, []);
    
     const deleteProduct = (id) => {
-        fetch(`http://localhost:3003/products/${id}`, {
+        fetch(`${API_BASE_URL}/api/products${id}`, {
         method: "DELETE"
         })
         .then(res => res.text())
@@ -84,7 +85,7 @@ function Products(){
 
 
     const addProduct = () => {
-        fetch("http://localhost:3003/products", {
+        fetch(`${API_BASE_URL}/api/products`, {
             method: "POST",
             headers:
             {
