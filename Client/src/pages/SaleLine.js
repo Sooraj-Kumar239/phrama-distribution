@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import API_BASE_URL from "../config";
 
-function SalesLines() {
+function SaleLine() {
   const { id } = useParams(); // SalesOrderID
 
   const [order, setOrder] = useState({});
@@ -19,7 +20,7 @@ function SalesLines() {
 
   // Fetch Order Data
   useEffect(() => {
-    fetch(`http://localhost:3003/sales-orders/${id}`)
+    fetch(`${API_BASE_URL}/sales-orders/${id}`)
       .then(res => res.json())
       .then(data => {
         setOrder(data);
@@ -29,22 +30,22 @@ function SalesLines() {
 
   // Fetch All Master Data
   useEffect(() => {
-    fetch(`http://localhost:3003/customers`).then(res => res.json()).then(setCustomers);
-    fetch(`http://localhost:3003/employees`).then(res => res.json()).then(setEmployees);
-    fetch(`http://localhost:3003/vehicles`).then(res => res.json()).then(setVehicles);
-    fetch(`http://localhost:3003/products`).then(res => res.json()).then(setProducts);
+    fetch(`${API_BASE_URL}/api/customers`).then(res => res.json()).then(setCustomers);
+    fetch(`${API_BASE_URL}/employees`).then(res => res.json()).then(setEmployees);
+    fetch(`${API_BASE_URL}/vehicles`).then(res => res.json()).then(setVehicles);
+    fetch(`${API_BASE_URL}/api/products`).then(res => res.json()).then(setProducts);
   }, []);
 
   // Fetch Lines
   useEffect(() => {
-    fetch(`http://localhost:3003/sales-lines/${id}`)
+    fetch(`${API_BASE_URL}/api/sales-lines/${id}`)
       .then(res => res.json())
       .then(setLines);
   }, [id]);
 
   // Save Header Logic
   const handleSave = () => {
-    fetch(`http://localhost:3003/sales-orders/${id}`, {
+    fetch(`${API_BASE_URL}/sales-orders/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(tempData)
@@ -74,7 +75,7 @@ function SalesLines() {
     const total = currentLines.reduce((sum, l) => sum + (Number(l.LineTotal) || 0), 0);
     
     // Sales Orders table ko update 
-    fetch(`http://localhost:3003/sales-orders/${id}`, {
+    fetch(`${API_BASE_URL}/sales-orders/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...order, TotalAmount: total }) 
@@ -100,7 +101,7 @@ function SalesLines() {
     // const isExisting = line.SLineID !== undefined; 
 
 
-    const url = isExisting ? `http://localhost:3003/sales-lines/${line.SLineID}` : `http://localhost:3003/sales-lines`;
+    const url = isExisting ? `${API_BASE_URL}/api/sales-lines/${line.SLineID}` : `${API_BASE_URL}/api/sales-lines`;
     const method = isExisting ? "PUT" : "POST";
 
     const body = JSON.stringify({ ...line, SalesOrderID: id });
@@ -117,7 +118,7 @@ function SalesLines() {
       toast.success(isExisting ? "Line Updated!" : "Line Saved!");
       setLineEditMode(false);
       setSelectedIndex(null);
-      return fetch(`http://localhost:3003/sales-lines/${id}`);
+      return fetch(`${API_BASE_URL}/api/sales-lines/${id}`);
     })
       .then(res => res.json())
       .then(freshLines => {
@@ -282,7 +283,7 @@ function SalesLines() {
   );
 }
 
-export default SalesLines;
+export default SaleLine;
 
 // --- STYLES ---
 const btnStyle = { padding: "8px 15px", borderRadius: "5px", border: "none", cursor: "pointer", fontWeight: "bold" };

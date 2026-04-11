@@ -19,9 +19,10 @@ const LabelService = require('../labels/labelService');
     db.query(sql, (err, results) => {
         if (err) {
             console.log(err);
-            res.send("Error fetching employees");
+           return res.status(500).json({ error: "Error fetching employees" });
         } else {
-            res.json(results);
+            // res.json(results);
+            return res.json(results);
         }
     });
 });
@@ -36,10 +37,11 @@ const LabelService = require('../labels/labelService');
             (err, result) => {
                 if (err) {
                     console.log(err);
-                    return res.send("Error fetching employee");
+                    return res.status(500).json({ error: "Error fetching employees" });
                 }
                 // res.json(result);
-                res.json(result[0]);
+                // res.json(result[0]);
+                return res.json(result[0]);
             }
         );
     });
@@ -54,13 +56,15 @@ const LabelService = require('../labels/labelService');
             values (?,?,?,?,?,?,?)`;
 
         db.query(sql,
-            [DesignationID,FullName,Email,PhoneNumber,HireDate,EndDate,Number(IsActive)],
+            [DesignationID,FullName,Email,PhoneNumber,HireDate,EndDate,IsActive ? Number(IsActive) : 0],
             (err, result) => {
                 if (err) {
+                    // console.log("SQL ERROR:", err.sqlMessage);
+                    // res.json('Error inserting employss');
                     console.log("SQL ERROR:", err.sqlMessage);
-                    res.send('Error inserting employss');
+                    return res.status(500).json({ error: err.sqlMessage });
                 } else {
-                    res.send('employee added successfully');
+                   return res.json({ message: "Employee added successfully" });
                 }
             }
         )
@@ -69,6 +73,7 @@ const LabelService = require('../labels/labelService');
      // 4:  update request /employe
                 
                     router.put('/:id', (req, res) => {
+                            console.log("BODY DATA:", req.body); 
                         const id = req.params.id;
 
                         const {
@@ -92,9 +97,12 @@ const LabelService = require('../labels/labelService');
                             (err, result) => {
                                 if (err) {
                                     console.log(err);
-                                    res.send('Error updating employee');
+                                    // res.json('Error updating employee');
+                                    console.log("SQL ERROR:", err.sqlMessage);
+                                    return res.status(500).json({ error: err.sqlMessage });
                                 } else {
-                                    res.send('Employee updated successfully');
+                                    // res.json('Employee updated successfully');
+                                      return res.json({ message: "Employee updated successfully" });
                                 }
                             }
                         );
@@ -107,10 +115,10 @@ const LabelService = require('../labels/labelService');
                 db.query('DELETE FROM employees WHERE EmployeeID = ?', [id], (err, result) => {
                 if (err) {
                             console.log(err);
-                            res.send('Error deleting employee');
+                            return res.status(500).json({ error: err.sqlMessage });
                         }
                         else {
-                                res.send('Employee deleted successfully');
+                                 return res.json({ message: "Employee deleted successfully" });
                              }
                 });
                 });

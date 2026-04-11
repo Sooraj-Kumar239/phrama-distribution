@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import API_BASE_URL from "../config";
 
 const user = JSON.parse(localStorage.getItem("user"));
 
@@ -20,13 +21,13 @@ function PurchaseOrder() {
 
   // LOAD DATA
   useEffect(() => {
-    fetch("http://localhost:3003/purchase-orders")
+    fetch(`${API_BASE_URL}/purchase-orders`)
       .then(res => res.json())
       .then(data => setOrders(data));
     }, []);
 
    useEffect(() => {
-        fetch("http://localhost:3003/vendors")
+        fetch(`${API_BASE_URL}/vendors`)
         .then(res => res.json())
         .then(data => setVendors(data));
 
@@ -80,7 +81,7 @@ function PurchaseOrder() {
 
     if (selected === "new") {
       // INSERT
-      fetch("http://localhost:3003/purchase-orders", {
+      fetch(`${API_BASE_URL}/purchase-orders`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(tempData)
@@ -93,7 +94,7 @@ function PurchaseOrder() {
 
     } else {
       // UPDATE
-      fetch(`http://localhost:3003/purchase-orders/${selected}`, {
+      fetch(`${API_BASE_URL}/purchase-orders/${selected}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(tempData)

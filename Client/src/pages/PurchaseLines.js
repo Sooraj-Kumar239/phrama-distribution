@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import API_BASE_URL from "../config";
+
 
 function PurchaseLines() {
   const { id } = useParams();
@@ -16,24 +18,24 @@ function PurchaseLines() {
 
   // --- Data Fetching ---
   const fetchLines = () => {
-    fetch(`http://localhost:3003/purchaselines/${id}`)
+    fetch(`${API_BASE_URL}/purchaselines/${id}`)
       .then((res) => res.json())
       .then((data) => setLines(data));
   };
 
   useEffect(() => {
-    fetch(`http://localhost:3003/purchase-orders/${id}`)
+    fetch(`${API_BASE_URL}/purchase-orders/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setOrder(data);
         setTempData(data);
       });
 
-    fetch(`http://localhost:3003/vendors`)
+    fetch(`${API_BASE_URL}/vendors`)
       .then((res) => res.json())
       .then(setVendors);
 
-    fetch("http://localhost:3003/products")
+    fetch(`${API_BASE_URL}/products`)
       .then((res) => res.json())
       .then(setProducts);
 
@@ -42,7 +44,7 @@ function PurchaseLines() {
 
   // --- Logic Handlers ---
   const handleSaveHeader = () => {
-    fetch(`http://localhost:3003/purchase-orders/${id}`, {
+    fetch(`${API_BASE_URL}/purchase-orders/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(tempData),
@@ -106,7 +108,7 @@ function PurchaseLines() {
           return;
         }
 
-        await fetch("http://localhost:3003/purchaselines", {
+        await fetch(`${API_BASE_URL}/purchaselines`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -118,7 +120,7 @@ function PurchaseLines() {
         });
       }
 
-      toast.info("New lines saved ✅");
+      toast.info("New lines saved ");
       setLines([]);
       fetchLines();
       setSelectedIndex(null);
@@ -129,7 +131,7 @@ function PurchaseLines() {
 
   const updateLine = async (line) => {
     try {
-      const response = await fetch(`http://localhost:3003/purchaselines/${line.PLineID}`, {
+      const response = await fetch(`${API_BASE_URL}/purchaselines/${line.PLineID}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -139,7 +141,7 @@ function PurchaseLines() {
         }),
       });
       const data = await response.json();
-      toast.success(data.message || "Updated ✅");
+      toast.success(data.message || "Updated ");
       fetchLines();
     } catch (err) {
       console.error(err);
@@ -239,5 +241,4 @@ function PurchaseLines() {
     </Layout>
   );
 }
-
 export default PurchaseLines;

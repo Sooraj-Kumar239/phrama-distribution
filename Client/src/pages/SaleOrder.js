@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import API_BASE_URL from "../config";
+
 
 const user = JSON.parse(localStorage.getItem("user"));
 
@@ -22,19 +24,19 @@ function SaleOrder() {
     
     // vehicles api start
     useEffect(() => {
-        fetch("http://localhost:3003/sales-orders")     
+        fetch(`${API_BASE_URL}/sales-orders`)     
         .then(res => res.json())
         .then(data => setOrders(data));
 
-        fetch("http://localhost:3003/customers")
+        fetch(`${API_BASE_URL}/api/customers`)
         .then(res => res.json())
         .then(data => setCustomers(data));
 
-        fetch("http://localhost:3003/vehicles")
+        fetch(`${API_BASE_URL}/vehicles`)
             .then(res => res.json())
             .then(data => setVehicles(data));
 
-        fetch("http://localhost:3003/employees")
+        fetch(`${API_BASE_URL}/employees`)
             .then(res => res.json())
             .then(data => setEmployees(data));    
     }, []);
@@ -47,13 +49,13 @@ function SaleOrder() {
   // ID CLICK -> NAVIGATE ->to SaleLinie page
   const handleIDClick = (e, id) => {
     e.stopPropagation();
-    navigate(`/sales-lines/${id}`);
+    navigate(`/api/sales-lines/${id}`);
   };
 
   // LINES BUTTON click p lines page p jawhi
   const goToLines = () => {
     if (!selected) return toast.info("Select record first");
-    navigate(`/sales-lines/${selected}`);
+    navigate(`/api/sales-lines/${selected}`);
   };
 
   // ADD new record
@@ -90,7 +92,7 @@ function SaleOrder() {
   // SAVE inser / update
    const handleSave = () => {
     const isNew = selected === "new";
-    const url = isNew ? "http://localhost:3003/sales-orders" : `http://localhost:3003/sales-orders/${selected}`;
+    const url = isNew ? `${API_BASE_URL}/sales-orders` : `${API_BASE_URL}/sales-orders/${selected}`;
     const method = isNew ? "POST" : "PUT"; // Naya record hai to POST, purana hai to PUT
 
     fetch(url, {

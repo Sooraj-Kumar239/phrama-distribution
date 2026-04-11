@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Layout from "../components/Layout";
+import API_BASE_URL from "../config";
 
 
 function EditVendor() {
@@ -13,7 +14,7 @@ function EditVendor() {
 
     // GET vendor data
     useEffect(() => {
-        fetch(`http://localhost:3003/vendors/${id}`)
+        fetch(`${API_BASE_URL}/vendors/${id}`)
             .then(res => res.json())
             .then(data => {
                 setName(data.VendorName);
@@ -24,7 +25,7 @@ function EditVendor() {
 
     // UPDATE vendor
     const updateVendor = () => {
-        fetch(`http://localhost:3003/vendors/${id}`, {
+        fetch(`${API_BASE_URL}/vendors/${id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"

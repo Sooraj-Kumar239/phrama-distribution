@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Layout from "../components/Layout";
+import API_BASE_URL from "../config";
 
 
 function EditCustomer() {
@@ -19,7 +20,7 @@ function EditCustomer() {
 
     // load existing  data
     useEffect(() => {
-        fetch(`http://localhost:3003/customers/${id}`)
+        fetch(`${API_BASE_URL}/api/customers/${id}`)
             .then(res => res.json())
             .then(data => {
                 setCustomerName(data.CustomerName);
@@ -53,7 +54,7 @@ function EditCustomer() {
     }
 
     // API call
-    fetch(`http://localhost:3003/customers/${id}`, {
+    fetch(`${API_BASE_URL}/api/customers/${id}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json"

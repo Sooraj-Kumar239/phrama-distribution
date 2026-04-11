@@ -15,14 +15,19 @@
     const productController         = require('./Controllers/productController');
 
     const customerController        = require('./Controllers/customerController');
+
     const userController            = require('./Controllers/userController');
+
     const designationsController    = require('./Controllers/designationsController');
+
     const employeesController       = require('./Controllers/employeesController');
 
     const purchaseLineController    = require('./Controllers/purchaseLineController');
+
     const purchaseOrderController   = require('./Controllers/purchaseOrderController');
 
     const salesLinesController      = require('./Controllers/salesLinesController');
+
     const salesOrdersController     = require('./Controllers/salesOrdersController');
 
     const vehiclesController        = require('./Controllers/vehiclesController');
@@ -57,7 +62,7 @@
     // purchase order
     app.use('/purchase-orders', purchaseOrderController);
     // sales LinesAC
-    app.use('/sales-lines', salesLinesController);
+    app.use('/api/sales-lines', salesLinesController);
     // salesOrder
     app.use('/sales-orders', salesOrdersController);
     // vehicles
@@ -86,14 +91,14 @@
     // }
     // // 
 
-    app.get('/test-db', async (req, res) => {
-        try {
-            const result = await sql.query('SELECT * FROM products');
-            res.json(result.recordset);
-        } catch (err) {
-            res.status(500).send(err.message);
-        }
-    });
+    // app.get('/test-db', async (req, res) => {
+    //     try {
+    //         const result = await sql.query('SELECT * FROM products');
+    //         res.json(result.recordset);
+    //     } catch (err) {
+    //         res.status(500).send(err.message);
+    //     }
+    // });
     // 
     // app.listen(LabelService.get('PORT'), () => {
     //     console.log(`${LabelService.get('SERVER_START')}: ${LabelService.get('PORT')}`);

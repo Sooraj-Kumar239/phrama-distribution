@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 // import { Form } from "react-router-dom";
+import API_BASE_URL from "../config";
 
 function Customers(){
     const [customers, setCustomers] = useState([]);
@@ -62,7 +63,7 @@ function Customers(){
     // fetch data
     useEffect(() => {
         // fetch(`http://localhost:3003/customers`)
-        fetch("/api/customers")
+        fetch(`${API_BASE_URL}/api/customers`)
         .then(res => res.json())
         .then(data => setCustomers(data));
     },[]);
@@ -94,7 +95,7 @@ function Customers(){
         // validation end
 
        
-        fetch(`http://localhost:3003/customers`, {
+        fetch(`${API_BASE_URL}/api/customers`, {
             method: "POST",
             headers: {
                 "Content-type" : "application/json"
@@ -114,7 +115,7 @@ function Customers(){
 
             // refresh list
             // fetch(`http://localhost:3003/customers`)
-            fetch("/api/customers")
+            fetch(`${API_BASE_URL}/api/customers`)
             .then(res => res.json())
             .then(data => setCustomers(data));
             // set error
@@ -136,14 +137,14 @@ function Customers(){
 
     //delete customers
     const handleDelete = (id) => {
-        fetch(`http://localhost:3003/customers/${id}`, {
+        fetch(`${API_BASE_URL}/api/customers/${id}`, {
             method: "DELETE"
         })
         .then(res => res.text())
         .then(() => {
 
             // fetch(`http://localhost:3003/customers`)
-            fetch("/api/customers")
+            fetch(`${API_BASE_URL}/api/customers`)
             .then(res => res.json())
             .then(data => setCustomers(data));
 

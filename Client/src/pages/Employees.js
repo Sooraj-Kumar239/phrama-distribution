@@ -66,6 +66,12 @@ function Employees() {
 
     //  Add Employee
     const addEmployee = () => {
+                if (!fullName || !email || !designationId || !hireDate) {
+            setMessage("Please fill all required fields");
+            setMsgType("delete");
+            return;
+        }
+
         fetch(`${API_BASE_URL}/employees`, {
             method: "POST",
             headers: {
@@ -75,30 +81,41 @@ function Employees() {
                 FullName: fullName,
                 Email: email,
                 PhoneNumber: phone,
-                DesignationID: designationId,
+                // DesignationID: designationId,
+                DesignationID: Number(designationId),
                 HireDate: hireDate,
                 EndDate: endDate,
-                IsActive: isActive
+                // IsActive: isActive
+                // required string here
+                // IsActive: Number(isActive)
+                IsActive: isActive === "1" ? 1 : 0
             })
         })
-            .then(res => res.text())
-            .then(() => {
-            setMessage("Employee Added Successfully");
-            setMsgType("success");
+            .then(res => res.json())
+            .then((data) => {
+            // setMessage("Employee Added Successfully");
+            // setMsgType("success");
+             console.log("ADD RESPONSE:", data);
 
-            // clear form
-            setFullName("");
-            setEmail("");
-            setPhone("");
-            setDesignationId("");
-            setHireDate("");
-            setEndDate("");
-            setIsActive("");
+                if (data.error) {
+                    setMessage(data.error);
+                    setMsgType("delete");
+                } else {
+                    setMessage(data.message);
+                    setMsgType("success");
+                // clear form
+                setFullName("");
+                setEmail("");
+                setPhone("");
+                setDesignationId("");
+                setHireDate("");
+                setEndDate("");
+                setIsActive("");
 
-            fetchEmployees();
-
-            setTimeout(() => setMessage(""), 3000);
-        })
+                fetchEmployees();
+            }
+                setTimeout(() => setMessage(""), 3000);
+            })
             .catch(err => console.log(err));
     };
 

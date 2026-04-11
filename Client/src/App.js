@@ -12,6 +12,7 @@ import Designation from "./pages/Designation";
 
 import Employees from "./pages/Employees";
 import EditEmployees from "./pages/EditEmployees";
+// import EmployeeEdit from "./pages/EmployeeEdit";
 
 import Vendors from "./pages/Vendors";
 // for edit distributor
@@ -31,6 +32,7 @@ import PurchaseLines from "./pages/PurchaseLines";
 // sales
 import SaleOrder from "./pages/SaleOrder";
 import SaleLine from "./pages/SaleLine";
+// import SalesLines from "./pages/SaleLine";
 
 
 
@@ -60,6 +62,7 @@ function App() {
 
           <Route path="/employees" element={<Employees />} />
           <Route path="/employees/edit/:id" element={<EditEmployees />} />
+          {/* <Route path="/employees/edit/:id" element={<EmployeeEdit />} /> */}
 
           <Route path="/vendors" element={<Vendors />} />
           <Route path="/vendors/edit/:id" element={<EditVendor />} />

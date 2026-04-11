@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Layout from "../components/Layout";
 import API_BASE_URL from "../config";
+import { useNavigate } from "react-router-dom";
 
 function EmployeeEdit() {
 
@@ -16,7 +17,7 @@ function EmployeeEdit() {
     const [isActive, setIsActive] = useState("");
 
     const [designations, setDesignations] = useState([]);
-
+const navigate = useNavigate();
     // fetch employee + designation
     useEffect(() => {
 
@@ -31,8 +32,9 @@ function EmployeeEdit() {
                 setPhone(emp.PhoneNumber || "");
                 setDesignationId(emp.DesignationID || "");
                 setHireDate(emp.HireDate?.split("T")[0] || "");
-                setEndDate(emp.Endate?.split("T")[0] || "");
-                setIsActive(emp.IsActive || "");
+                setEndDate(emp.EndDate ? emp.EndDate.split("T")[0] : "");
+                // setIsActive(emp.IsActive !== undefined ? emp.IsActive : "");
+                setIsActive(emp.IsActive !== undefined ? String(emp.IsActive) : "");
             });
 
         // designation dropdown
@@ -53,21 +55,22 @@ function EmployeeEdit() {
                 FullName: fullName,
                 Email: email,
                 PhoneNumber: phone,
-                DesignationID: designationId,
+                // DesignationID: designationId,
+                DesignationID: Number(designationId),
                 HireDate: hireDate,
                 EndDate: endDate,
-                IsActive: isActive
+                // IsActive: isActive
+                // IsActive: Number(isActive)
+                IsActive: isActive === "1" ? 1 : 0
             })
         })
         .then(res => res.text())
-.then(data => {
-    console.log("UPDATE RESPONSE:", data);
-
-    setTimeout(() => {
-        window.location.href = "/employees?msg=updated";
-    }, 500);
+        .then(data => {
+        console.log("RESPONSE:", data);
+        alert(data);              // direct text show karega
+        navigate("/employees");   // redirect
 })
-.catch(err => console.log(err));
+        .catch(err => console.log(err));
     };
     return (
         <Layout>
