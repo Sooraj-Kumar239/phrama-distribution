@@ -67,7 +67,7 @@ function Products(){
         }, []);
    
     const deleteProduct = (id) => {
-        fetch(`${API_BASE_URL}/api/products${id}`, {
+        fetch(`${API_BASE_URL}/api/products/${id}`, {
         method: "DELETE"
         })
         .then(res => res.text())
@@ -178,13 +178,14 @@ function Products(){
                                         <tr key={p.ProductID}>
                                             <td>{p.ProductName}</td>
                                             <td>{p.BatchNumber}</td>
-                                            <td>{p.ExpiryDate}</td>
+                                            {/* <td>{p.ExpiryDate}</td> */}
+                                            <td>{p.ExpiryDate.split("T")[0]}</td>
                                             <td>{p.StockQuantity}</td>
                                             <td>{p.UnitPrice}</td>
                                             <td>{p.ReorderLevel}</td>
                                             <td>
                                              <button
-                                                    onClick={() => window.location.href = `/edit/${p.ProductID}`}
+                                                    onClick={() => window.location.href = `/products/edit/${p.ProductID}`}
                                                     style={{
                                                     backgroundColor: "#007bff",
                                                     color: "white",

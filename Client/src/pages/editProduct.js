@@ -15,7 +15,7 @@ function EditProduct() {
     const [reorder, setReorder] = useState("");
 
     useEffect(() => {
-        fetch(`${API_BASE_URL}/products/${id}`)
+        fetch(`${API_BASE_URL}/api/products/${id}`)
             .then(res => res.json())
             .then(data => {
                 setName(data.ProductName);
@@ -28,7 +28,7 @@ function EditProduct() {
     }, [id]);
 
     const updateProduct = () => {
-        fetch(`${API_BASE_URL}/products/${id}`, {
+        fetch(`${API_BASE_URL}/api/products/${id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
