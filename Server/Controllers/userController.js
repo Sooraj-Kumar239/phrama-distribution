@@ -24,9 +24,9 @@
         
         db.query(
         `SELECT U1.*, E1.FullName 
-            FROM USERS U1
-            JOIN EMPLOYEES E1 ON E1.EmployeeID = U1.EmployeeID
-            WHERE U1.USERID = ?`,
+            FROM users U1
+            JOIN employees E1 ON E1.EmployeeID = U1.EmployeeID
+            WHERE U1.UserID = ?`,
             [UserId],
             (err, results) => {
                 if (err) {
