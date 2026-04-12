@@ -125,6 +125,8 @@ function Products(){
 
         return (
             <Layout>
+                <style>{internalCSS}</style>
+                <div>
         <div>
 
                     {/* <h1>Dashboard</h1> */}
@@ -144,18 +146,18 @@ function Products(){
                     </div>
 )}          
                             <h3>Add Product</h3>
-                            
-                            <input style={inputStyle} placeholder="Product Name" onChange={(e) => setName(e.target.value)} />
-                            <input style={inputStyle} placeholder="Batch Number" onChange={(e) => setBatch(e.target.value)} />
-                            <input style={inputStyle} type="date" onChange={(e) => setExpiry(e.target.value)} />
-                            <input style={inputStyle} placeholder="Stock" type="number" onChange={(e) => setStock(e.target.value)} />
-                            <input style={inputStyle} placeholder="Unit Price" type="number" onChange={(e) => setPrice(e.target.value)} />
-                            <input style={inputStyle} placeholder="Reorder Level" type="number" onChange={(e) => setReorder(e.target.value)} />
+                            <div className="product-form-container" > 
+                            <input  placeholder="Product Name" onChange={(e) => setName(e.target.value)} />
+                            <input  placeholder="Batch Number" onChange={(e) => setBatch(e.target.value)} />
+                            <input  type="date" onChange={(e) => setExpiry(e.target.value)} />
+                            <input  placeholder="Stock" type="number" onChange={(e) => setStock(e.target.value)} />
+                            <input  placeholder="Unit Price" type="number" onChange={(e) => setPrice(e.target.value)} />
+                            <input  placeholder="Reorder Level" type="number" onChange={(e) => setReorder(e.target.value)} />
 
-                              <button style={addBtn} onClick={addProduct}>Add Product</button>
-
+                              <button  onClick={addProduct}>Add Product</button>
+                            </div>
                                 <h2>All Products</h2>
-                                <table border="1" cellPadding="10">
+            <table className="product-table" border="1" cellPadding="10">
                                 <thead>
                                     <tr>
                                         <th>Product Name</th>
@@ -221,10 +223,76 @@ function Products(){
             </tbody>
         </table>
    
-
+        </div>
         </div>
         </Layout>
   );
 }
 
 export default Products;
+// css
+const internalCSS = `
+    .product-form-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
+        background: #f4f7f6;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+
+    .product-input {
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 14px;
+        outline: none;
+        transition: border 0.3s;
+    }
+
+    .product-input:focus {
+        border-color: #28a745;
+    }
+
+    .add-product-btn {
+        background-color: #28a745;
+        color: white;
+        border: none;
+        padding: 12px;
+        border-radius: 6px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .add-product-btn:hover {
+        background-color: #218838;
+    }
+
+    .product-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .product-table th {
+        background-color: #343a40;
+        color: white;
+        padding: 15px;
+        text-align: left;
+    }
+
+    .product-table td {
+        padding: 12px 15px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .product-table tr:hover {
+        background-color: #f9f9f9;
+    }
+`;

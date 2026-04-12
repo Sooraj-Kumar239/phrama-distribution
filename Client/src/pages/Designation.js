@@ -123,6 +123,7 @@
         return (
             
             <Layout>
+                
                     <button 
                         onClick={() => setShowForm(!showForm)} 
                         style={{ marginBottom: "10px" }}
@@ -256,3 +257,54 @@
     }
 
     export default Designation;
+    const internalCSS = `
+    .form-box {
+        background: #f9f9f9;
+        padding: 20px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        margin-bottom: 20px;
+    }
+
+    .my-input {
+        width: 100%;           /* Full width cover karega */
+        max-width: 300px;      /* Lekin 300px se zyada bada nahi hoga */
+        padding: 10px;
+        margin-bottom: 5px;    /* Input ke niche thodi jagah */
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        display: block;        /* Ek ke niche ek aayenge */
+    }
+
+    .error-msg {
+        color: red;
+        font-size: 12px;
+        margin-bottom: 10px;
+        display: block;
+    }
+
+    .save-btn {
+        padding: 10px 20px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .desig-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    .desig-table th, .desig-table td {
+        padding: 12px;
+        border: 1px solid #ddd;
+        text-align: left;
+    }
+
+    .desig-table th {
+        background-color: #f4f4f4;
+    }
+`;
