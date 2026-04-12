@@ -17,12 +17,28 @@ function PurchaseLines() {
   const [lineEditMode, setLineEditMode] = useState(false);
 
   // --- Data Fetching ---
+  // const fetchLines = () => {
+  //   fetch(`${API_BASE_URL}/purchase-lines/${id}`)
+  //     .then((res) => res.json())
+  //     .then((data) => setLines(data));
+  //     // .then((data) => setLines(data.recordset || []));
+  // };
+
   const fetchLines = () => {
-    fetch(`${API_BASE_URL}/purchase-lines/${id}`)
-      .then((res) => res.json())
-      // .then((data) => setLines(data));
-      .then((data) => setLines(data.recordset || []));
-  };
+  fetch(`${API_BASE_URL}/purchase-lines/${id}`)
+    .then((res) => res.json())
+    .then((data) => {
+      console.log("LINES DATA:", data);
+
+      if (Array.isArray(data)) {
+        setLines(data);
+      } else if (data.recordset) {
+        setLines(data.recordset);
+      } else {
+        setLines([]); // fallback
+      }
+    });
+};
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/purchase-orders/${id}`)
@@ -33,15 +49,15 @@ function PurchaseLines() {
         setTempData(data);
       
        // FIX: handle both cases
-      if (Array.isArray(data)) {
-        setLines(data);
-      } else if (data.recordset) {
-        setLines(data.recordset);
-      } else {
-        setLines([]);
-      }
+      // if (Array.isArray(data)) {
+      //   setLines(data);
+      // } else if (data.recordset) {
+      //   setLines(data.recordset);
+      // } else {
+      //   setLines([]);
+      // }
       
-      });
+      },[id]);
 
     fetch(`${API_BASE_URL}/vendors`)
       .then((res) => res.json())
@@ -185,10 +201,12 @@ function PurchaseLines() {
               </select>
             ) : vendors.find(v => Number(v.VendorID) === Number(order.VendorID))?.VendorName}</p>
             <p><b>Status:</b> {editMode ? (
-              <select style={gridInput} value={tempData.OrderStatus} onChange={(e) => setTempData({ ...tempData, OrderStatus: e.target.value })}>
+              <select style={gridInput}
+                      value={tempData.OrderStatu || ""}
+                      onChange={(e) => setTempData({ ...tempData, OrderStatus: e.target.value })}>
                 <option>Pending</option><option>Received</option>
               </select>
-            ) : order.OrderStatus}</p>
+            ) : order.OrderStatus ||"NA"}</p>
             <p><b>Date:</b> {order.OrderDate}</p>
             <p style={{ fontSize: "1.2rem", color: "#28a745" }}><b>Grand Total: </b> 
                {lines.reduce((sum, l) => Number(sum) + (Number(l.LineTotal) || 0), 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}

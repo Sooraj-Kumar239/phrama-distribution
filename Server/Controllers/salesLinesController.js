@@ -1,6 +1,3 @@
-// code for checking
-// console.log("User Controller Loaded");
-
 const db = require('../Model/db');
 const express = require('express');
 const router = express.Router();
@@ -9,19 +6,17 @@ const LabelService = require('../labels/labelService');
 //Return all u
 router.get("/:id", (req, res) => {
     const id = req.params.id;
-    const sql = "SELECT * FROM SalesLines WHERE SalesOrderID = ?";
+    const sql = "SELECT * FROM saleslines WHERE SalesOrderID = ?";
 
    db.query(sql, [id],(err, results) => {
             if (err) {
-                return res.status(500).json(err);
-                return res.json(result);
-                // return res.status(500).send("Error fetching sales order");
+                console.error("GET Error:", err);
+                return res.status(500).send("Error fetching sales order");
             }
 
-            // res.json(results[0]); // single object
-            res.json(results);
-        }
-    );
+            res.json(results || []); // single object
+            // res.json(results);
+    });
 });
 
 //Inserts request
@@ -32,25 +27,26 @@ router.post('/', (req, res) => {
         QuantitySold,
         UnitPriceAtSale,
         Discount,
-    	LineTotal
+    	
     } = req.body;
 
-    const sql = `INSERT INTO  SalesLines
-        (SalesOrderID,	ProductID, QuantitySold, UnitPriceAtSale, Discount, LineTotal)
-        values (?,?,?,?,?,?)`;
+    const sql = `INSERT INTO  saleslines
+        (SalesOrderID,	ProductID, QuantitySold, UnitPriceAtSale, Discount)
+        values (?,?,?,?,?)`;
 
     db.query(sql,
-        [SalesOrderID,	ProductID, QuantitySold, UnitPriceAtSale, Discount, LineTotal],
+        [SalesOrderID,	ProductID, QuantitySold, UnitPriceAtSale, Discount],
         (err, result) => {
             if (err) {
                 console.log(err.message);
-                res.send('Error inserting user' + err.message);
-            } else {
+               return res.status(500).json({ error: 'Error inserting line: ' + err.message });
+            } 
+            
                 res.json({
                     message: "Line added successfully",
                     insertId: result.insertId
-                    });
-                }
+                });
+                
         }
     );
 
@@ -60,19 +56,23 @@ router.post('/', (req, res) => {
 router.put('/:lineId', (req, res) => {
 
     const lineId = req.params.lineId;
-    const { SLineID, SalesOrderID, ProductID, QuantitySold, UnitPriceAtSale, Discount, LineTotal } = req.body;
+    const { ProductID, QuantitySold, UnitPriceAtSale, Discount } = req.body;
 
-    db.query(
-     `UPDATE SALESLINES 
-             SET ProductID=?, QuantitySold=?, UnitPriceAtSale=?, Discount=?, LineTotal=? 
-             WHERE SLineID=? AND SalesOrderID=?`,
-      [ProductID, QuantitySold, UnitPriceAtSale, Discount, LineTotal, SLineID, SalesOrderID],
-      (err) => {
+    const sql = `UPDATE saleslines 
+            SET ProductID=?, QuantitySold=?, UnitPriceAtSale=?, Discount=?
+            WHERE SLineID=?`;
+            
+      
+            db.query(sql, [ProductID, QuantitySold, UnitPriceAtSale, Discount, lineId],
+            
+            (err, result) => {
 
-        if (err) return res.send(err);
-
-         res.json({message: lineId });
-      }
+            if (err){
+                console.error("PUT Error:", err);
+                return res.status(500).json({ error: err.message });
+            }
+                res.json({ message: "Updated successfully", lineId });
+        }
     );
 });
 

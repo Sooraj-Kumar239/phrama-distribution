@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import API_BASE_URL from "../config";
 
-function SaleLine() {
+function SalesLines() {
   const { id } = useParams(); // SalesOrderID
 
   const [order, setOrder] = useState({});
@@ -39,8 +39,24 @@ function SaleLine() {
   // Fetch Lines
   useEffect(() => {
     fetch(`${API_BASE_URL}/api/sales-lines/${id}`)
-      .then(res => res.json())
-      .then(setLines);
+      .then(res => {
+      if (!res.ok) throw new Error("Server Error");
+      return res.json();
+    })
+    .then(data => {
+      // FIX: Ensure data is an array
+      if (Array.isArray(data)) {
+        setLines(data);
+      } else if (data.recordset) {
+        setLines(data.recordset);
+      } else {
+        setLines([]); 
+      }
+    })
+    .catch(err => {
+      console.error("Fetch Lines Error:", err);
+      setLines([]); // Fallback to empty array to prevent .reduce crash
+    });
   }, [id]);
 
   // Save Header Logic
@@ -90,7 +106,7 @@ function SaleLine() {
   };
 
   // 2.  check karega Line save or Update
-  const handleSaveLine = () => {
+    const handleSaveLine = () => {
     if (selectedIndex === null) return;
     const line = lines[selectedIndex];
 
@@ -101,8 +117,11 @@ function SaleLine() {
     // const isExisting = line.SLineID !== undefined; 
 
 
-    const url = isExisting ? `${API_BASE_URL}/api/sales-lines/${line.SLineID}` : `${API_BASE_URL}/api/sales-lines`;
-    const method = isExisting ? "PUT" : "POST";
+   const url = isExisting 
+        ? `${API_BASE_URL}/api/sales-lines/${line.SLineID}` 
+        : `${API_BASE_URL}/api/sales-lines`;
+    
+        const method = isExisting ? "PUT" : "POST";
 
     const body = JSON.stringify({ ...line, SalesOrderID: id });
     fetch(url, {
@@ -112,7 +131,7 @@ function SaleLine() {
     })
     .then(res =>{
        if(!res.ok)throw new Error("Save failed");
-       return res.text();
+       return res.json();
       })
     .then(()=> {
       toast.success(isExisting ? "Line Updated!" : "Line Saved!");
@@ -168,10 +187,12 @@ function SaleLine() {
             <p><b>Order ID:</b> {order.SalesOrderID}</p>
             
             <p><b>Customer:</b> {editMode ? (
-              <select style={gridInput} value={tempData.CustomerID || ""} onChange={(e) => setTempData({ ...tempData, CustomerID: e.target.value })}>
-                {customers.map(c => <option key={c.CustomerID} value={c.CustomerID}>{c.CustomerName}</option>)}
+              <select style={gridInput} 
+                      value={tempData.CustomerID || ""}
+                      onChange={(e) => setTempData({ ...tempData, CustomerID: e.target.value })}>
+                      {customers.map(c => <option key={c.CustomerID} value={c.CustomerID}>{c.CustomerName}</option>)}
               </select>
-            ) : (customers.find(c => Number(c.CustomerID) === Number(order.CustomerID))?.CustomerName || "N/A")}</p>
+            ) : (customers.find(c => String(c.CustomerID) === String(order.CustomerID))?.CustomerName || "N/A")}</p>
 
             <p><b>Employee:</b> <span>{employees.find(emp => Number(emp.EmployeeID) === Number(order.EmployeeID))?.EmployeeName || order.EmployeeID}</span></p>
 
@@ -188,7 +209,10 @@ function SaleLine() {
             <p><b>Date:</b> {order.OrderDate}</p>
 
             <p style={{ fontSize: "1.2rem", color: "#28a745" }}><b>Grand Total: </b> 
-               {lines.reduce((sum, l) => Number(sum) + (Number(l.LineTotal) || 0), 0).toFixed(2)}
+               {/* {lines.reduce((sum, l) => Number(sum) + (Number(l.LineTotal) || 0), 0).toFixed(2)} */}
+               {Array.isArray(lines) 
+              ? lines.reduce((sum, l) => Number(sum) + (Number(l.LineTotal) || 0), 0).toFixed(2)
+              : "0.00"}
             </p>
 
             <p><b>Status:</b> {editMode ? (
@@ -283,7 +307,7 @@ function SaleLine() {
   );
 }
 
-export default SaleLine;
+export default SalesLines;
 
 // --- STYLES ---
 const btnStyle = { padding: "8px 15px", borderRadius: "5px", border: "none", cursor: "pointer", fontWeight: "bold" };
