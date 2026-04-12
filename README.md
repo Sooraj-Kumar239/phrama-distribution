@@ -45,6 +45,17 @@ The application is accessible at:
 
 ---
 
-## Future Goal
+## Future Goal / Improvements
+
+
+- Implement responsive design for mobile and tablet devices  
+- Add billing system and financial reports  
+- Implement authentication with role-based access control (Admin, Employee, etc.)  
+- Develop a public-facing website (Landing Page) including:
+  - Company information (About Us)
+  - Locations and branches
+  - Business partners
+  - Contact / Query submission form
+  - Career opportunities section  
 
 ### Sources
