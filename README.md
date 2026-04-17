@@ -47,7 +47,6 @@ The application is accessible at:
 
 ## Future Goal / Improvements
 
-
 - Implement responsive design for mobile and tablet devices  
 - Add billing system and financial reports  
 - Implement authentication with role-based access control (Admin, Employee, etc.)  
@@ -59,3 +58,18 @@ The application is accessible at:
   - Career opportunities section  
 
 ### Sources
+Throughout the project, these resources were used for learning, development advice, and troubleshooting.
+
+- React Documentation: https://react.dev/
+- Node.js Documentation: https://nodejs.org/
+- Express.js Documentation: https://expressjs.com/
+- W3Schools (Web Development Tutorials): https://www.w3schools.com/
+- Stack Overflow (Developer Community Support): https://stackoverflow.com/
+- ChatGPT (AI Assistance by OpenAI):
+  -  https://chatgpt.com/share/69e2b7a7-70b0-83eb-b740-1a39034c0cf7
+  -  https://chatgpt.com/share/69e2b917-1630-83eb-b7f1-a6bcae82e409
+  -  https://chatgpt.com/share/69e2b98d-c514-83eb-8d78-572ca304abc1
+  -  https://chatgpt.com/share/69e2ba53-c6c4-83eb-9901-04a511280149
+- Railway (Database Hosting): https://railway.app/
+- Azure (Cloud Deployment): https://azure.microsoft.com/
+
