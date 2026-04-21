@@ -72,4 +72,12 @@ Throughout the project, these resources were used for learning, development advi
   -  https://chatgpt.com/share/69e2ba53-c6c4-83eb-9901-04a511280149
 - Railway (Database Hosting): https://railway.app/
 - Azure (Cloud Deployment): https://azure.microsoft.com/
+- trying to fix yml file-took help from gpt- **Update main_pharma-distribution-sko13.yml** i was trying to dockerize datbase suggest  by friend for the deployment I tried many times but i was failed to do - then I deployed via railway- google suugest me railway steps foolwed by GPT, I also tried azure DB but region issues i was facing and steps are hard for me 
+
+    -  after deployment I was facing chalenges to control salesLine / PurchaseLines Pages flow for fixing get help by gpt and friend also mentioned in comments
+    -  
+
+
+·
+
 
